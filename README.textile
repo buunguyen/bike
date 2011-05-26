@@ -8,13 +8,11 @@ h1. Interpreted language built on .NET/Mono
 * Cross-platform (Windows, OSX, Linux)
 
 
-h1. Installation
+h1. Install Bike on Mac OSX
 
-h2. 1. Mac OSX 
-
-* Prerequisite: Mono 2.10.2 (I haven't tested with earlier versions)
+* Prerequisite: @Mono@ 2.10.2 (I haven't tested with earlier versions)
 * Download @bike.pkg@ in @installers/osx@
-* Run @bike.pkg@ to install bike
+* Run @bike.pkg@ to install @Bike@
 * Open the Terminal and type the followings
 <pre>@cat > hello.bk
 println('Hello World');
@@ -22,16 +20,16 @@ Ctrl-D
 bike.sh hello.bk@</pre>
 
 bq. Notes:
-If you didn't install Mono or bike to their default folders, modify @/usr/local/bin/bike.sh@
-If you want to double-click to execute a bike file in Finder, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
+If you didn't install @Mono@ or @Bike@ to their default folders, modify @/usr/local/bin/bike.sh@
+If you want to double-click to execute a @Bike@ file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
 
-h2. 2. Windows
+h1. Install Bike on Windows
 
 * Prerequisite: .NET 4.0
 * Download @bike.exe@ in @installers/win@
-* Run @bike.exe@ to extract and install bike
+* Run @bike.exe@ to extract and install @Bike@
 * Create a file named @hello.bk@ with this content <pre>@println('Hello World');@</pre>
-* In the cmd, type @bike hello.bk@ to execute it. Alternatively, you can double-click a bike file in Windows Explorer.
+* In the @cmd@, type @bike hello.bk@ to execute it. Alternatively, you can double-click a @Bike@ file in Windows Explorer.
 
 bq. Notes:
 The setup program also makes the following changes to your system:
@@ -39,18 +37,18 @@ The setup program also makes the following changes to your system:
 Append @[installation_folder]bin/@ to @PATH@ env variable
 Associate @.bk@ extension with @bike.exe@
 
-h2. 3. Folder structure after installation
+h1. Bike folder structure
 
-In OSX, bike is installed to @Applications/bike@. In Windows, bike is installed to @Program Files/bike@. The structure of the @bike@ folder is as follows:
+In OSX, @Bike@ is installed to @Applications/bike@. In Windows, @Bike@ is installed to @Program Files/bike@. The structure of the @Bike@ folder is as follows:
 * bin/: binaries and dependencies and
-** bike.app (OSX only): the app you can used to associate with @.bk@ files so that they are executable via Finder
-** bike.action (OSX only): the Automator action code used to create bike.app, feel free to customize
-** bike.sh (OSX only): the shell script used to run bike (the same file also exists in @/usr/local/bin@)
+** bike.app (OSX only): the app you can used to associate with @.bk@ files so that they are executable via @Finder@
+** bike.action (OSX only): the @Automator@ action code used to create @bike.app@, feel free to customize
+** bike.sh (OSX only): the shell script used to run @Bike@ (the same file also exists in @/usr/local/bin@)
 * lib/
 ** src/
 *** core/: Library source code
 *** test/: Test for library
-*** tools/: Bike doc and unit tools
+*** tools/: @Bike@ doc and unit tools
 *** doc/: API documentation
 * samples/: Sample programs, most notable is @spec.bk@, an executable walkthrough to all language features
 * resources/ (Windows only)
