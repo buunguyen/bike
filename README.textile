@@ -20,7 +20,7 @@ Ctrl-D
 bike.sh hello.bk@</pre>
 
 bq. Notes:
-- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@
+- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
 - If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
 
 
