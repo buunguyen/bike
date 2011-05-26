@@ -7,7 +7,6 @@ h1. Interpreted language built on .NET/Mono
 * CLR interoperability
 * Cross-platform (Windows, OSX, Linux)
 
-<hr />
 
 h1. Installation
 
@@ -58,13 +57,11 @@ In OSX, bike is installed to @Applications/bike@. In Windows, bike is installed 
 ** np.xml: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
 * LICENSE
 
-<hr />
 
 h1. Contributors
 
 * "duylam":https://github.com/duylam
 
-<hr />
 
 h1. Copyright
 
