@@ -50,7 +50,7 @@ In OSX, Bike is installed to @Applications/bike@. In Windows, Bike is installed 
 *** @core@: Library source code
 *** @test@: Test for library
 *** @tools@: Bike doc and unit tools
-*** @doc@: API documentation
+** @doc@: API documentation
 * @samples@: Sample programs, most notable is @spec.bk@
 * @resources@ (Windows only)
 ** @np.xml@: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
