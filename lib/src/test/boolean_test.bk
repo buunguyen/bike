@@ -1,0 +1,12 @@
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'Boolean :: Basic' ).run( func() {
+	this.should_not_be_same( true, true );
+	this.should_not_be_same( false, false );
+	this.should_be_equal( true, true );
+	this.should_be_equal( false, false );
+	this.should_not_be_equal( true, false );
+	this.should_not_be_null( true.hash_code() );
+	this.should_be_equal( true.to_string(), 'True' );
+	this.should_be_equal( false.to_string(), 'False' );
+} );

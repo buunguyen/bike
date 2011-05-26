@@ -1,0 +1,125 @@
+var BikeUnit = {};
+
+BikeUnit.AssertionError = Bike.Error.clone( null, 'BikeUnit.AssertionError' );
+
+BikeUnit.Batch = {
+	initialize: func( name ) {
+		this.name = name || 'default';
+	},
+	
+	run: func( code ) {
+		print( 'Status of test batch <{0}>: '.with( this.name ) );
+		try {
+			code.call( this );
+			print( 'PASS' );
+			println();
+		} rescue e {
+			print( 'FAIL' );
+			println();
+			throw e;
+		}
+	},
+	
+	should_be_same: func( actual, expected, msg ) {
+		msg ||= '{0} is not the same object as {1}'.with( expected, actual );
+		if ( !Bike.Object.is_same( actual, expected ) )
+			throw BikeUnit.AssertionError.create( msg );
+	},
+	
+	should_not_be_same: func( actual, expected, msg ) {
+		msg ||= '{0} is the same object as {1}'.with( expected, actual );
+		if ( Bike.Object.is_same( actual, expected ) )
+			throw BikeUnit.AssertionError.create( msg );
+	},
+	
+	should_be_equal: func( actual, expected, msg ) {
+		msg ||= '{0} is not equal to {1}'.with( expected, actual );
+		if ( expected != actual )
+			throw BikeUnit.AssertionError.create( msg );
+	},
+	
+	should_be_null: func( actual, msg ) {
+		if ( actual != null )
+			throw BikeUnit.AssertionError.create( msg || 'Expected to be null' );
+	},
+	
+	should_not_be_null: func( actual, msg ) {
+		if ( actual == null )
+			throw BikeUnit.AssertionError.create( msg || 'Expected to be not null' );
+	},
+	
+	should_not_be_equal: func( actual, expected, msg ) {
+		msg ||= '{0} is equal to {1}'.with( expected, actual );
+		if ( expected == actual )
+			throw BikeUnit.AssertionError.create( msg );
+	},
+	
+	should_throw: func( code, error_type, msg ) {
+		var fail = false;
+		try {
+			code();
+			fail = true;
+		} rescue e {	
+			if ( error_type != null && !( e is error_type ) ) {
+				fail = true;
+			}
+		}
+		if ( fail ) {
+			throw BikeUnit.AssertionError.create( msg || 'Expected error type {0} is thrown'.with( error_type.type || 'null' ) );
+		}
+	},
+	
+	should_throw_any_error: func( code, msg ) {
+		var fail = false;
+		try {
+			code();
+			fail = true;
+		} rescue e { }
+		if ( fail ) {
+			throw BikeUnit.AssertionError.create( msg || 'Expected error is thrown' );
+		}
+	},
+	
+	should_not_throw: func( code, msg ) {
+		var fail = false;
+		try {
+			code();
+		} rescue e { 
+			fail = true;
+		}
+		
+		if ( fail ) {
+			throw BikeUnit.AssertionError.create( msg || 'Unexpected error is thrown' );
+		}
+	},
+	
+	should_contain: func( actual_list, expected, msg ) {
+		if ( !actual_list.has( expected ) )
+			throw BikeUnit.AssertionError.create( msg || 'List does not contain {0}'.with( expected ) );
+	},
+	
+	should_not_contain: func( actual_list, expected, msg ) {
+		if ( actual_list.has( expected ) )
+			throw BikeUnit.AssertionError.create( msg || 'List contains {0}'.with( expected ) );
+	},
+	
+	should_be_true: func( cond, msg ) {
+		if ( !cond ) throw BikeUnit.AssertionError.create( msg || 'Condition not true' );
+	},
+	
+	should_not_be_true: func( cond, msg ) {
+		should_be_false( cond, msg );
+	},
+	
+	should_be_false: func( cond, msg ) {
+		if ( cond ) throw BikeUnit.AssertionError.create( msg || 'Condition not false' );
+	},
+	
+	should_not_be_false: func( cond, msg ) {
+		should_be_true( cond, msg );
+	},
+	
+	should_fail: func( msg ) {
+		throw BikeUnit.AssertionError.create( msg ||= 'Fail' );
+	}
+};

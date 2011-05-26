@@ -1,0 +1,756 @@
+load 'uri.bk';
+load 'file.bk';
+
+Bike.Http = {};
+	
+#!{ object: 'Bike.Http.Methods',
+	summary: 'Constants and helper methods for HTTP methods'
+}!#
+Bike.Http.Methods = {
+	#!{ field: 'Bike.Http.Methods.GET',
+		summary: 'Number constant for a GET method',
+		type: 'Bike.Number'
+	}!#
+	GET: 0,
+	
+	#!{ field: 'Bike.Http.Methods.POST',
+		summary: 'Number constant for a POST method',
+		type: 'Bike.Number'
+	}!#
+	POST: 1,
+	
+	#!{ field: 'Bike.Http.Methods.HEAD',
+		summary: 'Number constant for a HEAD method',
+		type: 'Bike.Number'
+	}!#
+	HEAD: 2,
+	
+	#!{ field: 'Bike.Http.Methods.PUT',
+		summary: 'Number constant for a PUT method',
+		type: 'Bike.Number'
+	}!#
+	PUT: 3,
+	
+	#!{ field: 'Bike.Http.Methods.DELETE',
+		summary: 'Number constant for a DELETE method',
+		type: 'Bike.Number'
+	}!#
+	DELETE: 4,
+	
+	#!{ method: 'Bike.Http.Methods.has( method_int_value )',
+		summary: 'Checks whether a given number value is valid constant of Bike.Http.Methods or not',
+		params: {
+			method_int_value: {
+				type: 'Bike.Number',
+				desc: 'Number value to check'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True of the given number is valid constant. Otherwise, False'
+		}
+		}!#
+	has: func( method_int_value ) {
+		try {
+			this.text( method_int_value );
+			return true;
+		}
+		rescue e { }
+		
+		return false;
+	},
+	
+	#!{ method: 'Bike.Http.Methods.text( int_value )',
+		summary: 'Returns appropriate http verb',
+		params: {
+			int_value: {
+				type: 'Bike.Number',
+				desc: 'Constant of Bike.Http.Methods'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'The http verb appropriates to given constant. E.g. \'GET\' for Bike.Http.Methods.GET'
+		}
+		}!#
+	text: func( int_value ) {
+		if ( int_value==null ) {
+			throw Bike.NullError.create( 'int_value' );
+		}
+
+		switch ( int_value ) {
+			case this.GET: return 'GET'; break;
+			case this.POST: return 'POST'; break;
+			case this.HEAD: return 'HEAD'; break;
+			case this.PUT: return 'PUT'; break;
+			case this.DELETE: return 'DELETE'; break;
+			default: throw Bike.ArgumentError.create( 'int_value', 'Invalid http method integer value {0}'.with( int_value ) ); break;
+		}
+	},
+	
+	#!{ method: 'Bike.Http.Methods.parse( method_text )',
+		summary: 'Converts a http verb into a constant of Bike.Http.Methods',
+		params: {
+			method_text: {
+				type: 'Bike.String',
+				desc: 'A http verb'
+			}
+		},
+		ret: {
+			type: 'Bike.Number',
+			desc: 'A Bike.Http.Methods constant appropriates to given http verb. E.g. Bike.Http.Methods.GET for \'GET\''
+		}
+	}!#
+	parse: func( method_text ) {
+		method_text ||= '';
+		switch ( method_text.lower() ) {
+			case 'get': return this.GET; break;
+			case 'post': return this.POST; break;
+			case 'head': return this.HEAD; break;
+			case 'put': return this.PUT; break;
+			case 'delete': return this.DELETE; break;
+			default: throw Bike.ArgumentError.create( 'method_text', 'Invalid http verb {0}'.with( method_text ) ); break;
+		}
+	}
+};
+
+#!{ object: 'Bike.Http.Request',
+	summary: 'Represents a HTTP request'
+}!#
+Bike.Http.Request = {
+	#!{ method: 'Bike.Http.Request.initialize( uri, http_method )',
+	summary: 'Initializes this object',
+	params: {
+		uri: {
+			type: 'Bike.String',
+			desc: 'A string representation for uri of request'
+		},
+		http_method: {
+			type: 'Bike.Number',
+			desc: 'One of the constants in {Bike.Http.Methods}'
+		}
+	}
+	}!#
+	initialize: func( uri , http_method ) {
+		http_method ||= Bike.Http.Methods.GET;
+		
+		Bike.Contract.requires_not_null( uri , 'uri' );
+		Bike.Contract.requires( Bike.Http.Methods.has( http_method ) , 'http_method' , 'Unsupported integer value for parameter http_method={0}'.with( http_method ) );
+		
+		var uri_object = Bike.Uri.create( uri );
+		Bike.Contract.requires( [ 'http', 'https' ].has( uri_object.scheme().lower() ) , 'uri' , 'Invalid protocol {0}'.with( uri_object.scheme() ) );
+
+		var _headers = Bike.Http.Headers.create();
+		
+		#!{ method: 'Bike.Http.Request.uri()',
+			summary: 'Returns the uri of request',
+			ret: {
+				type: 'Bike.Uri',
+				desc: 'The uri of request'
+			}
+		}!#
+		this.uri = func() { return uri_object; };
+		
+		#!{ method: 'Bike.Http.Request.http_method()',
+			summary: 'Returns the HTTP method of this request',
+			ret: {
+				type: 'Bike.Number',
+				desc: 'The HTTP method of this request'
+			}
+		}!#
+		this.http_method = func() { return http_method; };
+		
+		#!{ method: 'Bike.Http.Request.headers()',
+			summary: 'Returns request headers',
+			ret: {
+				type: 'Bike.Http.Headers',
+				desc: 'The request headers'
+			}
+		}!#
+		this.headers = func() { return _headers; };				
+		this._form_data = '';
+		
+		#!{ method: 'Bike.Http.Request.uri()',
+			summary: 'Returns uri-encoded string representation of form data for request set in Bike.Http.Request.set_form_data()',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The uri-encoded string representation of form data, e.x: param1=value1&param2=value2'
+			}
+		}!#
+		this.form_data = func() { return this._form_data; };
+	},	
+	
+	#!{ method: 'Bike.Http.Request.set_form_data( form_hash )',
+	summary: 'Sets the form data for the request to submit to server',
+	params: {
+		form_hash: {
+			type: 'Bike.Object',
+			desc: 'A form data object. This object must contains text values.'
+		}
+	}
+	}!#
+	set_form_data: func( form_hash ) {
+		if ( form_hash == null ) {
+			return;
+		}
+		
+		var hash_keys = form_hash.members( false , true );
+		
+		# Serialize the hash into string of 'key1=value1&key2=value2&key3=value3 ...'
+		if ( hash_keys.size() > 0 ) {
+			var form_data_as_string = '';
+			var first_item = true;
+			var http_method = this.http_method();
+			var escape_string_func = func( text ) {
+				var return_value = text;
+				if ( http_method == Bike.Http.Methods.GET ) {
+					return_value = Bike.Uri.escape_string( text );
+				}
+				return_value;				
+			};
+			for ( var key in hash_keys ) { 		
+				form_data_as_string += '{0}{1}={2}'.with( 
+					( first_item ? '' : '&' ),
+					escape_string_func( key ), 
+					escape_string_func( form_hash[ key ] || '' ) );
+				first_item = false;		
+			}
+			this._form_data = form_data_as_string;
+		}
+	},	
+	
+	#!{ method: 'Bike.Http.Request.send()',
+	summary: 'Sends the request to server and return the response object',
+	ret: {
+		type: 'Bike.Http.Response',
+		desc: 'The response of request'
+	}
+	}!#
+	send: func() {
+		var net_request = null;
+		var request_uri = this.uri();
+		var http_method = this.http_method();
+		
+		# Attach form data to GET request 
+		if ( http_method == Bike.Http.Methods.GET ) {
+			var uri_string = request_uri.original_string();
+			var append_params = uri_string.ends( '?' ) ? '' : '?' ;
+			request_uri = Bike.Uri.create( '{0}{1}{2}'.with( uri_string , append_params , this.form_data() ) );
+		}
+		net_request = System.Net.WebRequest.Create( request_uri.inner_uri() );
+	
+		# Attach form data to POST request 
+		if ( http_method == Bike.Http.Methods.POST ) {
+			net_request.ContentType = 'application/x-www-form-urlencoded';
+			net_request.Method = 'POST';
+			var form_bytes = System.Text.Encoding.ASCII.GetBytes( this.form_data() );
+			var request_stream = null;
+			try {
+				net_request.ContentLength = form_bytes.size();
+				request_stream = net_request.GetRequestStream();
+				request_stream.Write( form_bytes , 0 , net_request.ContentLength );
+			}
+			finally {
+				if ( request_stream != null ) {
+					request_stream.Close();
+				}
+			}
+		}
+			
+		var net_request_headers = net_request.Headers;
+		
+		# Add headers to request
+		var request_headers = this.headers();		
+		for ( var h in request_headers.all_headers() ) {
+			net_request_headers.Add( h , request_headers.get( h ) );
+		}
+		var response_headers = null;
+		var response_reader = null;
+		var response_object = null;
+		var net_response = null;
+
+		try {
+			net_response = net_request.GetResponse();
+			
+			# Extract data from .NET response object into Bike.Http.HttpResponse object
+			var hash_headers = {};
+			var status_code = System.Convert.ToInt32( net_response.StatusCode );
+			var http_method = net_response.Method;
+			var response_headers = net_response.Headers;
+			var header_keys = response_headers.AllKeys;		
+			header_keys.each( func( k ) { hash_headers[ k ] = response_headers[ k ]; } );
+			var buffer_size = 51200; # 50 KB
+			response_reader = System.IO.BufferedStream( net_response.GetResponseStream(), buffer_size );
+			var response_data_memory_stream = System.IO.MemoryStream( buffer_size );
+			response_reader.CopyTo( response_data_memory_stream );
+			response_object = Bike.Http.Response.create( this.uri().original_string() , Bike.Http.Methods.parse( http_method ) , hash_headers, status_code , response_data_memory_stream );
+			response_data_memory_stream.Close();
+		} finally {
+			if ( response_reader != null ) {
+				response_reader.Dispose();
+			}
+			if ( net_response != null ) {
+				net_response.Close();
+			}
+		}
+		
+		return response_object;
+	},
+	
+	#!{ method: 'Bike.Http.Request.get( uri, response_callback, query_parameters )',
+	summary: 'Makes a GET request to server and receives response text body',
+	params: {
+		uri: {
+			type: 'Bike.String',
+			desc: 'The uri of the request'
+		},
+		response_callback: {
+			type: 'Bike.Function',
+			desc: 'A func( Bike.Http.Response ) callback'
+		},
+		query_parameters: {
+			type: 'Bike.Object',
+			desc: 'A hash for request parameters'
+		}
+	}
+	}!#
+	get: func( uri , response_callback , query_parameters ) {
+		Bike.Contract.requires_not_null( uri , 'uri' );
+		Bike.Contract.requires_not_null( response_callback , 'response_callback' );
+		
+		var req = Bike.Http.Get.create( uri );
+		req.set_form_data( query_parameters );
+		
+		var resp = req.send();
+		response_callback( resp );
+	},
+	
+	#!{ method: 'Bike.Http.Request.post( uri, response_callback, form_parameters )',
+	summary: 'Makes a POST request to server and receives response text body',
+	params: {
+		uri: {
+			type: 'Bike.String',
+			desc: 'The uri of the request'
+		},
+		response_callback: {
+			type: 'Bike.Function',
+			desc: 'A func( Bike.Http.Response ) callback'
+		},
+		form_parameters: {
+			type: 'Bike.Object',
+			desc: 'A hash for form parameters of POST method'
+		}
+	}
+	}!#
+	post: func( uri , response_callback , form_parameters ) {
+		Bike.Contract.requires_not_null( uri , 'uri' );
+		Bike.Contract.requires_not_null( response_callback , 'response_callback' );
+
+		var req = Bike.Http.Post.create( uri );
+		req.set_form_data( form_parameters );
+		
+		var resp = req.send();
+		response_callback( resp );
+	},
+	
+	#!{ method: 'Bike.Http.Request.download( file_uri , download_dir , overwrite , file_name_to_save )',
+	summary: 'A handy way to download a file with a GET HTTP request',
+	params: {
+		file_uri: {
+			type: 'Bike.String',
+			desc: 'The uri of the file to download'
+		},
+		download_dir: {
+			type: 'Bike.String',
+			desc: 'The location to store the downloaded file'
+		},
+		overwrite: {
+			type: 'Bike.Boolean',
+			desc: 'Indicates whether the downloaded file is saved if there is a file with the same name in {download_dir}. 
+				   False if not specified.'
+		},
+		file_name_to_save: {
+			type: 'Bike.String',
+			desc: 'The downloaded file will be saved with file name indicated by this parameter. 
+				  If not specified, the name is the same with the file uri'
+		}
+	}
+	}!#
+	download: func( file_uri , download_dir , overwrite , file_name_to_save ) {
+		Bike.Contract.requires_not_null( file_uri , 'file_uri' );
+		Bike.Contract.requires_not_null( download_dir , 'download_dir' );
+		Bike.Contract.requires( Bike.FileSystem.dir_exists( download_dir ) , 'download_dir' );
+		
+		var uri_object = Bike.Uri.create( file_uri );
+		overwrite ||= false;
+		file_name_to_save ||= Bike.FileSystem.get_file_name( uri_object.path() );
+		var path_to_save = Bike.FileSystem.combine_path( download_dir , file_name_to_save );
+		
+		if( Bike.FileSystem.file_exists( path_to_save ) && !overwrite ) throw Bike.InvalidOperationError.create( 'Could not overwrite existing file {0}'.with(path_to_save) );
+		
+		var req = Bike.Http.Get.create( file_uri );
+		try { 			
+			var resp = req.send();
+			resp.save_body_to_file( path_to_save , overwrite );
+		} rescue e {
+			# @Hack around Mono's bug: 
+			if ( e.cause is System.InvalidOperationException ) {
+				throw Bike.ArgumentError.create( file_uri , 'Could not find the file from uri' );
+			} else if( e.cause is System.Net.WebException && 
+				System.Convert.ToInt32( e.cause.Response.StatusCode ) == System.Convert.ToInt32( System.Net.HttpStatusCode.NotFound ) ) {
+				# HTTP status 404
+				throw Bike.ArgumentError.create( file_uri , 'Could not find the file from uri' );
+			} else {
+				throw e;
+			}
+		}
+	}
+};
+
+
+#!{ 
+	object: 'Bike.Http.Response',
+	summary: 'Represents a HTTP response object'
+}!#
+Bike.Http.Response = {
+	#!{ method: 'Bike.Http.Response.initialize( uri, method, headers, code, response_data_memory_stream )',
+		summary: 'Initializes this object',
+		params: {
+			uri: {
+				type: 'Bike.String',
+				desc: 'The uri of the original request'
+			},
+			method: {
+				type: 'Bike.Number',
+				desc: 'One of the constants {Bike.Http.Methods}'
+			},
+			headers: {
+				type: 'Bike.Object',
+				desc: 'A hash of HTTP response headers'
+			},
+			code: {
+				type: 'Bike.Number',
+				desc: 'HTTP code in response'
+			},
+			response_data_memory_stream: {
+				type: 'System.IO.MemoryStream',
+				desc: 'Raw data of response body'
+			}
+		}
+	}!#
+	initialize: func( uri , method , headers , code , response_data_memory_stream ) {	
+		Bike.Contract.requires_not_null( uri , 'uri' );
+		Bike.Contract.requires_not_null( headers , 'headers' );
+		Bike.Contract.requires( headers.members( false,true ).size() > 0 , 'headers' , 'headers must not be empty');
+		Bike.Contract.requires_not_null( code , 'code' );
+		Bike.Contract.requires_not_null( response_data_memory_stream , 'response_data_memory_stream' );
+		Bike.Contract.requires_not_null( Bike.Http.Methods.has( method ) , 'method' , 'Unsupported integer value for parameter http_method={0}'.with( method ) );
+		
+		var uri_object = Bike.Uri.create( uri );
+		var local_response_data_memory_stream = null;
+		var clone_data_memory_stream = func( stream_to_clone ) {
+			stream_to_clone ||= local_response_data_memory_stream;
+			var tmp_stream = System.IO.MemoryStream( 51200 );
+			stream_to_clone.Seek( 0, System.IO.SeekOrigin.Begin );
+			stream_to_clone.WriteTo( tmp_stream );
+			tmp_stream.Seek( 0, System.IO.SeekOrigin.Begin );
+			return tmp_stream;
+		};
+		
+		local_response_data_memory_stream = clone_data_memory_stream( response_data_memory_stream );
+		var headers_object = Bike.Http.Headers.create( headers , true );
+		var body_string = '';
+		
+		#!{ method: 'Bike.Http.Response.headers()',
+			summary: 'Returns the read-only header collection of the response',
+			ret: {
+				type: 'Bike.Http.Headers',
+				desc: 'The read-only header collection'
+			}
+		}!#
+		this.headers = func() { return headers_object; };
+		
+		#!{ method: 'Bike.Http.Response.code()',
+			summary: 'Returns the http status code of response',
+			ret: {
+				type: 'Bike.Number',
+				desc: 'The http status code of response, e.g. 200'
+			}
+		}!#
+		this.code = func() { return code; };
+		
+		#!{ method: 'Bike.Http.Response.body()',
+			summary: 'Returns the body of response ( not include the header ) as text',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The body of response ( not include the header ) as text'
+			}
+		}!#
+		this.body = func() { 
+			if ( Bike.String.is_empty( body_string ) ) {
+				var stream = null;			
+				try {
+					var tmp_stream = clone_data_memory_stream();
+					stream = System.IO.StreamReader( tmp_stream );
+					body_string = stream.ReadToEnd();
+				} finally {
+					if ( stream!=null ) {
+						stream.Close();
+					}
+				}
+			}
+			
+			return body_string;
+		};
+		
+		#!{ method: 'Bike.Http.Response.save_body_to_file( path, override )',
+			summary: 'Saves the body of response to file as binary',
+			params: {
+				path: {
+					type: 'Bike.String',
+					desc: 'Path to new file to save'
+				},
+				overwrite: {
+					type: 'Bike.Boolean',
+					desc: 'Indicate whether to overwrite the file if it exists. Default is False'
+				}
+			}
+		}!#
+		this.save_body_to_file = func( path , overwrite ) {
+			Bike.Contract.requires_not_null( path , 'path' );
+			
+			overwrite ||= false;			
+			var buffer_size = 51200;
+			var content_stream = null;
+			var saving_file_stream = null;
+			if ( !overwrite && Bike.FileSystem.file_exists( path ) ) throw Bike.InvalidOperationError.create( "File '{0}' already exists".with( path ) );
+			try {
+				# Clone the inner stream
+				content_stream = clone_data_memory_stream();
+				saving_file_stream = System.IO.BufferedStream( System.IO.FileStream( path, System.IO.FileMode.Create ), buffer_size );
+				content_stream.CopyTo( saving_file_stream );
+			}
+			finally {
+				if ( content_stream!=null ) {
+					content_stream.Close();
+				}
+				if ( saving_file_stream!=null ) {
+					saving_file_stream.Close();
+				}
+			}
+		};
+	
+		#!{ method: 'Bike.Http.Response.http_method()',
+			summary: 'Returns the constant of Bike.Http.Methods',
+			ret: {
+				type: 'Bike.Number',
+				desc: 'The constant of Bike.Http.Methods'
+			}
+		}!#
+		this.http_method = func() { return method; };
+		
+		#!{ method: 'Bike.Http.Response.uri()',
+			summary: 'Returns the uri of original request',
+			ret: {
+				type: 'Bike.Uri',
+				desc: 'The uri of original request'
+			}
+		}!#
+		this.uri = func() { return uri_object; };
+		return this;
+	}
+};
+
+#!{ 
+	object: 'Bike.Http.Get',
+	summary: 'Represent for a GET HTTP request'
+}!#
+Bike.Http.Get = {
+	prototype: Bike.Http.Request,
+	
+	#!{ method: 'Bike.Http.Get.initialize( uri )',
+		summary: 'Initializes this object',
+		params: {
+			uri: {
+				type: 'Bike.String',
+				desc: 'A string presentation for uri of request'
+			}
+		}
+	}!#
+	initialize : func( uri ) {
+		return Bike.Http.Request.initialize.call( this , uri , Bike.Http.Methods.GET );
+	}
+};
+
+
+#######
+
+#!{ 
+	object: 'Bike.Http.Post',
+	summary: 'Represent for a POST HTTP request'
+}!#
+Bike.Http.Post = {
+	prototype: Bike.Http.Request,
+	
+	#!{ method: 'Bike.Http.Post.initialize( uri )',
+		summary: 'Initializes this object',
+		params: {
+			uri: {
+				type: 'Bike.String',
+				desc: 'A string presentation for uri of request'
+			}
+		}
+	}!#
+	initialize : func( uri ) {
+		return Bike.Http.Request.initialize.call( this , uri , Bike.Http.Methods.POST );
+	}
+};
+
+
+########
+
+#!{ 
+	object: 'Bike.Http.Headers',
+	summary: 'Represent for a collection of HTTP header'
+}!#
+Bike.Http.Headers = {
+	
+	#!{ method: 'Bike.Http.Headers.initialize( headers_hash, is_readonly )',
+		summary: 'Initializes this object',
+		params: {
+			headers_hash: {
+				type: 'Bike.Object',
+				desc: 'The hash for initial headers'
+			},
+			is_readonly: {
+				type: 'Bike.Boolean',
+				desc: 'Indicate whether the header collection can be modified'
+			}
+		}
+	}!#
+	initialize: func( headers_hash , is_readonly ) {
+		this._headers = ( headers_hash || {} );
+		this.is_readonly = func() { return ( is_readonly || false ); };
+		return this;
+	},
+	
+	#!{ method: 'Bike.Http.Headers.add( header, value )',
+		summary: 'Adds a new http header',
+		params: {
+			header: {
+				type: 'Bike.String',
+				desc: 'The header name'
+			},
+			value: {
+				type: 'Bike.String',
+				desc: 'The header value'
+			}
+		},
+		ret: {
+			type: 'Bike.Http.Headers',
+			desc: 'The object itself'
+		}
+	}!#
+	add: func( header , value ) {
+		Bike.Contract.requires( !Bike.String.is_empty( header ) , 'header' );
+		if ( this.is_readonly() ) {
+			throw Bike.InvalidOperationError.create( 'Can not modify the readonly headers' );
+		}
+		this._headers[ header ] = ( value || '' ) + ''; # Cast value to string before saving
+		return this;
+	},
+	
+	#!{ method: 'Bike.Http.Headers.remove( header )',
+		summary: 'Removes a http header',
+		params: {
+			header: {
+				type: 'Bike.String',
+				desc: 'The header name'
+			}
+		},
+		ret: {
+			type: 'Bike.Http.Headers',
+			desc: 'The object itself'
+		}
+	}!#
+	remove: func( header ) {
+		if ( this.is_readonly() ) {
+			throw Bike.InvalidOperationError.create( 'Can not modify the readonly headers' );
+		}
+		if ( !Bike.String.is_empty( header ) ) {
+			this._headers.remove_member( header );
+		}
+		return this;
+	},
+	
+	#!{ method: 'Bike.Http.Headers.get( header )',
+		summary: 'Retrieves a http header value from given name',
+		params: {
+			header: {
+				type: 'Bike.String',
+				desc: 'The header name'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'The string value of header. If the name doesn\'t exist, return null'
+		}
+	}!#
+	get: func( header ) {
+		if ( !Bike.String.is_empty( header ) && this._headers.has_member( header ) ) {
+			return this._headers[ header ];
+		}
+		
+		return null;
+	},
+	
+	#!{ method: 'Bike.Http.Headers.all_headers()',
+		summary: 'Gets header names',
+		ret: {
+			type: 'Bike.Array',
+			desc: 'A string array of header names'
+		}
+	}!#
+	all_headers: func() {
+		return this._headers.members( false,true );
+	},
+	
+	#!{ method: 'Bike.Http.Headers.has( header )',
+		summary: 'Checks whether a header name exist or not',
+		params: {
+			header: {
+				type: 'Bike.String',
+				desc: 'The header name'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if it exists. Otherwise, False'
+		}
+	}!#
+	has: func( header ) {		
+		return this.get( header ) != null;
+	},
+	
+	#!{ method: 'Bike.Http.Headers.count()',
+		summary: 'Returns the current amount of headers which has been added',
+		ret: {
+			type: 'Bike.Number',
+			desc: 'Number of headers'
+		}
+	}!#
+	count: func() {
+		return this.all_headers().size();
+	},
+
+	#!{ method: 'Bike.Http.Headers.clear()',
+		summary: 'Removes all headers'
+	}!#
+	clear: func() {
+		if ( this.is_readonly() ) {
+			throw Bike.InvalidOperationError.create( 'Can not modify the readonly headers' );
+		}
+
+		this._headers = {};
+	}
+};

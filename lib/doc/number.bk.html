@@ -1,0 +1,128 @@
+<html>
+<head>
+	<title>number.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Number">Bike.Number</a></h1><br />The prototype of all numbers in the system.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Number == ( other )</td>
+	<td>
+		<div>Determines if this number is equal to the specified number.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The number to be compared.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this number is equal to the supplied number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.hash_code()</td>
+	<td>
+		<div>Gets the hash code of this number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The hash code of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.to_string()</td>
+	<td>
+		<div>Gets the string representation of this number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The string representation of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.compare_to( other )</td>
+	<td>
+		<div>Compares this number with the provided number.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The number to compare to.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />1 if this number comes before <i>other</i>; 
+		       0 if this number is equal to <i>other</i>;
+			  -1 if this number comes after <i>other</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.times( fn )</td>
+	<td>
+		<div>Executes a function for a number of times specified by this number.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting from 0.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.upto( to, fn )</td>
+	<td>
+		<div>Executes a function for as many times as this number proceeds to <i>to</i>, exclusively.</div>
+		<div><br /><strong>Parameters</strong><br /><i>to</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Determines how many times the function is executed.<br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting with this number up to <i>to</i>-1.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.downto( to, fn )</td>
+	<td>
+		<div>Executes a function for as many times as this number descends to <i>to</i>, exclusively.</div>
+		<div><br /><strong>Parameters</strong><br /><i>to</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Determines how many times the function is executed.<br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting with this number down to <i>to</i>-1.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.ceil()</td>
+	<td>
+		<div>Returns the ceiling of this number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The ceiling of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.floor()</td>
+	<td>
+		<div>Returns the floor of this number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The floor of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.round( places )</td>
+	<td>
+		<div>Returns the round of this number.</div>
+		<div><br /><strong>Parameters</strong><br /><i>places</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The number of decimal places to reserve. 
+			       If not specified, no decimal place is reserved.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The round of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.whole()</td>
+	<td>
+		<div>Determines if this number is a whole number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this number is a whole number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.truncate()</td>
+	<td>
+		<div>Returns the whole part of this number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The whole part of this number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.odd()</td>
+	<td>
+		<div>Determines if this number is an odd number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this number is an odd number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Number.even()</td>
+	<td>
+		<div>Determines if this number is an even number.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this number is an even number.</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

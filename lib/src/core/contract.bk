@@ -1,0 +1,43 @@
+#!{ object: 'Bike.Contract',
+	summary: 'Helper object used to assert methods\' preconditions'
+}!#
+Bike.Contract = {
+	#!{ method: 'Bike.Contract.requires_not_null( param_value , param_name )',
+		summary: 'Throws {Bike.ArgumentNullError} exception if {param_value} is null',
+		params: {
+			param_value: {
+				type: 'Bike.Object',
+				desc: 'The object to check null'
+			},
+			param_name: {
+				type: 'Bike.String',
+				desc: 'A name of the parameter being checked'
+			}
+		}
+	}!#
+	requires_not_null: func( param_value, param_name ) {
+		param_name ||= 'Object';
+		if( param_value == null ) throw Bike.ArgumentNullError.create( param_name );
+	},
+
+	#!{ method: 'Bike.Contract.requires( condition, param_name, message )',
+		summary: 'Throws Bike.ArgumentError exception if a condition is not true about the parameter',
+		params: {
+			condition: {
+				type: 'Bike.Boolean',
+				desc: 'The condition to check'
+			},
+			param_name: {
+				type: 'Bike.String',
+				desc: 'A name of the parameter being checked'
+			},
+			message: {
+				type: 'Bike.String',
+				desc: 'The error message'
+			}
+		}
+	}!#
+	requires: func( condition, param_name, message ) {
+		if( !condition ) throw Bike.ArgumentError.create( param_name, message );
+	}	
+};

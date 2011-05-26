@@ -1,0 +1,144 @@
+<html>
+<head>
+	<title>error.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Error">Bike.Error</a></h1><br />The prototype of all errors in the system.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Error.type</td>
+	<td>
+		<div>Type: Bike.String<br />The type of this error object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Error.cause</td>
+	<td>
+		<div>Type: Any object<br />The inner exception of this error object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Error.message</td>
+	<td>
+		<div>Type: Bike.String<br />The error message.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Error.stack_trace</td>
+	<td>
+		<div>Type: Bike.String<br />The stack trace of this error object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Error.message</td>
+	<td>
+		<div>Type: Bike.String<br />The message of this error object.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Error.initialize()</td>
+	<td>
+		<div>Initializes an error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The error message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Error.to_string()</td>
+	<td>
+		<div>Returns the error message and stack trace.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The error message and stack trace.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.AlreadyDefinedError">Bike.AlreadyDefinedError</a></h1><br />This type of error is thrown when a variable is re-declared.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.AlreadyDefinedError.var_name</td>
+	<td>
+		<div>Type: Bike.String<br />The name of the already defined variable.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.AlreadyDefinedError.initialize()</td>
+	<td>
+		<div>Initializes the error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>var_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the variable that is already defined.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.NotDefinedError">Bike.NotDefinedError</a></h1><br />This type of error is thrown when an undeclared variable is used.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.NotDefinedError.var_name</td>
+	<td>
+		<div>Type: Bike.String<br />The name of the undefined variable.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.NotDefinedError.initialize()</td>
+	<td>
+		<div>Initializes the error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>var_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the variable that does not exist.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.LoadError">Bike.LoadError</a></h1><br />This type of error is thrown when Bike fails to load code.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.LoadError.path</td>
+	<td>
+		<div>Type: Bike.String<br />The code path which is failed to be loaded.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.LoadError.initialize()</td>
+	<td>
+		<div>Initializes the error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The code path failed to be loaded.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.TypeError">Bike.TypeError</a></h1><br />This type of error is thrown when there is a type error.<br /><br /><h1><a name="Bike.ArgumentError">Bike.ArgumentError</a></h1><br />This type of error is thrown when there is an argument error.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.ArgumentError.param_name</td>
+	<td>
+		<div>Type: Bike.String<br />The name of the invalid argument.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.ArgumentNullError">Bike.ArgumentNullError</a></h1><br />This type of error is thrown when an argument is null although it should not be.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.ArgumentNullError.param_name</td>
+	<td>
+		<div>Type: Bike.String<br />The name of the null argument.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.InvalidProgramError">Bike.InvalidProgramError</a></h1><br />This type of error is thrown when the program violates Bike's semantics.<br /><br /><h1><a name="Bike.InvalidOperationError">Bike.InvalidOperationError</a></h1><br />This type of error is thrown when a method is not properly invoked.<br /><br /><h1><a name="Bike.ClrError">Bike.ClrError</a></h1><br />This type of error is thrown when there's a CLR interoperability issue.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.ClrError.initialize()</td>
+	<td>
+		<div>Initializes the error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The error message.<br /><i>cause</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The inner exception of this error.  Usually a CLR exception.  This could be null.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.NullError">Bike.NullError</a></h1><br />This type of error is thrown when a null variable is accessed.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.NullError.var_name</td>
+	<td>
+		<div>Type: Bike.String<br />The name of the null variable.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.NullError.initialize()</td>
+	<td>
+		<div>Initializes the error object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>var_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the variable that is null.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,19 @@
+load 'file.bk';
+
+var fs = Bike.FileSystem;
+
+func print_text( text , indent ) {
+	indent ||= false;
+	if( indent ) print( '	' );
+	println( text );
+};
+
+func run_resolution_test( fn , test_name ) {
+	var result = 'PASS';
+	try {
+		fn();
+	} rescue e {
+		result = 'FAILED. Error: ' + e;
+	}
+	print_text( test_name + ': {0}'.with(result) , true );
+};

@@ -1,0 +1,31 @@
+load 'file.bk';
+
+var fs = Bike.FileSystem;
+func print_size( dir, formatter ) {
+    var size = 0;
+    fs.each( dir,
+    func( path ) {
+        size += fs.file_size( path );
+    }, true );
+    println( "Size of {0} is: {1}".with( dir, formatter( size ) ) );
+}
+
+func formatter( bytes ) {
+    var unit;
+    if( bytes > 1024 * 1024 )
+   	 	unit = {
+	        weight: 1024 * 1024, text: 'MBs'
+	    };
+    else if( bytes > 1024 )
+    	unit = {
+	        weight: 1024, text: 'KBs'
+	    };
+    else
+   	 	unit = {
+	        weight: 1, text: 'bytes'
+	    };
+    '{0:F2} {1}'.with( bytes / unit.weight, unit.text );
+}
+
+print_size( fs.current_dir(), formatter );
+readln();

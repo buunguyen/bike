@@ -1,0 +1,25 @@
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'Function :: Basic' ).run( func() {
+	func f() {}
+	this.should_be_equal( f.to_string(), 'f()' );
+	
+	func f1( a, b, *c ) {}
+	this.should_be_equal( f1.to_string(), 'f1( a, b, *c )' );
+} );
+
+BikeUnit.Batch.create( 'Function :: Context' ).run( func() {
+	var ctx;
+	func f() { ctx = this; }
+	f();
+	this.should_be_same( ctx, null );
+	
+	var obj = {};
+	obj.f = f;
+	obj.f();
+	this.should_be_same( ctx, obj );
+	
+	var obj2 = {};
+	f.call( obj2 );
+	this.should_be_same( ctx, obj2 );
+} );

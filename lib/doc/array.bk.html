@@ -1,0 +1,184 @@
+<html>
+<head>
+	<title>array.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Array">Bike.Array</a></h1><br />The prototype of all arrays in the system.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Array.hash_code()</td>
+	<td>
+		<div>Gets the hash code of this array.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The hash code of this array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array == ( other )</td>
+	<td>
+		<div>Determines if this array is equal to the specified array.  
+			They are equal only if both arrays contain the same elements in the same order.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Array<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The array to be compared.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this array is equal to the supplied array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.to_string()</td>
+	<td>
+		<div>Gets the string representation of this array.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The string representation of this array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.size()</td>
+	<td>
+		<div>Returns the size of this array.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The size of this array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.add( element )</td>
+	<td>
+		<div>Adds an element to this array.</div>
+		<div><br /><strong>Parameters</strong><br /><i>element</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An element to be added.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.add( iterable )</td>
+	<td>
+		<div>Adds all elements in <i>iterable</i> to this array.</div>
+		<div><br /><strong>Parameters</strong><br /><i>element</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An object which contains elements to be added to this array.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.has( element )</td>
+	<td>
+		<div>Checks if an element exists in the array.</div>
+		<div><br /><strong>Parameters</strong><br /><i>element</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An element to be checked for existance.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this array contains <i>element</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.distinct()</td>
+	<td>
+		<div>Gets a copy of this array but without any duplicated element.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />The array without any duplicated element.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.any( predicate )</td>
+	<td>
+		<div>Determines if any element of this array satisfies the <i>predicate</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>predicate</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The predicate function.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if any element of this array satisfies the <i>predicate</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.all( predicate )</td>
+	<td>
+		<div>Determines if all elements of this array satisfies the <i>predicate</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>predicate</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The predicate function.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if all elements of this array satisfies the <i>predicate</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.each( fn )</td>
+	<td>
+		<div>Executes a function on every element of this array.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.each_with_index( fn )</td>
+	<td>
+		<div>Executes a function on every element of this array and the index of the element.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.sort( comparer )</td>
+	<td>
+		<div>Copies this array and sorts the copy.</div>
+		<div><br /><strong>Parameters</strong><br /><i>comparer</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A function used to compare elements in this array.  
+			       If not specified, the algorithm assumes each element
+				  has a compare_to() method.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />The sorted copied array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.copy()</td>
+	<td>
+		<div>Copies this array into another array and returns the new array.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />The copied array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.remove_at( index )</td>
+	<td>
+		<div>Removes the element at position <i>index</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>index</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The index at which an element is removed.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.remove_all()</td>
+	<td>
+		<div>Removes all elements in this array.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.remove( element )</td>
+	<td>
+		<div>Removes the specified element from the array.</div>
+		<div><br /><strong>Parameters</strong><br /><i>element</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The element to be removed.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the element was removed successfully.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.filter( predicate )</td>
+	<td>
+		<div>Returns an array all of whose elements match the predicate function.</div>
+		<div><br /><strong>Parameters</strong><br /><i>predicate</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The predicate function used to filter elements in the returned array.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />An array all of whose elements match the predicate function.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.map( fn )</td>
+	<td>
+		<div>Maps each element of this array to a new value returned by <i>fn</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The mapper function.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />An array containing the results of the mapper function applying on every element
+			  of the original array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.reduce( init, fn )</td>
+	<td>
+		<div>Reduces elements of this array into a single value.</div>
+		<div><br /><strong>Parameters</strong><br /><i>init</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The initial value.<br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The reduce function which takes a value and an element and returns
+				  a reduced version of both.  The result will be fed into the next
+				  invocation of this reduce function.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Object<br />A singly reduced value of the array.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Array.printable()</td>
+	<td>
+		<div>Maps this array to a new one containing only CLR printable elements.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />The array containing only CLR printable elements.</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

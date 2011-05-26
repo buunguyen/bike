@@ -1,0 +1,189 @@
+<html>
+<head>
+	<title>string.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.String">Bike.String</a></h1><br />The base object for all strings in the system.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.String == ( other )</td>
+	<td>
+		<div>Determines if this string is equal to the specified string.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string to be compared.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this object is equal to the supplied object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.hash_code()</td>
+	<td>
+		<div>Gets the hash code of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The hash code of this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.to_string()</td>
+	<td>
+		<div>Gets the string of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The string representation of this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.with( *args )</td>
+	<td>
+		<div>Returns a string formatted with the supplied arguments.</div>
+		<div><br /><strong>Parameters</strong><br /><i>*args</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The objects to be formatted into the string.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A string formatted with the supplied arguments.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.compare_to( other )</td>
+	<td>
+		<div>Compares this string with the provided string.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string to compare to.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />1 if this string comes before <i>other</i>; 
+		       0 if this string is equal to <i>other</i>;
+			  -1 if this string comes after <i>other</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.to_number()</td>
+	<td>
+		<div>Returns the number values of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The number values of this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.trim( *trim_chars )</td>
+	<td>
+		<div>Creates a string from this string and removes some leading and trailing characters.</div>
+		<div><br /><strong>Parameters</strong><br /><i>*trim_chars</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The characters used to trim the string.  If not specified, space is used.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A string without some leading and trailing characters.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.trim_end( *trim_chars )</td>
+	<td>
+		<div>Creates a string from this string and removes some trailing characters.</div>
+		<div><br /><strong>Parameters</strong><br /><i>*trim_chars</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The characters used to trim the string.  If not specified, space is used.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A string without some trailing characters.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.trim_start( *trim_chars )</td>
+	<td>
+		<div>Creates a string from this string and removes some leading characters.</div>
+		<div><br /><strong>Parameters</strong><br /><i>*trim_chars</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The characters used to trim the string.  If not specified, space is used.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A string without some leading characters.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.length()</td>
+	<td>
+		<div>Returns the number of characters in this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The number of characters in this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.sub( start, length )</td>
+	<td>
+		<div>Gets a substring of this string.</div>
+		<div><br /><strong>Parameters</strong><br /><i>start</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The starting index.<br /><i>length</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The length of the substring from <i>start</i>.  
+			       If not specified, use the rest of the string.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A substring of this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.char( index )</td>
+	<td>
+		<div>Gets the character at position <i>index</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>index</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The index of the character to be retrieved.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The character at position <i>index</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.chars()</td>
+	<td>
+		<div>Gets all characters of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />All characters of this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.lower()</td>
+	<td>
+		<div>Returns the lower case version of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The lower case version of this tring.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.upper()</td>
+	<td>
+		<div>Returns the upper case version of this string.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The upper case version of this tring.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.index( sub )</td>
+	<td>
+		<div>Gets the index of a specific substring.</div>
+		<div><br /><strong>Parameters</strong><br /><i>sub</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The substring whose index is to be retrieved.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The index of <i>sub</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.contains( sub )</td>
+	<td>
+		<div>Determines whether this string contains a specific substring.</div>
+		<div><br /><strong>Parameters</strong><br /><i>sub</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The substring whose existance is to be checked.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this string contains <i>sub</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.starts( start )</td>
+	<td>
+		<div>Determines whether this string starts with a specific substring.</div>
+		<div><br /><strong>Parameters</strong><br /><i>start</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The substring with which this string starts.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this string starts with <i>start</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.ends( end )</td>
+	<td>
+		<div>Determines whether this string ends with a specific substring.</div>
+		<div><br /><strong>Parameters</strong><br /><i>end</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The substring with which this string ends.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this string ends with <i>end</i>.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.replaces( txt, by )</td>
+	<td>
+		<div>Replaces all occurences of <i>txt</i> by <i>by</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>txt</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string to be replaced.<br /><i>by</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string to replace.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The new string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.counts( sub )</td>
+	<td>
+		<div>Returns the number of occurences of <i>sub</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>sub</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string whose occurences are to be counted.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The number of times <i>sub</i> appears in this string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.String.is_empty( txt, by )</td>
+	<td>
+		<div>Determines whether the specified string is null or empty.</div>
+		<div><br /><strong>Parameters</strong><br /><i>str</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string to be verified.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the specified string is null or empty.</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,214 @@
+#!{ object: 'Bike.Number',
+	summary: 'The prototype of all numbers in the system'
+}!#
+
+#!{ method: 'Bike.Number == ( other )',
+	summary: 'Determines if this number is equal to the specified number',
+	params: {
+		other: {
+			type: 'Bike.Number',
+			desc: 'The number to be compared'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this number is equal to the supplied number'
+	}
+}!#
+Bike.Number[ '==' ] = func( other ) {
+	if ( other == null || !( other is Bike.Number ) ) {
+		return false;
+	}
+	return this.__native.Equals( other.__native );
+};
+
+#!{ method: 'Bike.Number.hash_code',
+	summary: 'Gets the hash code of this number',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The hash code of this number'
+	}
+}!#
+Bike.Number.hash_code = func() {
+	return this.__native.GetHashCode();
+};
+
+#!{ method: 'Bike.Number.to_string',
+	summary: 'Gets the string representation of this number',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The string representation of this number'
+	}
+}!#
+Bike.Number.to_string = func() {
+	return this.__native.ToString();
+};
+
+#!{ method: 'Bike.Number.compare_to( other )',
+	summary: 'Compares this number with the provided number',
+	params: {
+		other: {
+			type: 'Bike.Number',
+			desc: 'The number to compare to'
+		}
+	},
+	ret: {
+		type: 'Bike.Number',
+		desc: '1 if this number comes before {other}; 
+		       0 if this number is equal to {other};
+			  -1 if this number comes after {other}'
+	}
+}!#
+Bike.Number.compare_to = func( other ) {
+	Bike.Contract.requires_not_null( other , 'other' );
+	return this < other ? -1 : this == other ? 0 : 1;
+};
+
+#!{ method: 'Bike.Number.times( fn )',
+	summary: 'Executes a function for a number of times specified by this number',
+	params: {
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting from 0.'
+		}
+	}
+}!#
+Bike.Number.times = func( fn ) {
+	Bike.Contract.requires_not_null( fn , 'fn' );
+	var index = 0;
+	while ( index < this ) {
+		fn( index++ );
+	}
+};
+
+#!{ method: 'Bike.Number.upto( to, fn )',
+	summary: 'Executes a function for as many times as this number proceeds to {to}, exclusively',
+	params: {
+		to: {
+			type: 'Bike.Number',
+			desc: 'Determines how many times the function is executed'
+		},
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting with this number up to {to}-1.'
+		}
+	}
+}!#
+Bike.Number.upto = func( to, fn ) {
+	Bike.Contract.requires_not_null( to , 'to' );
+	Bike.Contract.requires_not_null( fn , 'fn' );
+	var index = this;
+	while ( index < to ) {
+		fn( index++ );
+	}
+};
+
+#!{ method: 'Bike.Number.downto( to, fn )',
+	summary: 'Executes a function for as many times as this number descends to {to}, exclusively',
+	params: {
+		to: {
+			type: 'Bike.Number',
+			desc: 'Determines how many times the function is executed'
+		},
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The function to be executed.  This function could accept a number
+				  denoting the current execution time, starting with this number down to {to}-1.'
+		}
+	}
+}!#
+Bike.Number.downto = func( to, fn ) {
+	Bike.Contract.requires_not_null( to , 'to' );
+	Bike.Contract.requires_not_null( fn , 'fn' );
+	var index = this;
+	while ( index > to ) {
+		fn( index-- );
+	}
+};
+
+#!{ method: 'Bike.Number.ceil()',
+	summary: 'Returns the ceiling of this number',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The ceiling of this number.'
+	}
+}!#
+Bike.Number.ceil = func() {
+	return System.Math.Ceiling( this );
+};
+
+#!{ method: 'Bike.Number.floor()',
+	summary: 'Returns the floor of this number',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The floor of this number.'
+	}
+}!#
+Bike.Number.floor = func() {
+	return System.Math.Floor( this );
+};
+
+#!{ method: 'Bike.Number.round( places )',
+	summary: 'Returns the round of this number',
+	params: {
+		places: {
+			type: 'Bike.Number',
+			desc: 'The number of decimal places to reserve. 
+			       If not specified, no decimal place is reserved.',
+		}
+	},
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The round of this number.'
+	}
+}!#
+Bike.Number.round = func( places ) {
+	places ||= 0;
+	return System.Math.Round( this, places );
+};
+
+#!{ method: 'Bike.Number.whole()',
+	summary: 'Determines if this number is a whole number',
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this number is a whole number.'
+	}
+}!#
+Bike.Number.whole = func() {
+	return this % 1 == 0;
+};
+
+#!{ method: 'Bike.Number.truncate()',
+	summary: 'Returns the whole part of this number',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The whole part of this number.'
+	}
+}!#
+Bike.Number.truncate = func() {
+	return System.Math.Truncate( this );
+};
+
+#!{ method: 'Bike.Number.odd()',
+	summary: 'Determines if this number is an odd number',
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this number is an odd number.'
+	}
+}!#
+Bike.Number.odd = func() {
+	return this.whole() && this % 2 != 0;
+};
+
+#!{ method: 'Bike.Number.even()',
+	summary: 'Determines if this number is an even number',
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this number is an even number.'
+	}
+}!#
+Bike.Number.even = func() {
+	return this % 2 == 0;
+};

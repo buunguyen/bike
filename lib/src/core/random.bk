@@ -1,0 +1,45 @@
+#!{ object: 'Bike.Random',
+	summary: 'Helper object used to generate random numbers'
+}!#
+Bike.Random = {
+	__native: System.Random(),
+	
+	#!{ method: 'Bike.Random.next_int( bound1, bound2 )',
+		summary: 'Generates a random whole number within a specific range',
+		params: {
+			bound1: {
+				type: 'Bike.Number',
+				desc: 'The minimum value of generated number if {bound2} exists. 
+					   Otherwise, this is the maximum value of the generated number.'
+			},
+			bound2: {
+				type: 'Bike.Number',
+				desc: 'The maximum value of generated number'
+			},
+		},
+		ret: {
+			type: 'Bike.Number',
+			desc: 'A random whole number'
+		}
+	}!#
+	next_int: func( bound1, bound2 ) {
+		if ( bound1 == null && bound2 == null )
+			return this.__native.Next();
+		else if ( bound2 == null )
+			return this.__native.Next( bound1 );
+		else if ( bound1 == null )
+			throw Bike.ArgumentError.create( 'bound1 must not be null if bound2 is not null' );
+		return this.__native.Next( bound1, bound2 );
+	},
+	
+	#!{ method: 'Bike.Random.next_decimal()',
+		summary: 'Generates a random decimal number',
+		ret: {
+			type: 'Bike.Number',
+			desc: 'A generated random decimal number'
+		}
+	}!#
+	next_decimal: func() {
+		this.__native.NextDouble();
+	}
+};

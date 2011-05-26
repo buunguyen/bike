@@ -1,0 +1,248 @@
+#!{ object: 'Bike.Error',
+	summary: 'The prototype of all errors in the system.',
+	remark: 'Avoid using sophisticated code for methods
+		    of error objects to avoid infinite error loop.'
+}!#
+
+#!{ field: 'Bike.Error.type',
+	summary: 'The type of this error object',
+	type: 'Bike.String'
+}!#
+Bike.Error.type = 'Bike.Error';
+
+#!{ field: 'Bike.Error.cause',
+	summary: 'The inner exception of this error object',
+	type: 'Any object'
+}!#
+Bike.Error.cause = null;
+
+#!{ field: 'Bike.Error.message',
+	summary: 'The error message',
+	type: 'Bike.String'
+}!#
+Bike.Error.message = null;
+
+#!{ field: 'Bike.Error.stack_trace',
+	summary: 'The stack trace of this error object',
+	type: 'Bike.String'
+}!#
+Bike.Error.stack_trace = null;
+
+#!{ method: 'Bike.Error.initialize',
+	summary: 'Initializes an error object',
+	params: {
+		message: {
+			type: 'Bike.String',
+			desc: 'The error message'
+		}
+	}
+}!#
+Bike.Error.initialize = func( message ) {	
+	#!{ field: 'Bike.Error.message',
+		summary: 'The message of this error object',
+		type: 'Bike.String'
+	}!#
+	this.message = message || 'An error has occurred';
+};
+
+#!{ method: 'Bike.Error.to_string',
+	summary: 'Returns the error message and stack trace',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The error message and stack trace'
+	}
+}!#
+Bike.Error.to_string = func() {
+	this.type + ": " + this.message + NL + 
+	"Stack Trace: " + NL + this.stack_trace;
+};
+Bike.Error.__is_error = true;
+
+#!{ object: 'Bike.AlreadyDefinedError',
+	summary: 'This type of error is thrown when a variable is re-declared'
+}!#
+Bike.AlreadyDefinedError = {
+	prototype: Bike.Error,
+	
+	type: 'Bike.AlreadyDefinedError',
+	
+	#!{ method: 'Bike.AlreadyDefinedError.initialize',
+		summary: 'Initializes the error object',
+		params: {
+			var_name: {
+				type: 'Bike.String',
+				desc: 'The name of the variable that is already defined'
+			}
+		}
+	}!#
+	initialize: func( var_name ) {
+		#!{ field: 'Bike.AlreadyDefinedError.var_name',
+			summary: 'The name of the already defined variable',
+			type: 'Bike.String'
+		}!#
+		this.var_name = var_name;
+		Bike.Error.initialize.call( this, var_name + ' is already defined' );
+	}
+};
+
+#!{ object: 'Bike.NotDefinedError',
+	summary: 'This type of error is thrown when an undeclared variable is used'
+}!#
+Bike.NotDefinedError = {
+	prototype: Bike.Error,
+	
+	type: 'Bike.NotDefinedError',
+	
+	#!{ method: 'Bike.NotDefinedError.initialize',
+		summary: 'Initializes the error object',
+		params: {
+			var_name: {
+				type: 'Bike.String',
+				desc: 'The name of the variable that does not exist'
+			}
+		}
+	}!#
+	initialize: func( var_name ) {
+		#!{ field: 'Bike.NotDefinedError.var_name',
+			summary: 'The name of the undefined variable',
+			type: 'Bike.String'
+		}!#
+		this.var_name = var_name;
+		Bike.Error.initialize.call( this, var_name + ' does not exist' );
+	}
+};
+
+#!{ object: 'Bike.LoadError',
+	summary: 'This type of error is thrown when Bike fails to load code'
+}!#
+Bike.LoadError = {
+	prototype: Bike.Error,
+	
+	type: 'Bike.LoadError',
+	
+	#!{ method: 'Bike.LoadError.initialize',
+		summary: 'Initializes the error object',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'The code path failed to be loaded'
+			}
+		}
+	}!#
+	initialize: func( path ) {
+		#!{ field: 'Bike.LoadError.path',
+			summary: 'The code path which is failed to be loaded',
+			type: 'Bike.String'
+		}!#
+		this.path = path;
+		Bike.Error.initialize.call( this, 'Cannot load path ' + path );
+	}
+};
+
+#!{ object: 'Bike.TypeError',
+	summary: 'This type of error is thrown when there is a type error'
+}!#
+Bike.TypeError = {
+	prototype: Bike.Error,
+	type: 'Bike.TypeError',
+};
+
+#!{ object: 'Bike.ArgumentError',
+	summary: 'This type of error is thrown when there is an argument error'
+}!#
+Bike.ArgumentError = {
+	prototype: Bike.Error,
+	type: 'Bike.ArgumentError',
+	initialize: func( param_name, message ) {
+		#!{ field: 'Bike.ArgumentError.param_name',
+			summary: 'The name of the invalid argument',
+			type: 'Bike.String'
+		}!#
+		this.param_name = param_name;
+		var mess = message || param_name + ' is invalid';
+		Bike.Error.initialize.call( this, mess );
+	},
+};
+
+#!{ object: 'Bike.ArgumentNullError',
+	summary: 'This type of error is thrown when an argument is null although it should not be'
+}!#
+Bike.ArgumentNullError = {
+	prototype: Bike.Error,
+	type: 'Bike.ArgumentNullError',
+	initialize: func( param_name ) {
+		#!{ field: 'Bike.ArgumentNullError.param_name',
+			summary: 'The name of the null argument',
+			type: 'Bike.String'
+		}!#
+		this.param_name = param_name;
+		Bike.Error.initialize.call( this, param_name + ' is null' );
+	},
+};
+
+#!{ object: 'Bike.InvalidProgramError',
+	summary: 'This type of error is thrown when the program violates Bike\'s semantics'
+}!#
+Bike.InvalidProgramError = {
+	prototype: Bike.Error,
+	type: 'Bike.InvalidProgramError'
+};
+
+#!{ object: 'Bike.InvalidOperationError',
+	summary: 'This type of error is thrown when a method is not properly invoked'
+}!#
+Bike.InvalidOperationError = {
+	prototype: Bike.Error,
+	type: 'Bike.InvalidOperationError'
+};
+
+#!{ object: 'Bike.ClrError',
+	summary: 'This type of error is thrown when there\'s a CLR interoperability issue'
+}!#
+Bike.ClrError = {
+	prototype: Bike.Error,
+	
+	type: 'Bike.ClrError',
+	
+	#!{ method: 'Bike.ClrError.initialize',
+		summary: 'Initializes the error object',
+		params: {
+			message: 'The error message'	,
+			cause: 'The inner exception of this error.  Usually a CLR exception.  This could be null.'
+		}
+	}!#
+	initialize: func( message, cause ) {
+		this.message = message;
+		this.cause = cause;
+		if ( cause != null ) {
+			this.message = this.message || cause.Message;
+			this.type = cause.GetType().FullName;
+		}
+	}
+};
+
+#!{ object: 'Bike.NullError',
+	summary: 'This type of error is thrown when a null variable is accessed'
+}!#
+Bike.NullError = {
+	prototype: Bike.Error,
+	type: 'Bike.NullError',
+	
+	#!{ method: 'Bike.NullError.initialize',
+		summary: 'Initializes the error object',
+		params: {
+			var_name: {
+				type: 'Bike.String',
+				desc: 'The name of the variable that is null'
+			}
+		}
+	}!#
+	initialize: func( var_name ) {
+		#!{ field: 'Bike.NullError.var_name',
+			summary: 'The name of the null variable',
+			type: 'Bike.String'
+		}!#
+		this.var_name = var_name;
+		Bike.Error.initialize.call( this, var_name + ' is null' );
+	}
+};

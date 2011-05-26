@@ -1,0 +1,31 @@
+load 'gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f';
+
+Gtk.Application.Init();
+
+var lblHello = Gtk.Label();
+
+var btnHello = Gtk.Button("Hello");
+var count = 0;
+btnHello.Clicked += func() {
+	lblHello.Text = "Hello World ({0} {1})".with(
+		++count, "time" + (count == 1 ? "" : "s"));
+};
+
+var btnQuit = Gtk.Button("Quit");
+btnQuit.Clicked += func() {
+	Gtk.Application.Quit();
+};
+
+var box = Gtk.VBox(false, 10);
+box.PackStart(btnHello, true, true, 0);
+box.PackStart(lblHello, true, true, 0);
+box.PackStart(btnQuit, true, true, 0);
+
+var win = Gtk.Window("Hello World");
+win.DeleteEvent += func() {
+	Gtk.Application.Quit();
+};
+win.Add(box);
+win.Resize(300, 200);
+win.ShowAll();
+Gtk.Application.Run();

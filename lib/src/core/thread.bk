@@ -1,0 +1,174 @@
+#!{ object: 'Bike.Thread',
+	summary: 'Represents a thread'
+}!#
+Bike.Thread = {
+	#!{ method: 'Bike.Thread.initialize( fn )',
+		summary: 'Initializes the thread object',
+		params: {
+			fn: {
+				type: 'Bike.Function',
+				desc: 'A func() that will be executed by thread'
+			}
+		}
+	}!#
+	initialize: func( fn ) {
+		Bike.Contract.requires_not_null( fn , 'fn' );
+		var me = this;
+		var fnWithThis = func() {
+			fn.call( me );
+		};
+		this.__native = System.Threading.Thread( fnWithThis );
+	},
+	
+	#!{ method: 'Bike.Thread.set_name( name )',
+		summary: 'Sets the name of this thread',
+		params: {
+			name: {
+				type: 'Bike.String',
+				desc: 'The name of to set'
+			}
+		}
+	}!#
+	set_name: func( name ) {
+		Bike.Contract.requires_not_null( name , 'name' );
+		this.__native.Name = name;
+	},
+	
+	#!{ method: 'Bike.Thread.id()',
+		summary: 'Returns the id of this thread',
+		ret: {
+			type: 'Bike.Number',
+			desc: 'The id of this thread'
+		}
+	}!#
+	id: func() {
+		this.__native.ManagedThreadId;
+	},
+	
+	#!{ method: 'Bike.Thread.start()',
+		summary: 'Puts the thread in runnable state'
+	}!#
+	start: func() {
+		this.__native.Start();
+	},
+	
+	#!{ method: 'Bike.Thread.is_started()',
+		summary: 'Checks whether the thread was started or not',
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the thread has been started'
+		}
+	}!#
+	is_started: func() {
+		this.__native.ThreadState != System.Threading.ThreadState.Unstarted;
+	},
+	
+	#!{ method: 'Bike.Thread.is_alive()',
+		summary: 'Checks whether this thread is alive or not',
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if this thread is still alive'
+		}
+	}!#
+	is_alive: func() {
+		this.__native.IsAlive;
+	},
+	
+	#!{ method: 'Bike.Thread.join( millis )',
+		summary: 'Blocks the currently executing thread until this thread 
+				 terminates or the specified timeout has elapsed',
+		params: {
+			millis: {
+				type: 'Bike.Number',
+				desc: 'The number of milliseconds to wait for this thread to terminate.  
+					   If 0 or not specified, wait until this thread finishes execution.'
+			}
+		}
+	}!#
+	join: func( millis ) {
+		if ( millis == null )
+			this.__native.Join();
+		else
+			this.__native.Join( millis );
+	},
+	
+	#!{ method: 'Bike.Thread.sleep( millis )',
+		summary: 'Blocks the currently executing thread',
+		params: {
+			millis: {
+				type: 'Bike.Number',
+				desc: 'The number of milliseconds to sleep'
+			}
+		}
+	}!#
+	sleep: func( millis ) {
+		Bike.Contract.requires_not_null( millis , 'millis' );
+
+		System.Threading.Thread.Sleep( millis );
+	},
+	
+	#!{ method: 'Bike.Thread.current_thread( )',
+		summary: 'Returns the currently executing thread',
+		ret: {
+			type: 'Bike.Thread',
+			desc: 'The currently executing thread'
+		}
+	}!#
+	current_thread: func() {
+		var thread = Bike.Thread.clone();
+		thread.__native = System.Threading.CurrentThread;
+		return thread;
+	}
+};
+
+#!{ object: 'Bike.ThreadGroup',
+	summary: 'A helper class to manage life cycle of a group of thread'
+}!#
+Bike.ThreadGroup = {
+	#!{ method: 'Bike.ThreadGroup.initialize()',
+		summary: 'Initializes new Bike.ThreadGroup object'
+	}!#
+	initialize: func() {
+		this.threads = [];
+	},
+	
+	#!{ method: 'Bike.ThreadGroup.spawn( fn , auto_start )',
+		summary: 'Creates a new thread',
+		params: {
+			fn: {
+				type: 'Bike.Function',
+				desc: 'The function which will be executed by the new thread'
+			},
+			auto_start: {
+				type: 'Bike.Boolean',
+				desc: 'Indicates whether the new thread should start immediately'
+			}
+		}
+	}!#
+	spawn: func( fn , auto_start ) {
+		auto_start ||= false;
+		var thread = Bike.Thread.create( fn );
+		this.threads.add( thread );
+		if ( auto_start ) thread.start();
+	},
+	
+	#!{ method: 'Bike.ThreadGroup.start( )',
+		summary: 'Starts all non-running threads in this ThreadGroup'
+	}!#
+	start: func() {
+		for ( var thread in this.threads ) {
+			if ( !thread.is_started() ) {
+				thread.start();
+			}
+		}
+	},
+	
+	#!{ method: 'Bike.ThreadGroup.join( )',
+		summary: 'Blocks the currently executing thread until all threads in the ThreadGroup has finished running'
+	}!#
+	join: func() {
+		for ( var thread in this.threads ) {
+			thread.join();
+		}
+	}
+};

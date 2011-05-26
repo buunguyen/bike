@@ -1,0 +1,52 @@
+load 'uri.bk';
+load 'http.bk';
+load 'regex.bk';
+load 'file.bk';
+
+var BASE_URL = 'http://www.nytimes.com/';
+
+func create_folder( ) {
+	var fs = Bike.FileSystem;
+	var cur_dir = fs.current_dir();	
+	var img_dir = fs.combine_path( cur_dir , 'downloaded_images' );
+	fs.create_dir( img_dir );
+	println( 'Created folder "{0}"'.with( img_dir ) );
+	return img_dir;
+}
+	
+func get_images_in( base_url, cb ) {
+	println( 'Sending request to ' + base_url );
+	var image_uris = [];
+	Bike.Http.Request.get( base_url , func( resp ) {
+		var html = resp.body();
+		var matches = Bike.Regex.matches( html, '<img(\\s*[\\w]+=("[^"]*"|\'[^\']*\')\\s*)+/>' );		
+		for ( var m in matches ) {
+			var src_att = Bike.Regex.matches( m.value, 'src=([\'"])([^\'"]*)\\1' );
+			for ( var src_match in src_att ) {
+				if ( src_match.groups.size() > 1 ) {
+					var img_path = src_match.groups[ 2 ].value.trim_start( '/' );
+					image_uris.add( img_path );
+				}
+			}
+		}
+	} );
+	
+	return image_uris;
+}
+
+func download( image_uri , folder ) {
+	println( '	Download and save: ' + image_uri );	
+	try {
+		Bike.Http.Request.download( image_uri , folder );
+	} rescue {
+		println(  '\t** Error saving file {0}'.with( Bike.FileSystem.get_file_name( image_uri ) ) );
+	}
+}
+
+var folder = create_folder( );
+get_images_in( BASE_URL ).each( func( img_path ) {
+	download( img_path , folder );
+} );
+
+println( 'Press Enter key to exit ...' );
+readln();

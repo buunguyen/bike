@@ -1,0 +1,13 @@
+load 'object_test.bk';
+load 'string_test.bk';
+load 'boolean_test.bk';
+load 'number_test.bk';
+load 'array_test.bk';
+load 'function_test.bk';
+load 'file_test.bk';
+load 'uri_test.bk';
+load 'http_test.bk';
+load 'json_test.bk';
+load 'regex_test.bk';
+load 'stopwatch_test.bk';
+load 'thread_test.bk';

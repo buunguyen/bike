@@ -1,0 +1,37 @@
+load 'json.bk';
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'Bike.Json :: to_json' ).run( func() {
+	var obj = {name: 'Bike', age: 0, is_language: true, to_string: func(){}, arr: [ 1, '2' ]};
+	this.should_be_equal( Bike.Json.to_json( obj ), '{name:\'Bike\',age:0,is_language:true,arr:[ 1,\'2\' ]}' );
+	
+	obj = [ 1, 2, 3, {name: 'Bike'} ];
+	this.should_be_equal( Bike.Json.to_json( obj ), '[ 1,2,3,{name:\'Bike\'} ]' );
+	
+	obj = {child: {grand_child: {}}};
+	this.should_be_equal( Bike.Json.to_json( obj ), '{child:{grand_child:{}}}' );
+	
+	obj = null;
+	this.should_throw( func() {Bike.Json.to_json( obj );}, Bike.ArgumentNullError );
+	
+	obj = true;
+	this.should_throw( func() {Bike.Json.to_json( obj );}, Bike.ArgumentError );
+} );
+
+BikeUnit.Batch.create( 'Bike.Json :: to_object' ).run( func() {
+	var json = '{name:\'Bike\',age:0,is_language:true,arr:[ 1,\'2\' ]}';
+	var obj = Bike.Json.to_object( json );
+	this.should_be_equal( obj.name, 'Bike' );
+	this.should_be_equal( obj.age, 0 );
+	this.should_be_equal( obj.is_language, true );
+	this.should_be_equal( obj.arr, [ 1, '2' ] );
+	
+	json = '[ 1, 2, {} ]';
+	obj = Bike.Json.to_object( json );
+	this.should_be_true( obj is Bike.Array );
+	this.should_be_equal( obj.size(), 3 );
+	
+	json = '{a: 1';
+	this.should_throw( func() {Bike.Json.to_object();}, Bike.ArgumentNullError );
+	this.should_throw( func() {Bike.Json.to_object( json );}, Bike.ArgumentError );
+} );

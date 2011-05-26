@@ -1,0 +1,121 @@
+#!{ object: 'Bike.Uri',
+	summary: 'Represent for an uniform resource identifier ( URI ) and easy access to the parts of the URI'
+}!#
+Bike.Uri = {
+	#!{ method: 'Bike.Uri.initialize(  uri_string  )',
+		summary: 'Initializes new Bike.Http.Request object',
+		params: {
+			uri_string: {
+				type: 'Bike.String',
+				desc: 'A representation string for an uri'
+			}
+		}
+	}!#
+	initialize: func(  uri_string  ) {
+		Bike.Contract.requires_not_null( uri_string , 'uri_string' );
+
+		var uri = System.Uri( uri_string );
+		
+		var _scheme = uri.Scheme;
+		var _path = uri.AbsolutePath;
+		var _query = ( uri.Query || '' ).trim_start( '?' );
+		var _host = uri.Host;
+		var _port = uri.Port;
+		var _original_string = uri.OriginalString;
+		var _is_absolute = uri.IsAbsoluteUri;
+		
+		#!{ method: 'Bike.Uri.scheme()',
+			summary: 'Returns the scheme part of uri',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The scheme part of uri'
+			}
+		}!#
+		this.scheme = func() { _scheme; };
+		
+		#!{ method: 'Bike.Uri.path()',
+			summary: 'Returns the path part of uri',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The path part of uri'
+			}
+		}!#
+		this.path = func() { _path; };
+		
+		#!{ method: 'Bike.Uri.query()',
+			summary: 'Returns the query part of uri',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The query part of uri'
+			}
+		}!#
+		this.query = func() { _query; };
+		
+		#!{ method: 'Bike.Uri.host()',
+			summary: 'Returns the host part of uri',
+			ret: {
+				type: 'Bike.String',
+				desc: 'The host part of uri'
+			}
+		}!#
+		this.host = func() { _host; };
+		
+		#!{ method: 'Bike.Uri.port()',
+			summary: 'Returns the port part of uri',
+			ret: {
+				type: 'Bike.Number',
+				desc: 'The host port of uri'
+			}
+		}!#
+		this.port = func() { _port; };
+		
+		#!{ method: 'Bike.Uri.inner_uri()',
+			summary: 'Returns the instance of System.Uri object',
+			ret: {
+				type: 'System.Uri',
+				desc: 'The instance of System.Uri object'
+			}
+		}!#
+		this.inner_uri = func() { uri; };
+		
+		#!{ method: 'Bike.Uri.original_string()',
+			summary: 'Returns the original string of uri',
+			ret: {
+				type: 'System.String',
+				desc: 'The original string of uri'
+			}
+		}!#
+		this.original_string = func() { _original_string; };
+		
+		#!{ method: 'Bike.Uri.is_absolute()',
+			summary: 'Indicates whether this is an absolute uri or not',
+			ret: {
+				type: 'System.Boolean',
+				desc: 'True if this is an absolute uri. Otherwise, False'
+			}
+		}!#
+		this.is_absolute = func() { _is_absolute; };
+	},
+	
+	#!{ method: 'Bike.Uri.escape_string(  uri_string  ) ',
+		summary: 'Converts a string to its escaped representation',
+		ret: {
+			type: 'System.String',
+			desc: 'The escaped representation of uri string'
+		}
+	}!#
+	escape_string: func(  uri_string  ) {
+		return System.Uri.EscapeUriString( uri_string );
+	},
+	
+	#!{ method: 'Bike.Uri.unescape_string(   uri_string  )',
+		summary: 'Converts a string to its unescaped representation',
+		ret: {
+			type: 'System.String',
+			desc: 'The unescaped representation of uri string'
+		}
+	}!#
+	unescape_string: func(  uri_string  ) {
+		return System.Uri.UnescapeDataString( uri_string );
+	}
+};

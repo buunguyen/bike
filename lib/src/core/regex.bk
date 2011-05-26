@@ -1,0 +1,172 @@
+#!{ object: 'Bike.Regex',
+	summary: 'Helper object used to perform regular expression matching'
+}!#
+Bike.Regex = {
+	#!{ method: 'Bike.Regex.is_matched( text , pattern )',
+		summary: 'Checks whether a text matches with a pattern',
+		params: {
+			text: {
+				type: 'Bike.String',
+				desc: 'The text to check'
+			},
+			pattern: {
+				type: 'Bike.String',
+				desc: 'The regular expression pattern to check'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the text matches with the pattern'
+		}
+	}!#
+	is_matched: func( text , pattern ) {
+		Bike.Contract.requires_not_null( text , 'text' );
+		Bike.Contract.requires_not_null( pattern , 'pattern' );
+		System.Text.RegularExpressions.Regex.IsMatch( text , pattern,
+			System.Text.RegularExpressions.RegexOptions.Singleline );
+	},
+	
+	#!{ method: 'Bike.Regex.replace( text , pattern , replacement )',
+		summary: 'Replaces substrings of {text} which match the supplied {pattern} by {replacement}',
+		params: {
+			text: {
+				type: 'Bike.String',
+				desc: 'The text to search in'
+			},
+			pattern: {
+				type: 'Bike.String',
+				desc: 'The regular expression pattern'
+			},
+			replacement: {
+				type: 'Bike.String',
+				desc: 'The string used to replace'
+			}
+		}
+	}!#
+	replace: func( text , pattern , replacement ) {
+		Bike.Contract.requires_not_null( text , 'text' );
+		Bike.Contract.requires_not_null( pattern , 'pattern' );
+		Bike.Contract.requires_not_null( replacement , 'replacement' );
+		
+		System.Text.RegularExpressions.Regex.Replace( text , pattern , replacement ,
+			System.Text.RegularExpressions.RegexOptions.Singleline );
+	},
+	
+	#!{ method: 'Bike.Regex.matches( text , pattern )',
+		summary: 'Gets the match objects representing the matches of a regular expression pattern',
+		params: {
+			text: {
+				type: 'Bike.String',
+				desc: 'The text to search in'
+			},
+			pattern: {
+				type: 'Bike.String',
+				desc: 'The regular expression pattern'
+			}
+		},
+		ret: {
+			type: 'Bike.Array',
+			desc: 'An array of {Bike.Regex.Match} object'
+		}
+	}!#
+	matches: func( text, pattern ) {
+		Bike.Contract.requires_not_null( text , 'text' );
+		Bike.Contract.requires_not_null( pattern , 'pattern' );
+		
+		var mc = System.Text.RegularExpressions.Regex.Matches( text , pattern , 
+			System.Text.RegularExpressions.RegexOptions.Singleline );
+		var result = [];
+		for ( var match in mc ) {
+			var groups = [];
+			for ( var g in match.Groups ) {
+				groups.add( Bike.Regex.Group.create( g.Value , g.Index , g.Success ) );
+			}
+			result.add( Bike.Regex.Match.create( match.Value , match.Index , groups ) );
+		}
+		return result;
+	}
+};
+
+#!{ object: 'Bike.Regex.Match',
+	summary: 'Represents a regular expression match'
+}!#
+Bike.Regex.Match = {
+	#!{ method: 'Bike.Regex.Match.initialize( value , index , groups )',
+		summary: 'Initializes this object',
+		params: {
+			value: {
+				type: 'Bike.String',
+				desc: 'The matched string value'
+			},
+			index: {
+				type: 'Bike.Number',
+				desc: 'The starting index of the match'
+			},
+			groups: {
+				type: 'Bike.Array',
+				desc: 'An array of {Bike.Regex.Group} objects'
+			}
+		}
+	}!#
+	initialize: func( value , index , groups ) {
+		#!{ field: 'Bike.Regex.Match.value',
+			summary: 'The captured substring from the input string',
+			type: 'Bike.String'
+		}!#
+		this.value = value;
+		
+		#!{ field: 'Bike.Regex.Match.index',
+			summary: 'The position in the original string where the first character of the captured substring was found',
+			type: 'Bike.Number'
+		}!#
+		this.index = index;
+		
+		#!{ field: 'Bike.Regex.Match.groups',
+			summary: 'A collection of groups matched by the regular expression',
+			type: 'Bike.Array where each element is Bike.Regex.Group object'
+		}!#
+		this.groups = groups || [];
+	}
+};
+
+#!{ object: 'Bike.Regex.Group',
+	summary: 'Represents a captured group'
+}!#
+Bike.Regex.Group = {
+	#!{ method: 'Bike.Regex.Group.initialize( value , index , success )',
+		summary: 'Initializes this captured object',
+		params: {
+			value: {
+				type: 'Bike.String',
+				desc: 'The value of captured group'
+			},
+			index: {
+				type: 'Bike.Number',
+				desc: 'The starting index of the value of captured group'
+			},
+			success: {
+				type: 'Bike.Boolean',
+				desc: 'Indicates whether the match is successful'
+			}
+		}
+	}!#
+	initialize: func( value , index , success ) {
+		#!{ field: 'Bike.Regex.Group.value',
+			summary: 'The captured substring from the input string',
+			type: 'Bike.String'
+		}!#
+		this.value = value;
+		
+		#!{ field: 'Bike.Regex.Group.index',
+			summary: 'The position in the original string where the first character of the captured substring was found',
+			type: 'Bike.Number'
+		}!#
+		this.index = index;
+		
+		#!{ field: 'Bike.Regex.Group.success',
+			summary: 'A value indicating whether the match is successful',
+			type: 'Bike.Boolean'
+		}!#
+		this.success = success;
+	}
+};

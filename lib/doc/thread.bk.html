@@ -1,0 +1,117 @@
+<html>
+<head>
+	<title>thread.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Thread">Bike.Thread</a></h1><br />Represents a thread.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Thread.initialize( fn )</td>
+	<td>
+		<div>Initializes the thread object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A func() that will be executed by thread.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.set_name( name )</td>
+	<td>
+		<div>Sets the name of this thread.</div>
+		<div><br /><strong>Parameters</strong><br /><i>name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of to set.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.id()</td>
+	<td>
+		<div>Returns the id of this thread.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The id of this thread.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.start()</td>
+	<td>
+		<div>Puts the thread in runnable state.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.is_started()</td>
+	<td>
+		<div>Checks whether the thread was started or not.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the thread has been started.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.is_alive()</td>
+	<td>
+		<div>Checks whether this thread is alive or not.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this thread is still alive.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.join( millis )</td>
+	<td>
+		<div>Blocks the currently executing thread until this thread 
+				 terminates or the specified timeout has elapsed.</div>
+		<div><br /><strong>Parameters</strong><br /><i>millis</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The number of milliseconds to wait for this thread to terminate.  
+					   If 0 or not specified, wait until this thread finishes execution.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.sleep( millis )</td>
+	<td>
+		<div>Blocks the currently executing thread.</div>
+		<div><br /><strong>Parameters</strong><br /><i>millis</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The number of milliseconds to sleep.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Thread.current_thread( )</td>
+	<td>
+		<div>Returns the currently executing thread.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Thread<br />The currently executing thread.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.ThreadGroup">Bike.ThreadGroup</a></h1><br />A helper class to manage life cycle of a group of thread.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.ThreadGroup.initialize()</td>
+	<td>
+		<div>Initializes new Bike.ThreadGroup object.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.ThreadGroup.spawn( fn , auto_start )</td>
+	<td>
+		<div>Creates a new thread.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function which will be executed by the new thread.<br /><i>auto_start</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates whether the new thread should start immediately.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.ThreadGroup.start( )</td>
+	<td>
+		<div>Starts all non-running threads in this ThreadGroup.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.ThreadGroup.join( )</td>
+	<td>
+		<div>Blocks the currently executing thread until all threads in the ThreadGroup has finished running.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

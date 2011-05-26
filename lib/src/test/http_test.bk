@@ -1,0 +1,197 @@
+load 'uri.bk';
+load 'http.bk';
+load 'unit.bk';
+load 'file.bk';
+
+var fsys = Bike.FileSystem;
+
+BikeUnit.Batch.create( 'Bike.Http :: Bike.Http.Methods test' ).run( func() {
+	var http_method_ns = Bike.Http.Methods;
+	this.should_be_true( http_method_ns.has( http_method_ns.GET ) );
+	this.should_be_false( http_method_ns.has( 1000 ) );
+	
+	this.should_be_equal( http_method_ns.text( http_method_ns.POST ) , 'POST' );
+	this.should_throw( func() { http_method_ns.text( 1000 ); } , Bike.ArgumentError );
+
+	this.should_be_equal( http_method_ns.parse( 'post' ) , http_method_ns.POST );
+	this.should_throw( func() { http_method_ns.parse( 'hello' ); } , Bike.ArgumentError );
+} );
+
+BikeUnit.Batch.create( 'Bike.Http :: Http object creation test' ).run( func() {
+	var message = 'HTTP url is invalid';
+	var url = 'http://google.com';
+	var constructor_message = 'Constructor gives error with valid HTTP url string';
+	for ( var url in [ '' , null , 'this is not a http url' , 'ftp://server.local/path1' , 50 ] ) {
+		this.should_throw_any_error( func() { Bike.Http.Request.create( url ); }, message );
+		this.should_throw_any_error( func() { Bike.Http.Get.create( url ); }, message );
+		this.should_throw_any_error( func() { Bike.Http.Post.create( url ); }, message );
+	}
+	
+	this.should_throw_any_error( func() { Bike.Http.Request.create( url , 1000 ); }, 'Method on HTTP Request is invalid' );
+	
+	this.should_not_throw( func() { Bike.Http.Request.create( url ); } , constructor_message );
+	this.should_not_throw( func() { Bike.Http.Request.create( url , Bike.Http.Methods.GET ); } , constructor_message );
+	this.should_not_throw( func() { Bike.Http.Get.create( url ); } , constructor_message );
+	this.should_not_throw( func() { Bike.Http.Post.create( url ); } , constructor_message );
+} );
+
+BikeUnit.Batch.create( 'Bike.Http :: Http header object test' ).run( func() {
+	var test_url = 'http://google.com/';
+	var msg1 = 'Invalid http header should raise error';
+	var request = Bike.Http.Get.create( test_url );
+	
+	this.should_be_equal( request.uri().original_string() , test_url );
+	
+	var request_headers = request.headers();
+	
+	this.should_be_false( request_headers.is_readonly() );
+	this.should_be_true( request_headers.count() == 0 );
+	
+	this.should_be_null( request_headers.get() );
+	
+	this.should_be_null( request_headers.get( '' ) );
+	this.should_be_null( request_headers.get( 'Accept' ) );
+	this.should_be_false( request_headers.has( 'Accept' ) );
+	
+	this.should_throw_any_error( func() { request_headers.add(); } , msg1 );
+	this.should_throw_any_error( func() { request_headers.add( '' ); } , msg1 );
+	this.should_throw_any_error( func() { request_headers.add( '','abc' ); } , msg1 );
+		
+	request_headers.add( 'Accept','text/html' );	
+	this.should_be_true( request_headers.has( 'Accept' ) );
+	this.should_be_equal( request_headers.get( 'Accept' ) , 'text/html' );	
+	request_headers.add( 'Accept','text/xml' ).add( 'Keep-Alive' , 300 );
+	this.should_be_equal( request_headers.get( 'Accept' ) , 'text/xml' );		
+	this.should_be_equal( request_headers.get( 'Keep-Alive' ) , '300' ); # Treat header value as string
+
+	this.should_be_true( request_headers.count() == 2 );	
+	this.should_be_true( request_headers.all_headers() == [ 'Accept','Keep-Alive' ] );
+	
+	request_headers.remove( 'Accept' );
+	this.should_be_null( request_headers.get( 'Accept' ) );
+	this.should_be_false( request_headers.has( 'Accept' ) );
+	this.should_be_true( request_headers.count() == 1 );	
+	
+	this.should_not_throw( func() { request_headers.remove( 'non-existing header' ); } );	
+	
+	request_headers.clear();
+	this.should_be_true( request_headers.count() == 0 );
+	
+	request_headers.add( 'Accept' ,'text/xml' ).add( 'Keep-Alive' , 300 ); # Support method calling chain
+	this.should_be_equal( request_headers.count() , 2 );
+} );
+
+BikeUnit.Batch.create( 'Bike.Http.Get :: Http get request object test' ).run( func() {
+	var test_url = 'http://google.com/search';
+	var search_string = 'this is a very special search string';
+	var request = Bike.Http.Get.create( test_url );
+	this.should_not_throw( func() { request.set_form_data(); } );
+	this.should_not_throw( func() { request.set_form_data( {} ); } );	
+	
+	this.should_be_equal( request.form_data() , '' );
+	request.set_form_data( { sourceid : 'chrome', ie: 'UTF-8', q : search_string } );
+	var response_body_text = request.send().body();
+	this.should_be_true( response_body_text.contains( search_string ) );
+} );
+
+
+BikeUnit.Batch.create( 'Bike.Http.Request :: Http get method test' ).run( func() {
+	var test_url = 'http://google.com/search';
+	var search_string = 'this is a very special search string';
+	
+	this.should_throw( func() { Bike.Http.Request.get(); } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Http.Request.get( test_url ); } , Bike.ArgumentNullError );
+	
+	Bike.Http.Request.get( test_url, func( response ) {
+		BikeUnit.Batch.should_be_true( [ 200 -> 210 ].has( response.code() ) );
+		BikeUnit.Batch.should_be_false( Bike.String.is_empty( response.body() ) );
+	} );
+	
+	Bike.Http.Request.get( test_url, func( response ) {
+		BikeUnit.Batch.should_be_true( [ 200 -> 210 ].has( response.code() ) );
+		BikeUnit.Batch.should_be_true( response.body().contains( search_string ) );
+	} , { q : search_string } );
+} );
+
+
+BikeUnit.Batch.create( 'Bike.Http.Request :: Http post method test' ).run( func() {
+	var test_url = 'http://www.gawab.com/login';
+	var email_value = 'bike@gawab.com';
+	
+	this.should_throw( func() { Bike.Http.Request.post(); } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Http.Request.post( test_url ); } , Bike.ArgumentNullError );	
+	
+	var me = this;
+	Bike.Http.Request.post( test_url, func( response ) {
+		me.should_be_equal( response.code() , 200 );
+		me.should_be_true( response.body().contains( 'address=' + email_value ) );
+	} , { service : 'webmail', username : 'bike', domain : 'gawab.com' , email : email_value , password : 'wanna know ?' } );
+	
+	Bike.Http.Request.post( test_url, func( response ) {
+		me.should_be_equal( response.code() , 200 );
+	} );
+} );
+
+
+BikeUnit.Batch.create( 'Bike.Http.Request :: Http download file method test' ).run( func() {
+	var image_file_url = 'http://www.google.com.vn/logos/2011/berliner11-hp.png';
+	var unexisting_image_file_url = 'http://www.google.com.vn/logos/2011/no_file_ever_here.png';
+	var base_dir = fsys.current_dir();
+	var unexisting_base_dir = fsys.combine_path( base_dir , 'there-is-no-folder-here' );
+	var file_to_save = fsys.combine_path( base_dir , 'berliner11-hp.png' );
+	var new_file_name_to_save = fsys.combine_path( base_dir , 'berliner11-hp_new.png' );
+	
+	# Setup temp folders and files
+	fsys.delete_file( file_to_save );
+	fsys.delete_file( new_file_name_to_save );
+	fsys.delete_dir( unexisting_base_dir );
+	
+	this.should_throw( func() { Bike.Http.Request.download(); }, Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Http.Request.download( image_file_url ); }, Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Http.Request.download( unexisting_image_file_url , base_dir ); }, Bike.ArgumentError );
+	this.should_throw( func() { Bike.Http.Request.download( image_file_url , unexisting_base_dir ); }, Bike.ArgumentError );
+	
+	Bike.Http.Request.download( image_file_url , base_dir );
+	this.should_be_true( fsys.file_exists( file_to_save ) );
+	
+	this.should_throw( func() { Bike.Http.Request.download( image_file_url , base_dir ); }, Bike.InvalidOperationError ); # Don't overwrite file
+	this.should_not_throw( func() { Bike.Http.Request.download( image_file_url , base_dir , true ); } );
+	
+	Bike.Http.Request.download( image_file_url , base_dir , true , 'berliner11-hp_new.png' );
+	this.should_be_true( fsys.file_exists( new_file_name_to_save ) );
+	
+	# Clear up temp folders and files
+	fsys.delete_file( file_to_save );
+	fsys.delete_file( new_file_name_to_save );
+} );
+
+BikeUnit.Batch.create( 'Bike.Http :: Http operating test' ).run( func() {
+	var test_url = 'http://google.com';
+	var request = Bike.Http.Get.create( test_url );
+	
+	var response = request.send();
+	this.should_be_true( [ 200->210 ].has( response.code() ) );
+	this.should_be_equal( response.http_method() , Bike.Http.Methods.GET );
+	this.should_be_equal( response.uri().original_string() , test_url );
+	var response_headers = response.headers();
+	this.should_be_true( response_headers.has( 'Server' ) );
+	this.should_be_true( response_headers.has( 'Date' ) );
+	this.should_be_true( response_headers.has( 'Content-Type' ) );
+	this.should_be_true( response_headers.has( 'Cache-Control' ) );
+	this.should_be_true( response_headers.is_readonly() );
+	this.should_throw( func() { response_headers.add( 'Cache-Control' , 'private' ); } , Bike.InvalidOperationError );
+	this.should_throw( func() { response_headers.remove( 'Cache-Control' ); } , Bike.InvalidOperationError  );
+	this.should_throw( func() { response_headers.clear(); } , Bike.InvalidOperationError );
+		
+	this.should_not_be_null( response.body() );
+	
+	var saving_file = 'downloaded_body_file.log';
+	fsys.delete_file( saving_file ); # Make sure this file doesn't exist before
+	this.should_throw( func() { response.save_body_to_file(); } , Bike.ArgumentNullError );
+	
+	fsys.create_file( saving_file );
+	this.should_throw( func() { response.save_body_to_file( saving_file ); } , Bike.InvalidOperationError );
+	response.save_body_to_file( saving_file , true ); 
+	this.should_not_throw( func() { response.save_body_to_file( saving_file, true ); } );	
+	fsys.delete_file( saving_file );
+} );

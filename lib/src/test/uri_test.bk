@@ -1,0 +1,32 @@
+load 'uri.bk';
+load 'unit.bk';
+load 'file.bk';
+BikeUnit.Batch.create( 'Bike.Uri :: Uri creation test' ).run( func() {
+	var requireConstructorMessage = 'Constructor of Bike.Uri should have value';
+	this.should_throw_any_error( func() { Bike.Uri.create(); }, requireConstructorMessage );
+	this.should_throw_any_error( func() { Bike.Uri.create( '' ); }, requireConstructorMessage );
+	this.should_throw_any_error( func() { Bike.Uri.create( 'this is not an uri string' ); }, 'Uri is invalid' );
+	this.should_not_throw( func() { Bike.Uri.create( 'http://google.com' ); }, 'Constructor gave error with valid URI string' );
+} );
+
+BikeUnit.Batch.create( 'Bike.Uri :: Uri members test' ).run( func() {
+	var googleUri = 'http://google.com';
+	var uri = Bike.Uri.create( googleUri );	
+	this.should_be_equal( uri.scheme(), 'http' );
+	this.should_be_equal( uri.original_string(), googleUri );
+	this.should_be_equal( uri.path(), '/' );
+	this.should_be_equal( uri.query(), '' );
+	this.should_be_equal( uri.host(), 'google.com' );	
+	this.should_be_equal( uri.port(), 80 );
+	
+	var googleSearchUri = 'http://www.google.com.vn:8080/search?sourceid=chrome&ie=UTF-8&q=bike programming language';
+	uri = Bike.Uri.create( googleSearchUri );	
+	this.should_be_equal( uri.original_string(), googleSearchUri );
+	this.should_be_equal( uri.host(), 'www.google.com.vn' );
+	this.should_be_equal( uri.port(), 8080 );
+	this.should_be_equal( uri.path(), '/search' );
+	var escapedUriString = Bike.Uri.escape_string( 'sourceid=chrome&ie=UTF-8&q=bike programming language' ); 
+	this.should_be_equal( escapedUriString, 'sourceid=chrome&ie=UTF-8&q=bike%20programming%20language' );
+	this.should_be_equal( Bike.Uri.unescape_string( escapedUriString ), 'sourceid=chrome&ie=UTF-8&q=bike programming language' );
+	this.should_be_equal( uri.query(), escapedUriString );
+} );

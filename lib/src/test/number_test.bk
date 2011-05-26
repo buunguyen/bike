@@ -1,0 +1,75 @@
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'Number :: Basic' ).run( func() {
+	this.should_not_be_same( 1, 1 );
+	this.should_be_equal( 1, 1 );
+	this.should_be_equal( 1, 1.0000 );
+	this.should_be_equal( 1.000, 1.0000 );
+	this.should_be_equal( 1.00001, 1.00001 );
+	this.should_not_be_equal( 1.0001, 1.0002 );
+	this.should_be_equal( 1.to_string(), '1' );
+	this.should_not_be_null( 1.hash_code() );
+	this.should_throw( func() { 1.compare_to(); } , Bike.ArgumentNullError );
+	this.should_be_equal( 1.compare_to( 2 ), -1 );
+	this.should_be_equal( 1.compare_to( 1 ), 0 );
+	this.should_be_equal( 1.compare_to( 0 ), 1 );
+} );
+
+BikeUnit.Batch.create( 'Number :: Loop' ).run( func() {
+	var me = this;
+	this.should_throw( func() { 0.times(); } , Bike.ArgumentNullError );
+	0.times( func() {
+		me.should_fail();
+	} );
+	
+	var indices = [];
+	2.times( func( index ) {
+		indices.add( index );
+	} );
+	this.should_be_equal( indices, [ 0, 1 ] );
+	
+	indices = [];
+	this.should_throw( func() { 0.upto(); } , Bike.ArgumentNullError );
+	this.should_throw( func() { 0.upto( 5 ); } , Bike.ArgumentNullError );
+	
+	0.upto( 5, func( index ) {
+		indices.add( index );
+	} );
+	this.should_be_equal( indices, [ 0->5 ] );
+	
+	indices = [];
+	this.should_throw( func() { 0.downto(); } , Bike.ArgumentNullError );
+	this.should_throw( func() { 0.downto( 5 ); } , Bike.ArgumentNullError );
+	5.downto( 0, func( index ) {
+		indices.add( index );
+	} );
+	this.should_be_equal( indices, [ 5->0 ] );
+} );
+
+BikeUnit.Batch.create( 'Number :: Rounding' ).run( func() {
+	this.should_be_equal( 1.1.ceil(), 2 );
+	this.should_be_equal( 1.9.floor(), 1 );
+	
+	this.should_be_equal( 2.1.round(), 2 );
+	this.should_be_equal( 2.5.round(), 2 );
+	this.should_be_equal( 2.51.round(), 3 );
+	this.should_be_equal( 2.9.round(), 3 );
+	this.should_be_equal( 2.1234.round( 1 ), 2.1 );
+	this.should_be_equal( 2.1234.round( 2 ), 2.12 );
+	this.should_be_equal( 2.1234.round( 4 ), 2.1234 );
+	
+	this.should_be_equal( 2.91111.truncate(), 2 );
+	this.should_be_equal( 2.truncate(), 2 );
+	this.should_be_equal( 0.12.truncate(), 0 );
+} );
+
+BikeUnit.Batch.create( 'Number :: Even/Odd' ).run( func() {
+	this.should_be_true( 1.whole() );
+	this.should_be_false( 1.1.whole() );
+	this.should_be_true( 1.odd() );
+	this.should_be_true( 2.even() );
+	this.should_be_false( 1.1.odd() ); 
+	this.should_be_false( 1.2.even() );
+	this.should_be_true( 0.even() );
+	this.should_be_true( ( -2 ).even() );
+} );

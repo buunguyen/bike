@@ -1,0 +1,32 @@
+load 'file.bk';
+
+Bike.Function.curry = func( *args ) {
+	if ( args == null || args.size() == 0 ) return this;
+	var me = this;
+	return func( *more ) {
+		if ( more != null )  
+			args.add_all( more );
+		me.call( this, *args );
+	};
+};
+
+# Curry in a nutshell
+func add( a, b ) { a + b }
+var addTo2 = add.curry( 2 );
+println( addTo2( 3 ) );
+
+add = add.curry( 2, 3 );
+println( add() );
+
+# Adapted from: http://javascriptweblog.wordpress.com/2010/04/05/curry-cooking-up-tastier-functions/
+var converter = func( ratio, symbol, input ) {
+	( input * ratio ).round( 1 ) + " " + symbol
+};
+
+var kilosToPounds = converter.curry( 2.2, "lbs" );
+var milesToKilometers = converter.curry( 1.62, "km" );
+
+println( kilosToPounds( 4 ) ); 
+println( milesToKilometers( 34 ) );
+
+read();

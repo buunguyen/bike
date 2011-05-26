@@ -1,0 +1,57 @@
+#!{ field: 'NL',
+	summary: 'Newline character',
+	type: 'Bike.String'
+}!#
+var NL = System.Environment.NewLine;
+
+#!{ method: 'print',
+	summary: 'Prints to the console',
+	params: {
+		str: 'The object to be printed',
+		'*args': 'The formatted arguments'
+	}
+}!#
+func print( str, *args ) {
+	if ( args == null )
+		System.Console.Write( str );
+	else 
+		System.Console.Write( str, *args.printable() );
+}
+
+#!{ method: 'println',
+	summary: 'Prints to the console and appends a newline',
+	params: {
+		str: 'The object to be printed',
+		'*args': 'The formatted arguments'
+	}
+}!#
+func println( str, *args ) {
+	if ( str == null ) 
+		System.Console.WriteLine();
+	else if ( args == null ) 
+		System.Console.WriteLine( str );
+	else 
+		System.Console.WriteLine( str, *args.printable() );
+}
+
+#!{ method: 'read',
+	summary: 'Reads a character from the console',
+	ret: {
+		type: 'Bike.String',
+		desc: 'A character from the console'
+	}
+}!#
+func read() {
+	return System.Console.Read();
+}
+
+#!{ method: 'readln',
+	summary: 'Reads a string from the console',
+	ret: {
+		type: 'Bike.String',
+		desc: 'A string from the console'
+	}
+}!#
+func readln() {
+	return System.Console.ReadLine();
+}

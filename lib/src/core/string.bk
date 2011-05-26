@@ -1,0 +1,346 @@
+#!{ object: 'Bike.String',
+	summary: 'The base object for all strings in the system'
+}!#
+
+#!{ method: 'Bike.String == ( other )',
+	summary: 'Determines if this string is equal to the specified string',
+	params: {
+		other: {
+			type: 'Bike.String',
+			desc: 'The string to be compared'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this object is equal to the supplied object'
+	}
+}!#
+Bike.String[ '==' ] = func( other ) {
+	if ( other == null || !( other is Bike.String ) )
+		return false;
+	return this.__native.Equals( other.__native );
+};
+
+#!{ method: 'Bike.String.hash_code',
+	summary: 'Gets the hash code of this string',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The hash code of this string'
+	}
+}!#
+Bike.String.hash_code = func() {
+	return this.__native.GetHashCode();
+};
+
+#!{ method: 'Bike.String.to_string',
+	summary: 'Gets the string of this string',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The string representation of this string'
+	}
+}!#
+Bike.String.to_string = func() {
+	return this;
+};
+
+#!{ method: 'Bike.String.with( *args )',
+	summary: 'Returns a string formatted with the supplied arguments',
+	params: {
+		'*args': 'The objects to be formatted into the string'
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'A string formatted with the supplied arguments'
+	}
+}!#
+Bike.String.with = func( *args ) {
+	return System.String.Format( this.__native, *args.printable() );
+};
+
+#!{ method: 'Bike.String.compare_to( other )',
+	summary: 'Compares this string with the provided string',
+	params: {
+		other: {
+			type: 'Bike.String',
+			desc: 'The string to compare to'
+		}
+	},
+	ret: {
+		type: 'Bike.Number',
+		desc: '1 if this string comes before {other}; 
+		       0 if this string is equal to {other};
+			  -1 if this string comes after {other}'
+	}
+}!#
+Bike.String.compare_to = func( other ) {
+	return this.__native.CompareTo( other.__native );
+};
+
+#!{ method: 'Bike.String.to_number()',
+	summary: 'Returns the number values of this string',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The number values of this string'
+	}
+}!#
+Bike.String.to_number = func() {
+	return System.Decimal.Parse( this.__native );
+};
+
+#!{ method: 'Bike.String.trim( *trim_chars )',
+	summary: 'Creates a string from this string and removes some leading and trailing characters',
+	params: {
+		'*trim_chars': 'The characters used to trim the string.  If not specified, space is used'
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'A string without some leading and trailing characters'
+	}
+}!#
+Bike.String.trim = func( *trim_chars ) {
+	return trim_chars == null
+		? this.__native.Trim()
+		: this.__native.Trim( *trim_chars );
+};
+
+#!{ method: 'Bike.String.trim_end( *trim_chars )',
+	summary: 'Creates a string from this string and removes some trailing characters',
+	params: {
+		'*trim_chars': 'The characters used to trim the string.  If not specified, space is used'
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'A string without some trailing characters'
+	}
+}!#
+Bike.String.trim_end = func( *trim_chars ) {
+	return trim_chars == null
+		? this.__native.TrimEnd()
+		: this.__native.TrimEnd( *trim_chars );
+};
+
+#!{ method: 'Bike.String.trim_start( *trim_chars )',
+	summary: 'Creates a string from this string and removes some leading characters',
+	params: {
+		'*trim_chars': 'The characters used to trim the string.  If not specified, space is used'
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'A string without some leading characters'
+	}
+}!#
+Bike.String.trim_start = func( *trim_chars ) {
+	return trim_chars == null
+		? this.__native.TrimStart()
+		: this.__native.TrimStart( *trim_chars );
+};
+
+#!{ method: 'Bike.String.length()',
+	summary: 'Returns the number of characters in this string',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The number of characters in this string'
+	}
+}!#
+Bike.String.length = func() {
+	return this.__native.Length;
+};
+
+#!{ method: 'Bike.String.sub( start, length )',
+	summary: 'Gets a substring of this string',
+	params: {
+		start: {
+			type: 'Bike.Number',
+			desc: 'The starting index'
+		},
+		length: {
+			type: 'Bike.Number',
+			desc: 'The length of the substring from {start}.  
+			       If not specified, use the rest of the string.'
+		}
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'A substring of this string'
+	}
+}!#
+Bike.String.sub = func( start, length ) {
+	return length == null 
+		? this.__native.Substring( start )
+		: this.__native.Substring( start, length );
+};
+
+#!{ method: 'Bike.String.char( index )',
+	summary: 'Gets the character at position {index}',
+	params: {
+		index: {
+			type: 'Bike.Number',
+			desc: 'The index of the character to be retrieved.'
+		}
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'The character at position {index}'
+	}
+}!#
+Bike.String.char = func( index ) {
+	return this.__native[ index ];
+};
+
+#!{ method: 'Bike.String.chars',
+	summary: 'Gets all characters of this string',
+	ret: {
+		type: 'Bike.Array',
+		desc: 'All characters of this string'
+	}
+}!#
+Bike.String.chars = func() {
+	return this.__native.ToCharArray();
+};
+
+#!{ method: 'Bike.String.lower',
+	summary: 'Returns the lower case version of this string',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The lower case version of this tring'
+	}
+}!#
+Bike.String.lower = func() {
+	return this.__native.ToLower();
+};
+
+#!{ method: 'Bike.String.upper',
+	summary: 'Returns the upper case version of this string',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The upper case version of this tring'
+	}
+}!#
+Bike.String.upper = func() {
+	return this.__native.ToUpper();
+};
+
+#!{ method: 'Bike.String.index( sub )',
+	summary: 'Gets the index of a specific substring',
+	params: {
+		sub: {
+			type: 'Bike.String',
+			desc: 'The substring whose index is to be retrieved.'
+		}
+	},
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The index of {sub}'
+	}
+}!#
+Bike.String.index = func( sub ) {
+	return this.__native.IndexOf( sub );
+};
+
+#!{ method: 'Bike.String.contains( sub )',
+	summary: 'Determines whether this string contains a specific substring',
+	params: {
+		sub: {
+			type: 'Bike.String',
+			desc: 'The substring whose existance is to be checked.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this string contains {sub}'
+	}
+}!#
+Bike.String.contains = func( sub ) {
+	return this.__native.Contains( sub );
+};
+
+#!{ method: 'Bike.String.starts( start )',
+	summary: 'Determines whether this string starts with a specific substring',
+	params: {
+		start: {
+			type: 'Bike.String',
+			desc: 'The substring with which this string starts.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this string starts with {start}'
+	}
+}!#
+Bike.String.starts = func( start ) {
+	return this.__native.StartsWith( start );
+};
+
+#!{ method: 'Bike.String.ends( end )',
+	summary: 'Determines whether this string ends with a specific substring',
+	params: {
+		end: {
+			type: 'Bike.String',
+			desc: 'The substring with which this string ends.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this string ends with {end}'
+	}
+}!#
+Bike.String.ends = func( end ) {
+	return this.__native.EndsWith( end );
+};
+
+#!{ method: 'Bike.String.replaces( txt, by )',
+	summary: 'Replaces all occurences of {txt} by {by}',
+	params: {
+		txt: {
+			type: 'Bike.String',
+			desc: 'The string to be replaced.'
+		},
+		by: {
+			type: 'Bike.String',
+			desc: 'The string to replace.'
+		}
+	},
+	ret: {
+		type: 'Bike.String',
+		desc: 'The new string.'
+	}
+}!#
+Bike.String.replaces = func( txt, by ) {
+	return this.__native.Replace( txt, by );
+};
+
+#!{ method: 'Bike.String.counts( sub )',
+	summary: 'Returns the number of occurences of {sub}',
+	params: {
+		sub: {
+			type: 'Bike.String',
+			desc: 'The string whose occurences are to be counted.'
+		}
+	},
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The number of times {sub} appears in this string.'
+	}
+}!#
+Bike.String.counts = func( sub ) {
+	var currentLength = this.length();
+	var newLength = this.replaces( sub, '' ).length();
+	return ( currentLength - newLength ) / sub.length();
+};
+
+#!{ method: 'Bike.String.is_empty( txt, by )',
+	summary: 'Determines whether the specified string is null or empty',
+	params: {
+		str: {
+			type: 'Bike.String',
+			desc: 'The string to be verified.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if the specified string is null or empty.'
+	}
+}!#
+Bike.String.is_empty = func( str ) {
+	return ( str || '' ) == '';
+};

@@ -1,0 +1,288 @@
+<html>
+<head>
+	<title>http.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Http.Methods">Bike.Http.Methods</a></h1><br />Constants and helper methods for HTTP methods.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Methods.GET</td>
+	<td>
+		<div>Type: Bike.Number<br />Number constant for a GET method.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.POST</td>
+	<td>
+		<div>Type: Bike.Number<br />Number constant for a POST method.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.HEAD</td>
+	<td>
+		<div>Type: Bike.Number<br />Number constant for a HEAD method.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.PUT</td>
+	<td>
+		<div>Type: Bike.Number<br />Number constant for a PUT method.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.DELETE</td>
+	<td>
+		<div>Type: Bike.Number<br />Number constant for a DELETE method.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Methods.has( method_int_value )</td>
+	<td>
+		<div>Checks whether a given number value is valid constant of Bike.Http.Methods or not.</div>
+		<div><br /><strong>Parameters</strong><br /><i>method_int_value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number value to check.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True of the given number is valid constant. Otherwise, False.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.text( int_value )</td>
+	<td>
+		<div>Returns appropriate http verb.</div>
+		<div><br /><strong>Parameters</strong><br /><i>int_value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Constant of Bike.Http.Methods.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The http verb appropriates to given constant. E.g. 'GET' for Bike.Http.Methods.GET.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Methods.parse( method_text )</td>
+	<td>
+		<div>Converts a http verb into a constant of Bike.Http.Methods.</div>
+		<div><br /><strong>Parameters</strong><br /><i>method_text</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A http verb.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />A Bike.Http.Methods constant appropriates to given http verb. E.g. Bike.Http.Methods.GET for 'GET'.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Http.Request">Bike.Http.Request</a></h1><br />Represents a HTTP request.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Request.initialize( uri, http_method )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A string representation for uri of request.<br /><i>http_method</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One of the constants in <i>Bike.Http.Methods</i>.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.uri()</td>
+	<td>
+		<div>Returns the uri of request.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Uri<br />The uri of request.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.http_method()</td>
+	<td>
+		<div>Returns the HTTP method of this request.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The HTTP method of this request.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.headers()</td>
+	<td>
+		<div>Returns request headers.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Http.Headers<br />The request headers.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.uri()</td>
+	<td>
+		<div>Returns uri-encoded string representation of form data for request set in Bike.Http.Request.set_form_data().</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The uri-encoded string representation of form data, e.x: param1=value1&param2=value2.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.set_form_data( form_hash )</td>
+	<td>
+		<div>Sets the form data for the request to submit to server.</div>
+		<div><br /><strong>Parameters</strong><br /><i>form_hash</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A form data object. This object must contains text values.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.send()</td>
+	<td>
+		<div>Sends the request to server and return the response object.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Http.Response<br />The response of request.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.get( uri, response_callback, query_parameters )</td>
+	<td>
+		<div>Makes a GET request to server and receives response text body.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The uri of the request.<br /><i>response_callback</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A func( Bike.Http.Response ) callback.<br /><i>query_parameters</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A hash for request parameters.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.post( uri, response_callback, form_parameters )</td>
+	<td>
+		<div>Makes a POST request to server and receives response text body.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The uri of the request.<br /><i>response_callback</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A func( Bike.Http.Response ) callback.<br /><i>form_parameters</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A hash for form parameters of POST method.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Request.download( file_uri , download_dir , overwrite , file_name_to_save )</td>
+	<td>
+		<div>A handy way to download a file with a GET HTTP request.</div>
+		<div><br /><strong>Parameters</strong><br /><i>file_uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The uri of the file to download.<br /><i>download_dir</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The location to store the downloaded file.<br /><i>overwrite</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates whether the downloaded file is saved if there is a file with the same name in <i>download_dir</i>. 
+				   False if not specified.<br /><i>file_name_to_save</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The downloaded file will be saved with file name indicated by this parameter. 
+				  If not specified, the name is the same with the file uri.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Http.Response">Bike.Http.Response</a></h1><br />Represents a HTTP response object.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Response.initialize( uri, method, headers, code, response_data_memory_stream )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The uri of the original request.<br /><i>method</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;One of the constants <i>Bike.Http.Methods</i>.<br /><i>headers</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A hash of HTTP response headers.<br /><i>code</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HTTP code in response.<br /><i>response_data_memory_stream</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: System.IO.MemoryStream<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Raw data of response body.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.headers()</td>
+	<td>
+		<div>Returns the read-only header collection of the response.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Http.Headers<br />The read-only header collection.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.code()</td>
+	<td>
+		<div>Returns the http status code of response.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The http status code of response, e.g. 200.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.body()</td>
+	<td>
+		<div>Returns the body of response ( not include the header ) as text.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The body of response ( not include the header ) as text.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.save_body_to_file( path, override )</td>
+	<td>
+		<div>Saves the body of response to file as binary.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to new file to save.<br /><i>overwrite</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicate whether to overwrite the file if it exists. Default is False.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.http_method()</td>
+	<td>
+		<div>Returns the constant of Bike.Http.Methods.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The constant of Bike.Http.Methods.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Response.uri()</td>
+	<td>
+		<div>Returns the uri of original request.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Uri<br />The uri of original request.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Http.Get">Bike.Http.Get</a></h1><br />Represent for a GET HTTP request.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Get.initialize( uri )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A string presentation for uri of request.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Http.Post">Bike.Http.Post</a></h1><br />Represent for a POST HTTP request.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Post.initialize( uri )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>uri</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A string presentation for uri of request.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Http.Headers">Bike.Http.Headers</a></h1><br />Represent for a collection of HTTP header.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Http.Headers.initialize( headers_hash, is_readonly )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>headers_hash</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The hash for initial headers.<br /><i>is_readonly</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicate whether the header collection can be modified.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.add( header, value )</td>
+	<td>
+		<div>Adds a new http header.</div>
+		<div><br /><strong>Parameters</strong><br /><i>header</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header name.<br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header value.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Http.Headers<br />The object itself.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.remove( header )</td>
+	<td>
+		<div>Removes a http header.</div>
+		<div><br /><strong>Parameters</strong><br /><i>header</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header name.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Http.Headers<br />The object itself.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.get( header )</td>
+	<td>
+		<div>Retrieves a http header value from given name.</div>
+		<div><br /><strong>Parameters</strong><br /><i>header</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header name.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The string value of header. If the name doesn't exist, return null.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.all_headers()</td>
+	<td>
+		<div>Gets header names.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />A string array of header names.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.has( header )</td>
+	<td>
+		<div>Checks whether a header name exist or not.</div>
+		<div><br /><strong>Parameters</strong><br /><i>header</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The header name.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if it exists. Otherwise, False.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.count()</td>
+	<td>
+		<div>Returns the current amount of headers which has been added.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />Number of headers.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Http.Headers.clear()</td>
+	<td>
+		<div>Removes all headers.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

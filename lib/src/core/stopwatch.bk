@@ -1,0 +1,56 @@
+#!{ object: 'Bike.Stopwatch',
+	summary: 'A stopwatch object'
+}!#
+
+Bike.Stopwatch = {
+	#!{ method: 'Bike.Stopwatch.initialize',
+		summary: 'Initializes a stopwatch instance'
+	}!#
+	initialize: func() {
+		this.__native = System.Diagnostics.Stopwatch();
+		
+		#!{ field: 'Bike.Stopwatch.elapsed',
+			summary: 'Elapsed time in milliseconds',
+			type: 'Bike.Number'
+		}!#
+		this.elapsed = 0;
+	},
+
+	#!{ method: 'Bike.Stopwatch.start',
+		summary: 'Starts this stopwatch',
+		ret: {
+			type: 'Bike.Stopwatch',
+			desc: 'This stopwatch object'
+		}
+	}!#
+	start: func() {
+		this.__native.Start();
+		return this;
+	},
+	
+	#!{ method: 'Bike.Stopwatch.stop',
+		summary: 'Stops this stopwatch',
+		ret: {
+			type: 'Bike.Number',
+			desc: 'Elapsed time in milliseconds'
+		}
+	}!#
+	stop: func() {
+		this.__native.Stop();
+		this.elapsed = this.__native.ElapsedMilliseconds;
+		return this.elapsed;
+	},
+	
+	#!{ method: 'Bike.Stopwatch.reset',
+		summary: 'Resets this stopwatch',
+		ret: {
+			type: 'Bike.Stopwatch',
+			desc: 'This stopwatch object'
+		}
+	}!#
+	reset: func() {
+		this.elapsed = 0;
+		this.__native.Reset();
+		return this;
+	}
+};

@@ -1,0 +1,403 @@
+#!{ object: 'Bike.Array',
+	summary: 'The prototype of all arrays in the system'
+}!#
+
+#!{ method: 'Bike.Array.hash_code',
+	summary: 'Gets the hash code of this array',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The hash code of this array'
+	}
+}!#
+Bike.Array.hash_code = func() {
+	var hashcode = 0;
+	for ( var ele in this )
+		hashcode = hashcode * 31 + ele.hash_code();
+	return hashcode;
+};
+
+#!{ method: 'Bike.Array == ( other )',
+	summary: 'Determines if this array is equal to the specified array.  
+			They are equal only if both arrays contain the same elements in the same order.',
+	params: {
+		other: {
+			type: 'Bike.Array',
+			desc: 'The array to be compared'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this array is equal to the supplied array'
+	}
+}!#
+Bike.Array[ '==' ] = func( other ) {
+	if ( other == null || !( other is Bike.Array ) )
+		return false;
+	if ( this.size() != other.size() )
+		return false;
+	for ( var index in [ 0->this.size() ] ) {
+		if ( this[ index ] != other[ index ] )
+			return false;
+		index++;
+	}
+	return true;
+};
+
+#!{ method: 'Bike.Array.to_string',
+	summary: 'Gets the string representation of this array',
+	ret: {
+		type: 'Bike.String',
+		desc: 'The string representation of this array'
+	}
+}!#
+Bike.Array.to_string = func() {
+	var s = '[ ';
+	var size = this.size();
+	for ( var index in [ 0->size ] ) {
+		s += this[ index ].to_string();
+		if ( index++ < ( size - 1 ) ) s += ', ';
+	}
+	s += ' ]';
+	return s;
+};
+
+#!{ method: 'Bike.Array.size()',
+	summary: 'Returns the size of this array',
+	ret: {
+		type: 'Bike.Number',
+		desc: 'The size of this array'
+	}
+}!#
+Bike.Array.size = func() {
+	return this.__native.Count;
+};
+
+#!{ method: 'Bike.Array.add( element )',
+	summary: 'Adds an element to this array',
+	params: {
+		element: {
+			type: 'Bike.Object',
+			desc: 'An element to be added'
+		}
+	}
+}!#
+Bike.Array.add = func( element ) {
+	this[ this.size() ] = element;
+};
+
+#!{ method: 'Bike.Array.add( iterable )',
+	summary: 'Adds all elements in {iterable} to this array.',
+	params: {
+		element: {
+			type: 'Bike.Object',
+			desc: 'An object which contains elements to be added to this array.'
+		}
+	}
+}!#
+Bike.Array.add_all = func( iterable ) {
+	Bike.Contract.requires_not_null( iterable , 'iterable' );
+	for ( var element in iterable )
+		this.add( element );
+};
+
+#!{ method: 'Bike.Array.has( element )',
+	summary: 'Checks if an element exists in the array.',
+	params: {
+		element: {
+			type: 'Bike.Object',
+			desc: 'An element to be checked for existance.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if this array contains {element}.'
+	}
+}!#
+Bike.Array.has = func( element ) {
+	if( element ) {
+		for ( var ele in this )
+			if ( ele == element ) 
+				return true;
+	}
+	
+	return false;
+};
+
+#!{ method: 'Bike.Array.distinct()',
+	summary: 'Gets a copy of this array but without any duplicated element.',
+	ret: {
+		type: 'Bike.Array',
+		desc: 'The array without any duplicated element.'
+	}
+}!#
+Bike.Array.distinct = func() {
+	var other = [];
+	for ( var element in this )
+		if ( !other.has( element ) )
+			other.add( element );
+	return other;
+};
+
+#!{ method: 'Bike.Array.any( predicate )',
+	summary: 'Determines if any element of this array satisfies the {predicate}.',
+	params: {
+		predicate: {
+			type: 'Bike.Function',
+			desc: 'The predicate function'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if any element of this array satisfies the {predicate}.'
+	}
+}!#
+Bike.Array.any = func( predicate ) {
+	Bike.Contract.requires_not_null( predicate , 'predicate' );
+	for ( var element in this )
+		if ( predicate( element ) )
+			return true;
+	return false;
+};
+
+#!{ method: 'Bike.Array.all( predicate )',
+	summary: 'Determines if all elements of this array satisfies the {predicate}.',
+	params: {
+		predicate: {
+			type: 'Bike.Function',
+			desc: 'The predicate function'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if all elements of this array satisfies the {predicate}.'
+	}
+}!#
+Bike.Array.all = func( predicate ) {
+	Bike.Contract.requires_not_null( predicate , 'predicate' );
+	for ( var element in this )
+		if ( !predicate( element ) )
+			return false;
+	return true;
+};
+
+#!{ method: 'Bike.Array.each( fn )',
+	summary: 'Executes a function on every element of this array',
+	params: {
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The function to be executed.'
+		}
+	}
+}!#
+Bike.Array.each = func( fn ) {
+	Bike.Contract.requires_not_null( fn  , 'fn' );
+	for ( var element in this ) {
+		fn( element );
+	}
+};
+
+#!{ method: 'Bike.Array.each_with_index( fn )',
+	summary: 'Executes a function on every element of this array and the index of the element',
+	params: {
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The function to be executed.'
+		}
+	}
+}!#
+Bike.Array.each_with_index = func( fn ) {
+	Bike.Contract.requires_not_null( fn  , 'fn' );	
+	var index = 0;
+	for ( var element in this ) {
+		fn( element, index++ );
+	}
+};
+
+#!{ method: 'Bike.Array.sort( comparer )',
+	summary: 'Copies this array and sorts the copy',
+	params: {
+		comparer: {
+			type: 'Bike.Function',
+			desc: 'A function used to compare elements in this array.  
+			       If not specified, the algorithm assumes each element
+				  has a compare_to() method.'
+		}
+	},
+	ret: {
+		type: 'Bike.Array',
+		desc: 'The sorted copied array.'
+	}
+}!#
+Bike.Array.sort = func( comparer ) {
+	var other = this.copy();
+	comparer ||= func( a, b ) { a.compare_to( b ); };
+	func swap( i, j ) { var tmp = other[ i ]; other[ i ] = other[ j ]; other[ j ] = tmp; }
+	func partition( l, r ) {
+		var i = l-1, j = r, v = other[ r ];
+		while ( true ) { 
+			while ( comparer( other[ ++i ], v ) < 0 ); 
+			while ( comparer( v, other[ --j ] ) < 0 && j > i ); 
+			if ( i >= j ) break; 
+			swap( i, j ); 
+		} 
+		swap( i, r ); 
+		return i;
+	}
+	func quick_sort( l, r ) {
+		if ( r <= l ) return; 
+		var i = partition( l, r );
+		quick_sort( l, i - 1 );
+		quick_sort( i + 1, r );
+	};
+	quick_sort( 0, other.size() - 1 );
+	return other;
+};
+
+#!{ method: 'Bike.Array.copy()',
+	summary: 'Copies this array into another array and returns the new array.',
+	ret: {
+		type: 'Bike.Array',
+		desc: 'The copied array.'
+	}
+}!#
+Bike.Array.copy = func() {
+	var other = [];
+	for ( var element in this )
+		other.add( element );
+	return other;
+};
+
+#!{ method: 'Bike.Array.remove_at( index )',
+	summary: 'Removes the element at position {index}.',
+	params: {
+		index: {
+			type: 'Bike.Number',
+			desc: 'The index at which an element is removed.'
+		}
+	}
+}!#
+Bike.Array.remove_at = func( index ) {
+	Bike.Contract.requires_not_null( index , 'index' );
+	this.__native.RemoveAt( index );
+};
+
+#!{ method: 'Bike.Array.remove_all()',
+	summary: 'Removes all elements in this array'
+}!#
+Bike.Array.remove_all = func() {
+	this.__native.RemoveAll();
+};
+
+#!{ method: 'Bike.Array.remove( element )',
+	summary: 'Removes the specified element from the array',
+	params: {
+		element: {
+			type: 'Bike.Object',
+			desc: 'The element to be removed.'
+		}
+	},
+	ret: {
+		type: 'Bike.Boolean',
+		desc: 'True if the element was removed successfully.'
+	}
+}!#
+Bike.Array.remove = func( element ) {
+	var index = 0;
+	var position = -1;
+	for ( var ele in this ) {
+		if ( ele == element ) {
+			position = ele;
+			break;
+		}
+		index++;
+	}
+	if ( position != -1 ) {
+		this.remove_at( position );
+		return true;
+	}
+	return false;
+};
+
+#!{ method: 'Bike.Array.filter( predicate )',
+	summary: 'Returns an array all of whose elements match the predicate function',
+	params: {
+		predicate: {
+			type: 'Bike.Function',
+			desc: 'The predicate function used to filter elements in the returned array.'
+		}
+	},
+	ret: {
+		type: 'Bike.Array',
+		desc: 'An array all of whose elements match the predicate function'
+	}
+}!#
+Bike.Array.filter = func( fn ) {
+	Bike.Contract.requires_not_null( fn , 'fn' );
+	var other = [];
+	for ( var element in this )
+		if ( fn( element ) )
+			other.add( element );
+	return other;
+};
+
+#!{ method: 'Bike.Array.map( fn )',
+	summary: 'Maps each element of this array to a new value returned by {fn}',
+	params: {
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The mapper function.'
+		}
+	},
+	ret: {
+		type: 'Bike.Array',
+		desc: 'An array containing the results of the mapper function applying on every element
+			  of the original array.'
+	}
+}!#
+Bike.Array.map = func( fn ) {
+	Bike.Contract.requires_not_null( fn , 'fn' );	
+	var other = [];
+	for ( var element in this )
+		other.add( fn( element ) );
+	return other;
+};
+
+#!{ method: 'Bike.Array.reduce( init, fn )',
+	summary: 'Reduces elements of this array into a single value',
+	params: {
+		init: {
+			type: 'Bike.Object',
+			desc: 'The initial value.'
+		},
+		fn: {
+			type: 'Bike.Function',
+			desc: 'The reduce function which takes a value and an element and returns
+				  a reduced version of both.  The result will be fed into the next
+				  invocation of this reduce function.'
+		}
+	},
+	ret: {
+		type: 'Bike.Object',
+		desc: 'A singly reduced value of the array.'
+	}
+}!#
+Bike.Array.reduce = func( init, fn ) {
+	Bike.Contract.requires_not_null( init , 'init' );	
+	Bike.Contract.requires_not_null( fn , 'fn' );
+	for ( var element in this )
+		 init = fn( init, element );
+	return init;
+};
+
+#!{ method: 'Bike.Array.printable()',
+	summary: 'Maps this array to a new one containing only CLR printable elements.',
+	ret: {
+		type: 'Bike.Array',
+		desc: 'The array containing only CLR printable elements'
+	}
+}!#
+Bike.Array.printable = func() {
+	this.map( func( arg ) {
+		( arg is Bike.Array || arg is Bike.Function ) ? arg.to_string() : arg
+	} );
+};

@@ -1,0 +1,27 @@
+load 'resolution_helper.bk';
+
+print_text( 'Resolution tests for Installer :: Addon library path' );
+var addon_lib_path = System.Environment.GetEnvironmentVariable('BIKE_LIB');
+
+run_resolution_test( func() {	
+	var the_file =  fs.combine_path( addon_lib_path , 'the_dummy_file.bk' );
+	try {
+		fs.create_file( the_file );
+		load 'the_dummy_file.bk';
+	} finally {
+		fs.delete_file( the_file );
+	}
+} , 'Resolve files in {0} directory'.with(addon_lib_path) );
+
+run_resolution_test( func() {
+	var sub_dir =  fs.combine_path( addon_lib_path , 'dummy_sub_dir' );
+	var the_file =  fs.combine_path( sub_dir , 'the_dummy_file.bk' );
+	try {		
+		fs.create_dir( sub_dir );
+		fs.create_file( the_file );
+		load 'dummy_sub_dir/the_dummy_file.bk';
+	} finally {
+		fs.delete_dir( sub_dir , true );
+	}
+} , 'Resolve files in sub directory of {0}'.with(addon_lib_path) );
+

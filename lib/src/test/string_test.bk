@@ -1,0 +1,67 @@
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'String :: Basic' ).run( func() {
+	this.should_be_equal( '', '' );
+	this.should_be_equal( '', ''.to_string() );
+	this.should_be_equal( ''.length(), 0 );
+	this.should_be_equal( 'abcd'.length(), 4 );
+	this.should_be_equal( 'a'.compare_to( 'b' ), -1 );
+	this.should_be_equal( 'a'.compare_to( 'a' ), 0 );
+	this.should_be_equal( 'b'.compare_to( 'a' ), 1 );
+	this.should_be_equal( 'AbC'.lower(), 'abc' );
+	this.should_be_equal( 'aBc'.upper(), 'ABC' );
+} );
+
+BikeUnit.Batch.create( 'String :: Format' ).run( func() {
+	this.should_be_equal( 'name'.with( 'John' ), 'name' );
+	this.should_be_equal( 'name: {0}'.with( 'John' ), 'name: John' );
+	this.should_be_equal( 'name: {0}-{0}'.with( 'John' ), 'name: John-John' );
+	this.should_be_equal( 'name: {0}, age: {1}'.with( 'John', 12 ), 'name: John, age: 12' );
+	this.should_be_equal( '{0}'.with( [ 1, 2, 3 ] ), '[ 1, 2, 3 ]' );
+	this.should_be_equal( '{0}'.with( func f(){} ), 'f()' );
+	this.should_be_equal( '{0}'.with( [ 1, 'a', [ 1, 2 ], func f1( a, *b ){} ] ), 
+							  '[ 1, a, [ 1, 2 ], f1( a, *b ) ]' );
+} );
+
+BikeUnit.Batch.create( 'String :: Convert' ).run( func() {
+	this.should_be_equal( '10.11111'.to_number(), 10.11111 );
+	this.should_be_equal( '-10.9999999'.to_number(), -10.9999999 );
+	this.should_be_equal( '10000000'.to_number(), 10000000 );
+	this.should_be_equal( '-0.555555'.to_number(), -0.555555 );
+} );
+
+BikeUnit.Batch.create( 'String :: Substring' ).run( func() {
+	this.should_be_equal( 'a'.char( 0 ), 'a' );
+	this.should_be_equal( 'abc'.chars(), [ 'a', 'b', 'c' ] );
+	this.should_be_equal( 'abc'.sub( 1 ), 'bc' );
+	this.should_be_equal( 'abcd'.sub( 2, 2 ), 'cd' );
+	this.should_be_equal( 'abcd'.sub( 0 ), 'abcd' );
+	this.should_be_equal( 'abcd'.sub( 0, 'abcd'.length() ), 'abcd' );
+} );
+
+BikeUnit.Batch.create( 'String :: Contain' ).run( func() {
+	this.should_be_equal( 'abcd'.starts( 'a' ), true );
+	this.should_be_equal( 'abcd'.starts( 'ab' ), true );
+	this.should_be_equal( 'abcd'.starts( 'abcd' ), true );
+	
+	this.should_be_equal( 'abcd'.ends( 'd' ), true );
+	this.should_be_equal( 'abcd'.ends( 'cd' ), true );
+	this.should_be_equal( 'abcd'.ends( 'abcd' ), true );
+	
+	this.should_be_equal( 'abcd'.index( 'bc' ), 1 );
+	this.should_be_equal( 'abcd'.index( 'abcd' ), 0 );
+	
+	this.should_be_equal( 'abcd'.counts( 'a' ), 1 );
+	this.should_be_equal( 'aabbccddaabb'.counts( 'a' ), 4 );
+	this.should_be_equal( 'aabbccddaabb'.counts( 'aa' ), 2 );
+} );
+
+BikeUnit.Batch.create( 'String :: Modify' ).run( func() {
+	this.should_be_equal( 'Buu Nguyen'.replaces( 'u N', 'u Q N' ), 'Buu Q Nguyen' );
+	this.should_be_equal( '   Buu Nguyen  '.trim(), 'Buu Nguyen' );
+	this.should_be_equal( ' Buu Nguyen '.trim_end(), ' Buu Nguyen' );
+	this.should_be_equal( ' Buu Nguyen '.trim_start(), 'Buu Nguyen ' );
+	this.should_be_equal( 'a b a   Buu Nguyen  a b a'.trim( 'a', 'b', ' ' ), 'Buu Nguyen' );
+	this.should_be_equal( 'Buu Nguyen a b a '.trim_end( 'a', 'b', ' ' ), 'Buu Nguyen' );
+	this.should_be_equal( ' a b a Buu Nguyen'.trim_start( 'a', 'b', ' ' ), 'Buu Nguyen' );	
+} );

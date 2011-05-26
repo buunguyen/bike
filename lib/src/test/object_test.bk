@@ -1,0 +1,52 @@
+load 'unit.bk';
+
+BikeUnit.Batch.create( 'Object :: Basic' ).run( func() {
+	var obj = {};
+	this.should_be_equal( obj, obj );
+	this.should_not_be_null( obj.hash_code() );
+	this.should_not_be_null( obj.to_string() );
+} );
+
+BikeUnit.Batch.create( 'Object :: Clone' ).run( func() {
+	var parent = { type: func(){'parent';}, id: 1 };
+	var child = parent.clone();
+	child.id = 2;
+	child.type = func() {
+		'child ' + this.super( 'type' );
+	};
+	this.should_be_equal( child.type(), 'child parent' );
+	this.should_be_equal( child.id, 2 );
+	this.should_be_equal( parent.type(), 'parent' );
+	this.should_be_equal( parent.id, 1 );
+	
+	child.to_string = func() {
+		'child ' + this.super( 'to_string' );
+	};
+	this.should_be_equal( child.to_string(), 'child ' + Bike.Object.to_string.call( child ) );
+} );
+
+BikeUnit.Batch.create( 'Object :: Create' ).run( func() {	
+	var child = { member1: func(){ 'member 1'; }, member2: 9 };
+	child.initialize = func( value1, value2 ) {
+		this.member1 = value1;
+		this.member2 = value2;
+	};
+	var grand_child = child.create(  func() { 'object 2'; }, 5  );
+	this.should_be_equal( grand_child.member1(), 'object 2' );
+	this.should_be_equal( grand_child.member2, 5 );	
+	this.should_be_equal( child.member1(), 'member 1' );
+	this.should_be_equal( child.member2, 9 );
+} );
+
+BikeUnit.Batch.create( 'Object :: Members' ).run( func() {	
+	var target = {name: 'Bike', age: 10};
+	this.should_be_true( target.has_member( 'age' ) );
+	this.should_be_equal( target.member_if_exist( 'age' ), 10 );
+	
+	target.remove_member( 'age' );
+	this.should_be_true( !target.has_member( 'age' ) );
+	this.should_be_equal( target.member_if_exist( 'age', 11 ), 11 );
+	
+	this.should_be_equal( target.members().size(), 2 );
+	this.should_be_equal( target.members( false, true ).size(), 1 );
+} );

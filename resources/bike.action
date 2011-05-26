@@ -1,0 +1,10 @@
+on run {input, parameters}
+	tell application "Finder" to set the selected_files to input
+	tell application "Terminal"
+		repeat with i from 1 to the count of selected_files
+			set real_file to POSIX path of (item i of selected_files)
+			do script "bike.sh " & quoted form of real_file
+		end repeat
+	end tell
+	return input
+end run

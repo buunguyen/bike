@@ -1,0 +1,7 @@
+func fib( n ) {
+    n <= 2 ? n: fib( n - 1 ) + fib( n - 2 )
+}
+print( "n: " );
+var n = readln();
+println( fib( n.to_number() ) );
+read();

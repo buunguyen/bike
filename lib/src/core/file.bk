@@ -1,0 +1,459 @@
+#!{ object: 'Bike.FileSystem',
+	summary: 'Helped object used to perform directory and file operations'
+}!#
+Bike.FileSystem = {
+	#!{ method: 'Bike.FileSystem.each( path, fn , exts , recursive )',
+		summary: 'Iterates files and invokes the given function on each file name',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'The path of the root folder'
+			},
+			f: {
+				type: 'Bike.Function',
+				desc: 'A function to be called on each iterated file'
+			},
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Search files recursively or not. False if not specified.'
+			},
+			exts: {
+				type: 'Bike.String or Bike.Array',
+				desc: 'File extensions. If not specified, all files will match.'
+			}
+		}
+	}!#
+	each: func( path, fn, recursive, *exts ) {
+		exts ||= [];
+		recursive ||= false;
+		if ( Bike.String.is_empty( path ) || fn == null ) {
+			throw Bike.ArgumentError.create();
+		}
+		if ( Bike.FileSystem.file_exists( path ) ) {
+			if ( exts.size() == 0 || exts.has( System.IO.Path.GetExtension( path ) ) ) {
+				fn( path );
+			}
+		} else {
+			if ( !Bike.FileSystem.dir_exists( path ) ) {
+				throw Bike.ArgumentError.create( "No such directory" );
+			}
+			var dirInfo = System.IO.DirectoryInfo( path );
+			for ( var fileInfo in dirInfo.GetFiles() ) {
+				Bike.FileSystem.each( fileInfo.FullName, fn, recursive, *exts );
+			}
+			if ( recursive ) {
+				for ( var subDirInfo in dirInfo.GetDirectories() ) {					
+					 Bike.FileSystem.each( subDirInfo.FullName, fn, recursive, *exts );
+				}
+			}
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.current_dir()',
+		summary: 'Returns path of current execution folder',
+		ret: {
+			type: 'Bike.String',
+			desc: 'Path of current execution folder'
+		}
+	}!#
+	current_dir: func() {
+		return System.IO.Directory.GetCurrentDirectory();
+	},
+	
+	#!{ method: 'Bike.FileSystem.read( path )',
+		summary: 'Reads content of a text file',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to text file'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'The content of text file'
+		}
+	}!#
+	read: func( path ) {
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		return System.IO.File.ReadAllText( path );
+	},
+	
+	#!{ method: 'Bike.FileSystem.write( path , content )',
+		summary: 'Writes to a text file',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to text file'
+			},
+			content: {
+				type: 'Bike.String',
+				desc: 'Text content to write'
+			}
+		}
+	}!#
+	write: func( path, content ) {
+		Bike.Contract.requires_not_null( content , 'content' );
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.File.WriteAllText( path, content );
+	},
+	
+	#!{ method: 'Bike.FileSystem.dir_exists( path )',
+		summary: 'Checks whether a directory exists or not',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to directory'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the directory exists. Otherwise, False'
+		}
+	}!#
+	dir_exists: func( path ) {
+		if ( Bike.String.is_empty( path ) ) {
+			return false;
+		}
+		return System.IO.Directory.Exists( path );
+	},
+	
+	#!{ method: 'Bike.FileSystem.file_exists( path )',
+		summary: 'Checks whether a file exists or not',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to file'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the file exists. Otherwise, False'
+		}
+	}!#
+	file_exists: func( path ) {
+		if ( Bike.String.is_empty( path ) ) {
+			return false;
+		}
+		return System.IO.File.Exists( path );
+	},
+	
+	#!{ method: 'Bike.FileSystem.delete_file( path )',
+		summary: 'Deletes a file',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to file'
+			}
+		}
+	}!#
+	delete_file: func( path ) {
+		if ( Bike.FileSystem.file_exists( path ) ) {
+			System.IO.File.Delete( path );
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.delete_dir( path , recursive )',
+		summary: 'Deletes a directory and, if indicated, any subdirectories and files in the directory',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to directory'
+			},
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Indicate whether to delete any subdirectories and files in the directory. 
+					   False if not specified.'
+			}
+		}
+	}!#
+	delete_dir: func( path, recursive ) {
+		recursive ||= false;
+		if ( Bike.FileSystem.dir_exists( path ) ) {
+			System.IO.Directory.Delete( path, recursive );
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.create_file( path )',
+		summary: 'Creates a new empty file',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to new file'
+			}
+		}
+	}!#
+	create_file: func( path ) {
+		if ( !Bike.String.is_empty( path ) ) {
+			System.IO.File.Create( path ).Dispose();
+		}	
+	},
+	
+	#!{ method: 'Bike.FileSystem.create_dir( path )',
+		summary: 'Creates a new empty directory',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to new directory'
+			}
+		}
+	}!#
+	create_dir: func( path ) {
+		if ( !Bike.String.is_empty( path ) ) {
+			System.IO.Directory.CreateDirectory( path );
+		}	
+	},
+	
+	#!{ method: 'Bike.FileSystem.copy_file( src_file_name , des_file_name , overwrite )',
+		summary: 'Copies a existing file to new file. The new file could be overwritten if indicated',
+		params: {
+			src_file_name: {
+				type: 'Bike.String',
+				desc: 'Path to source file'
+			},
+			des_file_name: {
+				type: 'Bike.String',
+				desc: 'Path to destination file. If the destination file exists, it could be overwritten by overwrite parameter'
+			},
+			overwrite: {
+				type: 'Bike.Boolean',
+				desc: 'Indicate whether the copying can overwrite the destination file if it exists. Default is False'
+			}
+		}
+	}!#
+	copy_file: func( src_file_name , des_file_name , overwrite ) {
+		overwrite ||= false;
+		if ( Bike.FileSystem.file_exists( src_file_name ) ) {
+			if ( !Bike.FileSystem.dir_exists( des_file_name ) && ( !Bike.FileSystem.file_exists( des_file_name ) || overwrite ) ) {
+				System.IO.File.Copy( src_file_name, des_file_name, overwrite );
+			}
+		}		
+	},
+	
+	#!{ method: 'Bike.FileSystem.move_dir( src_dir_name, des_dir_name )',
+		summary: 'Moves a directory to another place',
+		params: {
+			src_dir_name: {
+				type: 'Bike.String',
+				desc: 'Path to source directory'
+			},
+			des_dir_name: {
+				type: 'Bike.String',
+				desc: 'Path to desitnation directory'
+			}
+		}
+	}!#
+	move_dir: func( src_dir_name , des_dir_name ) {
+		Bike.Contract.requires_not_null( src_dir_name , 'src_dir_name' );
+		Bike.Contract.requires_not_null( des_dir_name , 'des_dir_name' );
+		Bike.Contract.requires( Bike.FileSystem.dir_exists( src_dir_name ) , 'src_dir_name' , 'The source directory {0} is unavailable'.with(src_dir_name) );
+		Bike.Contract.requires( !Bike.FileSystem.dir_exists( des_dir_name ) , 'des_dir_name' , 'The destination directory {0} exists'.with(des_dir_name) );
+	
+		System.IO.Directory.Move( src_dir_name , des_dir_name );
+	},
+	
+	#!{ method: 'Bike.FileSystem.move_file( src_file_name,des_file_name )',
+		summary: 'Moves a file to another place',
+		params: {
+			src_file_name: {
+				type: 'Bike.String',
+				desc: 'Path to source file'
+			},
+			des_file_name: {
+				type: 'Bike.String',
+				desc: 'Path to desitnation file'
+			}
+		}
+	}!#
+	move_file: func( src_file_name, des_file_name ) {
+		if ( Bike.FileSystem.file_exists( src_file_name ) && !Bike.String.is_empty( des_file_name ) && !Bike.FileSystem.file_exists( des_file_name ) ) {
+			System.IO.File.Move( src_file_name, des_file_name );
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.combine_path( *path )',
+		summary: 'Combines an array of paths into a single one path',
+		params: {
+			path: {
+				type: 'Bike.Array',
+				desc: 'Array of paths to combine. Elements in array could be either relative path or file name'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'A combined value of elements in array. Return empty string if the array parameter is null or empty'
+		}
+	}!#
+	combine_path: func( *paths ) {
+		paths ||= [];
+		if ( paths.size() == 0 ) {
+			return '';
+		}		
+		if ( paths.size() == 1 ) {
+			return paths[ 0 ];
+		}
+		
+		return System.IO.Path.Combine( *paths );
+	},
+	
+	#!{ method: 'Bike.FileSystem.get_file_name( path )',
+		summary: 'Returns the name of file in a path',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to file to extract the name'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'Name of file in path ( with its extension )'
+		}
+	}!#
+	get_file_name: func( path ) {
+		if ( !Bike.String.is_empty( path ) ) {
+			return System.IO.Path.GetFileName( path );
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.get_file_extension( path )',
+		summary: 'Returns the extension of file in a path',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to file to extract the extension'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'The file extension in path. Noted that the extension doesn\'t include \'.\' character. E.g. \'log/today.log\' will result \'log\''
+		}
+	}!#
+	get_file_extension: func( path ) {
+		if ( !Bike.String.is_empty( path ) ) {
+			return System.IO.Path.GetExtension( path ).sub( 1 );
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.dir_separator()',
+		summary: 'Returns platform-specific separator string used in path',
+		ret: {
+			type: 'Bike.String',
+			desc: 'Platform-specific separator string used in path'
+		}
+	}!#
+	dir_separator: func() {
+		return System.IO.Path.DirectorySeparatorChar + '';
+	},
+	
+	#!{ method: 'Bike.FileSystem.append( path , content )',
+		summary: 'Appends content to a text file',
+		params: {
+			path: {
+				type: 'Bike.String',
+				desc: 'Path to text file'
+			},
+			content: {
+				type: 'Bike.String',
+				desc: 'Text content to append'
+			}
+		}
+	}!#
+	append: func( path, content ) {
+		Bike.Contract.requires_not_null( content , 'content' );
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.File.AppendAllText( path, content );
+	},
+	
+	#!{ method: 'Bike.FileSystem.copy_dir( src_dir_path , des_dir_path , create_des_dir , overwrite )',
+		summary: 'Copies all files and sub directories in {src_dir_path} to {des_dir_path}',
+		params: {
+			src_dir_path: {
+				type: 'Bike.String',
+				desc: 'Path of source directory'
+			},
+			des_dir_path: {
+				type: 'Bike.String',
+				desc: 'Path of destination directory'
+			},
+			create_des_dir: {
+				type: 'Bike.Boolean',
+				desc: 'Set True to automatically create the destination directory if it doesn\'t exist. False if not indenticated'
+			},
+			overwrite: {
+				type: 'Bike.Boolean',
+				desc: 'Set True to overwrite files which already existed in destination directory. False if not indenticated'
+			}
+		}
+	}!#
+	copy_dir: func( src_dir_path , des_dir_path , create_des_dir , overwrite  ) {
+		create_des_dir ||= false;
+		overwrite ||= false;
+		Bike.Contract.requires_not_null( src_dir_path , 'src_dir_path' );
+		Bike.Contract.requires_not_null( des_dir_path , 'des_dir_path' );
+		Bike.Contract.requires( Bike.FileSystem.dir_exists( src_dir_path ) , 'src_dir_path' , 'The directory {0} is unavailable'.with( src_dir_path ) );
+		Bike.Contract.requires( create_des_dir || Bike.FileSystem.dir_exists( des_dir_path ) , 'des_dir_path' , 'The directory {0} is unavailable. Please create it first or set parameter create_des_dir=True'.with( des_dir_path ) );
+				 
+		if( !Bike.FileSystem.dir_exists( des_dir_path ) ) {
+			Bike.FileSystem.create_dir( des_dir_path );
+		}
+		
+		var dir_info = System.IO.DirectoryInfo( src_dir_path );
+		var des_file_path = '';
+		for ( var file_info in dir_info.GetFiles() ) {	
+			des_file_path = Bike.FileSystem.combine_path( des_dir_path , file_info.Name );
+			if( !overwrite && Bike.FileSystem.file_exists( des_file_path ) ) {
+				throw Bike.InvalidOperationError.create( 'There is existing file at {0}. Could not overwrite'.with( des_file_path ) );
+			}
+			try {				
+				Bike.FileSystem.copy_file( file_info.FullName , des_file_path , overwrite );
+			} rescue e { }
+		}
+		
+		for ( var sub_dir_info in dir_info.GetDirectories() ) {		
+			try {
+				Bike.FileSystem.copy_dir( sub_dir_info.FullName, Bike.FileSystem.combine_path( des_dir_path , sub_dir_info.Name ) , true , overwrite );
+			} rescue e { }
+		}
+	},
+	
+	#!{ method: 'Bike.FileSystem.rename_dir( src_dir_path , new_name )',
+		summary: 'Renames the directory',
+		params: {
+			src_dir_path: {
+				type: 'Bike.String',
+				desc: 'Path of source directory'
+			},
+			new_name: {
+				type: 'Bike.String',
+				desc: 'New directory name'
+			}
+		}
+	}!#
+	rename_dir: func( src_dir_path , new_name ) {
+		Bike.Contract.requires_not_null( src_dir_path , 'src_dir_path' );
+		Bike.Contract.requires_not_null( new_name , 'new_name' );
+		
+		var dir_info = System.IO.DirectoryInfo( src_dir_path );
+		var base_dir = dir_info.Parent.FullName;
+
+		Bike.FileSystem.move_dir(  src_dir_path , fs.combine_path( base_dir , new_name ) );
+	},
+	
+	#!{ method: 'Bike.FileSystem.file_size( file_path )',
+		summary: 'Gets the number of bytes in a file',
+		params: {
+			file_path: {
+				type: 'Bike.String',
+				desc: 'Path to a file'
+			}
+		},
+		ret: {
+			type: 'Bike.Number',
+			desc: 'The number of bytes of the file'
+		}
+	}!#
+	file_size: func ( file_path ) {
+		Bike.Contract.requires( Bike.FileSystem.file_exists( file_path ) , 'file_path' );
+		var file_info = System.IO.FileInfo( file_path );
+		return file_info.Length;
+	}
+};

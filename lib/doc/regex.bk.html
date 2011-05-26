@@ -1,0 +1,90 @@
+<html>
+<head>
+	<title>regex.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Regex">Bike.Regex</a></h1><br />Helper object used to perform regular expression matching.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Regex.is_matched( text , pattern )</td>
+	<td>
+		<div>Checks whether a text matches with a pattern.</div>
+		<div><br /><strong>Parameters</strong><br /><i>text</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The text to check.<br /><i>pattern</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The regular expression pattern to check.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the text matches with the pattern.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.replace( text , pattern , replacement )</td>
+	<td>
+		<div>Replaces substrings of <i>text</i> which match the supplied <i>pattern</i> by <i>replacement</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>text</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The text to search in.<br /><i>pattern</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The regular expression pattern.<br /><i>replacement</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string used to replace.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.matches( text , pattern )</td>
+	<td>
+		<div>Gets the match objects representing the matches of a regular expression pattern.</div>
+		<div><br /><strong>Parameters</strong><br /><i>text</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The text to search in.<br /><i>pattern</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The regular expression pattern.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />An array of <i>Bike.Regex.Match</i> object.</div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Regex.Match">Bike.Regex.Match</a></h1><br />Represents a regular expression match.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Regex.Match.value</td>
+	<td>
+		<div>Type: Bike.String<br />The captured substring from the input string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.Match.index</td>
+	<td>
+		<div>Type: Bike.Number<br />The position in the original string where the first character of the captured substring was found.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.Match.groups</td>
+	<td>
+		<div>Type: Bike.Array where each element is Bike.Regex.Group object<br />A collection of groups matched by the regular expression.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Regex.Match.initialize( value , index , groups )</td>
+	<td>
+		<div>Initializes this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The matched string value.<br /><i>index</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The starting index of the match.<br /><i>groups</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Array<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An array of <i>Bike.Regex.Group</i> objects.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table><h1><a name="Bike.Regex.Group">Bike.Regex.Group</a></h1><br />Represents a captured group.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Regex.Group.value</td>
+	<td>
+		<div>Type: Bike.String<br />The captured substring from the input string.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.Group.index</td>
+	<td>
+		<div>Type: Bike.Number<br />The position in the original string where the first character of the captured substring was found.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Regex.Group.success</td>
+	<td>
+		<div>Type: Bike.Boolean<br />A value indicating whether the match is successful.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Regex.Group.initialize( value , index , success )</td>
+	<td>
+		<div>Initializes this captured object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of captured group.<br /><i>index</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The starting index of the value of captured group.<br /><i>success</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates whether the match is successful.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

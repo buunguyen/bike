@@ -1,0 +1,26 @@
+<html>
+<head>
+	<title>contract.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Contract">Bike.Contract</a></h1><br />Helper object used to assert methods' preconditions.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Contract.requires_not_null( param_value , param_name )</td>
+	<td>
+		<div>Throws <i>Bike.ArgumentNullError</i> exception if <i>param_value</i> is null.</div>
+		<div><br /><strong>Parameters</strong><br /><i>param_value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Object<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The object to check null.<br /><i>param_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A name of the parameter being checked.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Contract.requires( condition, param_name, message )</td>
+	<td>
+		<div>Throws Bike.ArgumentError exception if a condition is not true about the parameter.</div>
+		<div><br /><strong>Parameters</strong><br /><i>condition</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The condition to check.<br /><i>param_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A name of the parameter being checked.<br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The error message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

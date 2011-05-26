@@ -1,0 +1,130 @@
+load 'unit.bk';
+load 'thread.bk';
+load 'stopwatch.bk';
+
+BikeUnit.Batch.create( 'Thread :: Basic' ).run( func() {
+	var valueInThread;
+	this.should_throw( func() { Bike.Thread.create(); } , Bike.ArgumentNullError );
+	var thread = Bike.Thread.create( func() {
+		valueInThread = 10;
+	} );
+	thread.start();
+	thread.join();
+	this.should_be_equal( valueInThread, 10 );
+} );
+
+BikeUnit.Batch.create( 'Thread :: Lock' ).run( func() {
+	var lock = {};
+	var me = this;
+	var sw = Bike.Stopwatch.create().start();
+	var thread = Bike.Thread.create( func() {		
+		lock.acquire();
+		try {
+			var millis = sw.stop();
+			if ( millis <= 1000 )
+				me.should_fail( 'Only wait for {0}'.with( millis ) );
+		} finally {
+			lock.release();
+		}
+	} );
+	this.should_throw( func() { Bike.Thread.sleep(); } , Bike.ArgumentNullError );
+	lock.sync( func() {
+		Bike.Thread.sleep( 1000 );
+	} );
+	thread.start();
+	thread.join();
+} );
+
+BikeUnit.Batch.create( 'Thread :: Try Acquire' ).run( func() {
+	var lock = {};
+	var thread = Bike.Thread.create( func() {		
+		lock.acquire();
+		try {
+			Bike.Thread.sleep( 3000 );
+		} finally {
+			lock.release();
+		}
+	} );
+	thread.start();
+	Bike.Thread.sleep( 100 );
+	this.should_be_false( lock.try_acquire() );
+	this.should_be_false( lock.try_acquire( 2000 ) );
+	thread.join();
+} );
+
+BikeUnit.Batch.create( 'Thread :: Wait/Notify' ).run( func() {
+	var MAX = 10;
+	var inventory = [ 0->MAX ];
+	var consumer = Bike.Thread.create( func() {
+		inventory.sync( func() {
+			0.upto( 100, func() {
+				while ( inventory.size() == 0 )
+					inventory.wait();
+				inventory.remove_at( 0 );
+				inventory.notify();
+			} );
+		} );
+	} );
+	consumer.start();
+	
+	var producer = Bike.Thread.create( func() {
+		inventory.sync( func() {
+			0.upto( 100, func( index ) {
+				while ( inventory.size() == MAX )
+					inventory.wait();
+				inventory.add( index );
+				inventory.notify();
+			} );
+		} );		
+	} );
+	producer.start();
+	
+	consumer.join();
+	producer.join();
+	
+	this.should_be_true( 0 <= inventory.size() && 
+					 inventory.size() <= MAX );
+} );
+
+BikeUnit.Batch.create( 'Thread :: ThreadGroup' ).run( func() {
+	var tg = Bike.ThreadGroup.create();
+	var sum = 0;
+	for ( var i in [ 0->5 ] ) {
+		var local = i;
+		tg.spawn( func() {
+			tg.sync( func() {
+				sum += local;
+			} );
+		} );
+	}
+	tg.start();
+	tg.join();
+	this.should_be_equal( sum, 10 );
+} );
+
+BikeUnit.Batch.create( 'Thread :: Synchronization' ).run( func() {
+	var NO_OF_THREADS = 5;
+	var NO_OF_ITERATIONS = 1000;
+	func sync_test( is_sync ) {
+		var tg = Bike.ThreadGroup.create();
+		var value = 0;
+		var threads = [];
+		for ( var i in [ 0->NO_OF_THREADS ] ) {
+			tg.spawn( func() {
+				for ( var j in [ 0->NO_OF_ITERATIONS ] ) {
+					if ( is_sync ) {
+						is_sync.sync( func() {
+							value++;
+						} );
+					} else {
+						value++;
+					}
+				}
+			}, true );
+		}
+		tg.join();
+		return value;
+	}
+	this.should_be_true( sync_test( false ) <= NO_OF_THREADS * NO_OF_ITERATIONS );
+	this.should_be_equal( sync_test( true ), NO_OF_THREADS * NO_OF_ITERATIONS );
+} );

@@ -1,0 +1,340 @@
+load 'file.bk';
+load 'regex.bk';
+load 'json.bk';
+
+var CODE_FOLDER = '../core';
+var DOC_FOLDER = '../../doc';
+
+var HTML = #region
+'<html>
+<head>
+	<title>@title</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+@body
+</body>
+</html>
+';
+#endregion
+
+var STYLE_SHEET = #region
+'
+html, body, form, fieldset, h1, h2, h3, h4, h5, h6, p, pre, blockquote, ul, ol, dl, address {
+	margin:0;
+	padding:0;
+}
+body {
+	font-family: "Segoe UI",Verdana,Arial;
+	font-size: .81em;
+}
+h1 {
+	font-family: "Segoe UI",Verdana,Arial;
+	font-size: 1.769em;
+	color: #3F529C;
+	font-weight: bold;
+}
+p {
+	text-align:center;
+}	
+a:link {
+	color:#d42945;
+	text-decoration:none;
+	border-bottom:1px dotted #ffbac8;
+}	
+a:visited {
+	color:#d42945;
+	border-bottom:none;
+	text-decoration:none;
+}		
+a:hover, a:focus {
+	color:#f03b58;
+	border-bottom:1px solid #f03b58;
+	text-decoration:none;
+}
+table a, table a:link, table a:visited {
+	border:none;
+}	
+table {
+	width:98%;
+	font-size: inherit;
+	border: 1px solid #bbb;
+	margin:1em auto;
+	border-collapse:collapse;
+}
+td {
+	border: 1px solid #bbb;
+	padding:.3em 1em;
+	vertical-align: top;
+}	
+td.name {
+	color: #F03B58;
+}
+th {
+	background-color: #e5e5e5;
+	text-align:left;
+	border: 1px solid #bbb;
+	padding:.3em 1em;
+	vertical-align: top;
+}	
+th.column_1 {
+	width: 20%;
+}
+.header_group {
+	font-family: "Segoe UI",Verdana,Arial;
+	font-size: 1.538em;
+	color: #3F529C;
+	font-weight: bold;
+	padding-left: 6px;
+}
+hr {
+	border-bottom: #E5E5E5 1px solid;
+	border-top: none;
+	border-right: none;
+	color: #E5E5E5;
+	margin-left: 4px;
+}
+';
+#endregion
+
+var TAB = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+var fs = Bike.FileSystem;
+
+#region Helper Methods
+
+func append( str, char ) {
+	str = str + ( str.ends( char ) ? '' : char );
+	return str.replaces( '{', '<i>' ).replaces( '}', '</i>' );
+}
+	
+func value_for ( field, prefix ) {
+	prefix ||= '';
+	var txt = '';
+	if ( field is Bike.String ) {
+		txt += prefix + append( field, '.' );
+	} else {
+		txt += prefix + 'Type: ' + field.type + '<br />';
+		if ( field.has_member( 'desc' ) )
+			txt += prefix + append( field.desc, '.' );
+		else
+			txt += prefix + append( field.summary, '.' );
+	}
+	return txt;
+}
+#endregion
+
+#region Obj
+var Obj = {
+	initialize: func( info ) {
+		this.info = info;
+		this.methods = [];
+		this.fields = [];
+	},
+	
+	generate_header: func() {
+		var txt = '<h1><a name="{0}">{0}</a></h1>'.with( this.info.object );
+		txt += '<br />' + append( this.info.summary, '.' );
+		return txt + '<br /><br />';
+	},
+	
+	generate_field: func( field ) {
+		var field_template = 
+'<tr>
+	<td class="name">{0}</td>
+	<td>
+		<div>{1}</div>
+	</td>
+</tr>
+';		
+		return field_template.with( field.field, value_for ( field ) );
+	},
+
+	generate_method: func( method ) {
+		var method_template = 
+'<tr>
+	<td class="name">{0}</td>
+	<td>
+		<div>{1}</div>
+		<div>{2}</div>
+		<div>{3}</div>
+	</td>
+</tr>
+';
+		var paramsText = '';
+		if ( method.has_member( 'params' ) ) {
+			paramsText += '<br /><strong>Parameters</strong><br />';
+			for ( var paramName in method.params.members( false, true ) ) {
+				paramsText += '<i>' + paramName + '</i><br />';
+				var paramValue = method.params[ paramName ];
+				paramsText += value_for ( paramValue, TAB );
+				paramsText += '<br />';
+			}
+		}
+		
+		var methodText = method.method + 
+			( method.method.ends( ')' ) ? '' : '()' );
+		var summaryText = append( method.summary, '.' );
+		
+		var returnText = '';
+		if ( method.has_member( 'ret' ) ) {
+			returnText += '<br /><strong>Return Value</strong><br />';
+			returnText += value_for ( method.ret );
+		}
+		return method_template.with( methodText, summaryText, paramsText, returnText );
+	},
+	
+	generate: func() {
+		var content = this.generate_header();
+		
+		if ( this.fields.size() > 0 ) {
+			content += '<div class="header_group">Fields</div><div><hr /></div>';
+			content += '<table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr>';
+			for ( var field in this.fields ) {
+				content += this.generate_field( field );
+			}
+			content += '</table>';
+		}
+		
+		if ( this.methods.size() > 0 ) {
+			content += '<div class="header_group">Methods</div><div class="hr"><hr /></div>';
+			content += '<table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr>';
+			for ( var method in this.methods ) {
+				content += this.generate_method( method );
+			}
+			content += '</table>';
+		}
+		
+		return content;
+	}
+};
+#endregion
+
+#region Doc
+var	Doc = {
+	initialize: func( path ) {
+		this.path = path;
+		this.objects = {};
+	},
+	
+	generate: func() {
+		var path = fs.combine_path( DOC_FOLDER, fs.get_file_name( this.path ) + '.html' );
+		println( 'Generating {0}...', path );
+		var body = '';
+		for ( var objName in this.objects.members( false, true ) ) {
+			body += this.objects[ objName ].generate();
+		}
+		var content = HTML.replaces( '@title', fs.get_file_name( this.path ) )
+						.replaces( '@body', body );
+		fs.write( path, content );
+	},
+	
+	get: func( name, default_value ) {
+		if ( this.objects.has_member( name ) ) {
+			return this.objects[ name ];
+		}
+		this.objects[ name ] = default_value;
+		return default_value;
+	}
+};
+#endregion
+
+#region docs
+var docs = [];
+docs.generate_index = func() {
+	var index_path = fs.combine_path( DOC_FOLDER, 'index.html' );
+	println( 'Generating {0}...', index_path );
+	
+	var entries = [];
+	docs.each( func( doc ) {
+		for ( var objName in doc.objects.members( false, true ) ) {
+			var obj = doc.objects[ objName ];
+			entries.add( { url: fs.get_file_name( doc.path + '.html' ) + '#' + obj.info.object, 
+						text: obj.info.object,
+						desc: append( obj.info.summary, '.' )
+					  } );
+		}
+	} );
+	
+	var index = '<div class="header_group">Bike Documentation</div><div><hr /></div>';
+	index += '<table>
+					<tr><th class="column_1">Object</th><th>Description</th></tr>';
+					
+	entries = entries.sort( func( a, b ) {
+		a.text.compare_to( b.text );
+	} );
+	entries.each( func( entry ) {
+		var template = 
+			'<tr>
+				<td class="name"><a href="{0}">{1}</a></td>
+				<td>{2}</td>
+			</tr>
+			';			
+		index += template.with( entry.url, entry.text, entry.desc );
+	} );
+	index += '</table>';
+	
+	var index_page = HTML.replaces( '@title', 'Bike Documentation' )
+					  .replaces( '@body', index );
+	fs.write( index_path, index_page );	
+};
+
+docs.generate_style_sheet = func() {
+	var style_path = fs.combine_path( DOC_FOLDER, 'style.css' );
+	println( 'Generating {0}...', style_path );
+	fs.write( style_path, STYLE_SHEET );
+};
+
+docs.generate = func() {
+	if ( !fs.dir_exists( DOC_FOLDER ) ) {
+		fs.create_dir( DOC_FOLDER );
+	}
+	this.each( func( doc ) {
+		doc.generate();
+	} );
+	this.generate_index();
+	this.generate_style_sheet();
+};
+#endregion
+
+#region Driver
+fs.each( CODE_FOLDER, func( path ) {
+	if ( path.contains( 'doc.bk' ) ) 
+		next;
+	var content = fs.read( path );
+	var matches = Bike.Regex.matches( content, '#!.*?\\{.*?\\}.*?!#' );
+	if ( matches.size() == 0 )
+		next;
+	
+	var doc = Doc.create( path );
+	var currentObj;
+	for ( var match in matches ) {
+		var value = match.value.sub( 2, match.value.length() - 4 );
+		
+		# Uncomments this to view value should there be an error
+		# println( value );
+		var comment = Bike.Json.to_object( value );
+		if ( comment.has_member( 'method' ) ) {
+			if ( currentObj == null ) 
+				currentObj = doc.get( 'global', 
+					Obj.create( {object: 'global', summary: 'Global scope'} ) );
+			currentObj.methods.add( comment );
+		} else if ( comment.has_member( 'field' ) ) {
+			if ( currentObj == null ) 
+				currentObj = doc.get( 'global', 
+					Obj.create( {object: 'global', summary: 'Global scope'} ) );
+			currentObj.fields.add( comment );
+		} else {
+			var objName = comment.object;
+			currentObj = doc.get( objName, Obj.create( comment ) );
+		}
+	}
+	docs.add( doc );
+}, true, '.bk' );
+
+docs.generate();
+
+println( 'Complete successfully.  Press "Enter" to quit...' );
+readln();
+#endregion

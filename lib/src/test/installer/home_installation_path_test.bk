@@ -1,0 +1,27 @@
+load 'resolution_helper.bk';
+
+print_text( 'Resolution tests for Installer :: Home installation path' );
+var bike_home_lib_path = fs.combine_path( System.Environment.GetEnvironmentVariable('BIKE_HOME') , 'Lib' );
+
+run_resolution_test( func() {	
+	var the_file =  fs.combine_path( bike_home_lib_path , 'the_dummy_file.bk' );
+	try {
+		fs.create_file( the_file );
+		load 'the_dummy_file.bk';
+	} finally {
+		fs.delete_file( the_file );
+	}
+} , 'Resolve files in $HOME/Lib directory' );
+
+run_resolution_test( func() {
+	var sub_dir =  fs.combine_path( bike_home_lib_path , 'dummy_sub_dir' );
+	var the_file =  fs.combine_path( sub_dir , 'the_dummy_file.bk' );
+	try {		
+		fs.create_dir( sub_dir );
+		fs.create_file( the_file );
+		load 'dummy_sub_dir/the_dummy_file.bk';
+	} finally {
+		fs.delete_dir( sub_dir , true );
+	}
+} , 'Resolve files in sub directory of $HOME/Lib' );
+

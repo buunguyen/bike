@@ -1,0 +1,43 @@
+load 'resolution_helper.bk';
+
+print_text( 'Resolution tests for Installer :: Relative path' );
+
+run_resolution_test( func() {
+	var the_file = 'dummy_file.bk';
+	try {
+		fs.create_file( the_file );
+		load 'dummy_file.bk';
+		load './dummy_file.bk';
+	} finally {
+		fs.delete_file( the_file );
+	}
+} , 'Resolve files in current directory' );
+
+run_resolution_test( func() {
+	var sub_dir = 'dummy_sub_dir';	
+	try {		
+		fs.create_dir( sub_dir );
+		fs.create_file( fs.combine_path( sub_dir , 'dummy_file.bk' ) );
+		load 'dummy_sub_dir/dummy_file.bk';
+		load './dummy_sub_dir/dummy_file.bk';
+	} finally {
+		fs.delete_dir( sub_dir , true );
+	}
+} , 'Resolve files in sub directory' );
+
+
+run_resolution_test( func() {
+	var parent_dir = '../dummy_sub_dir';	
+	var parent_file = '../dummy_file1.bk';
+	try {		
+		fs.create_file( parent_file );
+		fs.create_dir( parent_dir );
+		fs.create_file( fs.combine_path( parent_dir , 'dummy_file2.bk' ) );
+		load '../dummy_file1.bk';
+		load '../dummy_sub_dir/dummy_file2.bk';
+	} finally {
+		fs.delete_file( parent_file );
+		fs.delete_dir( parent_dir , true );
+	}
+} , 'Resolve files in parent directory' );
+

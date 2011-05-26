@@ -1,0 +1,9 @@
+load 'object.bk';
+load 'string.bk';
+load 'number.bk';
+load 'boolean.bk';
+load 'function.bk';
+load 'array.bk';
+load 'global.bk';
+load 'error.bk';
+load 'contract.bk';

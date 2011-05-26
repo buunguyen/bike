@@ -1,0 +1,85 @@
+#!{ object: 'Bike.Json',
+	summary: 'Helper object used to perform JSON conversion'
+}!#
+Bike.Json = {
+	
+	#!{ method: 'Bike.Json.to_json( obj )',
+		summary: 'Converts an object to JSON string',
+		params: {
+			obj: {
+				type: 'Bike.Object',
+				desc: 'The object to be converted'
+			}
+		},
+		ret: {
+			type: 'Bike.String',
+			desc: 'The JSON representation of {obj}'
+		}
+	}!#
+	
+	to_json: func( obj ) {
+		Bike.Contract.requires_not_null( obj , 'obj' );
+		if ( !( obj is Bike.Object ) || 
+			obj is Bike.Number || 
+			obj is Bike.Function ||
+			obj is Bike.String ||
+			obj is Bike.Boolean )
+			throw Bike.ArgumentError.create( 'Unsupported data type ' + obj.to_string() );
+			
+		func primitive( obj ) {
+			if ( obj is Bike.Number ) return obj.to_string();
+			if ( obj is Bike.Boolean ) return obj.to_string().lower();
+			if ( obj is Bike.String ) return '\'' + obj + '\'';
+			return Bike.Json.to_json( obj );
+		}
+		
+		if ( obj is Bike.Array ) {
+			var json = '[ ';
+			for ( var child in obj ) {
+				if ( child is Bike.Function ) next;
+				json += primitive( child );
+				json += ',';
+			}
+			json = json.trim_end( ',' );
+			json += ' ]';
+			return json;
+		}
+		
+		# Must be Bike.Object
+		var members = obj.members( false, true );
+		var json = '{';
+		for ( var member in members ) {
+			var child = obj[ member ];
+			if ( child is Bike.Function ) next;
+			json += member;
+			json += ':';
+			json += primitive( child );
+			json += ',';
+		}
+		json = json.trim_end( ',' );
+		json += '}';
+		return json;
+	},
+	
+	#!{ method: 'Bike.Json.to_object( json )',
+		summary: 'Converts a JSON string to an object',
+		params: {
+			json: {
+				type: 'Bike.String',
+				desc: 'The JSON string to be converted'
+			}
+		},
+		ret: {
+			type: 'Bike.Object',
+			desc: 'The object represented by the supplied JSON string'
+		}
+	}!#
+	to_object: func( json ) {
+		Bike.Contract.requires_not_null( json , 'json' );
+		json = json.trim();
+		if ( !( json.starts( '{' ) && json.ends( '}' ) ) &&
+			!( json.starts( '[ ' ) && json.ends( ' ]' ) ) )
+			throw Bike.ArgumentError.create( 'Invalid JSON string' );
+		return exec( json + ';' );
+	}
+};

@@ -1,0 +1,179 @@
+<html>
+<head>
+	<title>file.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.FileSystem">Bike.FileSystem</a></h1><br />Helped object used to perform directory and file operations.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.FileSystem.each( path, fn , exts , recursive )</td>
+	<td>
+		<div>Iterates files and invokes the given function on each file name.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The path of the root folder.<br /><i>f</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A function to be called on each iterated file.<br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search files recursively or not. False if not specified.<br /><i>exts</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String or Bike.Array<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File extensions. If not specified, all files will match.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.current_dir()</td>
+	<td>
+		<div>Returns path of current execution folder.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />Path of current execution folder.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.read( path )</td>
+	<td>
+		<div>Reads content of a text file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to text file.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The content of text file.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.write( path , content )</td>
+	<td>
+		<div>Writes to a text file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to text file.<br /><i>content</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text content to write.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.dir_exists( path )</td>
+	<td>
+		<div>Checks whether a directory exists or not.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to directory.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the directory exists. Otherwise, False.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.file_exists( path )</td>
+	<td>
+		<div>Checks whether a file exists or not.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to file.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the file exists. Otherwise, False.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.delete_file( path )</td>
+	<td>
+		<div>Deletes a file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to file.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.delete_dir( path , recursive )</td>
+	<td>
+		<div>Deletes a directory and, if indicated, any subdirectories and files in the directory.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to directory.<br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicate whether to delete any subdirectories and files in the directory. 
+					   False if not specified.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.create_file( path )</td>
+	<td>
+		<div>Creates a new empty file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to new file.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.create_dir( path )</td>
+	<td>
+		<div>Creates a new empty directory.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to new directory.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.copy_file( src_file_name , des_file_name , overwrite )</td>
+	<td>
+		<div>Copies a existing file to new file. The new file could be overwritten if indicated.</div>
+		<div><br /><strong>Parameters</strong><br /><i>src_file_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to source file.<br /><i>des_file_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to destination file. If the destination file exists, it could be overwritten by overwrite parameter.<br /><i>overwrite</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicate whether the copying can overwrite the destination file if it exists. Default is False.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.move_dir( src_dir_name, des_dir_name )</td>
+	<td>
+		<div>Moves a directory to another place.</div>
+		<div><br /><strong>Parameters</strong><br /><i>src_dir_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to source directory.<br /><i>des_dir_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to desitnation directory.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.move_file( src_file_name,des_file_name )</td>
+	<td>
+		<div>Moves a file to another place.</div>
+		<div><br /><strong>Parameters</strong><br /><i>src_file_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to source file.<br /><i>des_file_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to desitnation file.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.combine_path( *path )</td>
+	<td>
+		<div>Combines an array of paths into a single one path.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Array<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Array of paths to combine. Elements in array could be either relative path or file name.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />A combined value of elements in array. Return empty string if the array parameter is null or empty.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.get_file_name( path )</td>
+	<td>
+		<div>Returns the name of file in a path.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to file to extract the name.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />Name of file in path ( with its extension ).</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.get_file_extension( path )</td>
+	<td>
+		<div>Returns the extension of file in a path.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to file to extract the extension.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The file extension in path. Noted that the extension doesn't include '.' character. E.g. 'log/today.log' will result 'log'.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.dir_separator()</td>
+	<td>
+		<div>Returns platform-specific separator string used in path.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />Platform-specific separator string used in path.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.append( path , content )</td>
+	<td>
+		<div>Appends content to a text file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to text file.<br /><i>content</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text content to append.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.copy_dir( src_dir_path , des_dir_path , create_des_dir , overwrite )</td>
+	<td>
+		<div>Copies all files and sub directories in <i>src_dir_path</i> to <i>des_dir_path</i>.</div>
+		<div><br /><strong>Parameters</strong><br /><i>src_dir_path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path of source directory.<br /><i>des_dir_path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path of destination directory.<br /><i>create_des_dir</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set True to automatically create the destination directory if it doesn't exist. False if not indenticated.<br /><i>overwrite</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set True to overwrite files which already existed in destination directory. False if not indenticated.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.rename_dir( src_dir_path , new_name )</td>
+	<td>
+		<div>Renames the directory.</div>
+		<div><br /><strong>Parameters</strong><br /><i>src_dir_path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path of source directory.<br /><i>new_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;New directory name.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.FileSystem.file_size( file_path )</td>
+	<td>
+		<div>Gets the number of bytes in a file.</div>
+		<div><br /><strong>Parameters</strong><br /><i>file_path</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to a file.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The number of bytes of the file.</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

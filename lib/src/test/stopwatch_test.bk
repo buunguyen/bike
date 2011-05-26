@@ -1,0 +1,16 @@
+load 'stopwatch.bk';
+load 'unit.bk';
+load 'thread.bk';
+
+BikeUnit.Batch.create( 'Stopwatch :: Basic' ).run( func( ) {
+    var watch = Bike.Stopwatch.create( ).start( );
+    Bike.Thread.sleep( 1000 );
+	watch.stop();
+    this.should_be_true( watch.elapsed > 950 ); 
+	
+	watch.start().stop();
+    this.should_be_true( watch.elapsed > 950 );
+
+	watch.reset().start().stop();
+    this.should_be_true( watch.elapsed < 10 );
+} );

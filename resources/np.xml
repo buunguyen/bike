@@ -1,0 +1,36 @@
+<NotepadPlus>
+    <UserLang name="Bike" ext="bk">
+        <Settings>
+            <Global caseIgnored="no" escapeChar="\" />
+            <TreatAsSymbol comment="no" commentLine="no" />
+            <Prefix words1="no" words2="no" words3="no" words4="no" />
+        </Settings>
+        <KeywordLists>
+            <Keywords name="Delimiters">&quot;&apos;0&quot;&apos;0</Keywords>
+            <Keywords name="Folder+">#region</Keywords>
+            <Keywords name="Folder-">#endregion</Keywords>
+            <Keywords name="Operators">&apos; &quot; $ &amp; ( ) * , . / : ; ? [ \ ] { | } + &lt; = &gt;</Keywords>
+            <Keywords name="Comment">1#! 2!# 0#</Keywords>
+            <Keywords name="Words1">var new load exec use func new is this true false null</Keywords>
+            <Keywords name="Words2">while for in next break return if else switch case default throw try rescue finally</Keywords>
+            <Keywords name="Words3"></Keywords>
+            <Keywords name="Words4"></Keywords>
+        </KeywordLists>
+        <Styles>
+            <WordsStyle name="DEFAULT" styleID="11" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="FOLDEROPEN" styleID="12" fgColor="FF0080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="FOLDERCLOSE" styleID="13" fgColor="FF0080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="KEYWORD1" styleID="5" fgColor="0000A0" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="8" />
+            <WordsStyle name="KEYWORD2" styleID="6" fgColor="FF0080" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="8" />
+            <WordsStyle name="KEYWORD3" styleID="7" fgColor="FF0080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="KEYWORD4" styleID="8" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="COMMENT" styleID="1" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="COMMENT LINE" styleID="2" fgColor="008000" bgColor="FFFFFF" fontName="" fontStyle="2" fontSize="8" />
+            <WordsStyle name="NUMBER" styleID="4" fgColor="FF8000" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="OPERATOR" styleID="10" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="1" fontSize="8" />
+            <WordsStyle name="DELIMINER1" styleID="14" fgColor="808080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="DELIMINER2" styleID="15" fgColor="808080" bgColor="FFFFFF" fontName="" fontStyle="0" fontSize="8" />
+            <WordsStyle name="DELIMINER3" styleID="16" fgColor="000000" bgColor="FFFFFF" fontName="" fontStyle="0" />
+        </Styles>
+    </UserLang>
+</NotepadPlus>

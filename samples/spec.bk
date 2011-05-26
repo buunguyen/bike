@@ -1,0 +1,530 @@
+# Bike Language Specification
+#!   
+	Version: 	1.0
+	Date:		5/20/2011
+	Author: 	Buu Nguyen
+!#
+
+# ---------- Start helping functions
+var enabled_once = false;
+var fns = {};
+
+# Register a feature
+func register( name, fn ) {
+	fns[ name ] = fn;
+	if ( enabled_once ) {
+		println( '-----------------------{0}-----------------------', name );
+		fn();
+		enabled_once = false;
+		read();
+	}
+}
+
+# Execute the next feature immediately
+func immediate() {
+	enabled_once = true;
+}
+
+# Execute register features
+func execute( *names ) {
+	if ( names == null ) 
+		names = fns.members( false, true );
+	
+	names.each( func( name ) {
+		println( '-----------------------{0}-----------------------', name );
+		fns[ name ]();
+		println();
+		println();
+	} );
+	read();
+}
+# ---------- End helping functions
+
+
+#! Data Types 
+- Built-in data types: Bike.Object, Bike.Function, Bike.Array, Bike.Number, Bike.String, Bike.Boolean
+- Everything in Bike is object ( directly or indirectly clones of Bike.Object )
+- Identifier name: ( 'a'..'z'|'A'..'Z'|'_'|'$' ) ( 'a'..'z'|'A'..'Z'|'0'..'9'|'_'|'$'|'!' )*
+- Variables start with $ are global variables
+- Variables end with !, by convention, mean they have effect on current object ( if method call ).
+Therefore, it's illegal in Bike to write code like this a!= 1 ( note, there's no space between 'a' and '!' )
+because Bike wouldn't know if you try to assign 1 to variable a! or compare if a is not 1.
+!#
+register( "Declaration", func() {
+	$obj1 = null; # this is a global variable
+	var _number = 1, 
+		number$ = 1.1;
+	var str_ = 'a', 
+		str$ = "abc",
+		str = 'I can span 
+				into 
+						multiline,
+						you see?';
+	var bool_ = true, 
+		bool$ = false;
+	var person = {name: 'John', age: 10};
+	var arr1 = [ 1, 2, 3, 4 ],
+		arr2 = [ 2->9 ]; # 2, 3, 4, ..., 8
+	var method = func() {
+		# do something
+	};
+} );
+
+register( "Primitive", func() {
+	println( "null is Bike.Object: {0}", null is Bike.Object );
+	println( "{{}} is Bike.Object: {0}", {} is Bike.Object );
+	println( "1 is Bike.Number: {0}", 1 is Bike.Number );
+	println( "1.1 is Bike.Number: {0}", 1.1 is Bike.Number );
+	println( "'a' is Bike.String: {0}", 'a' is Bike.String );
+	println( "'abc' is Bike.String: {0}", 'abc' is Bike.String );
+	println( "true is Bike.Boolean: {0}", true is Bike.Boolean );
+	println( "false is Bike.Boolean: {0}", false is Bike.Boolean );
+	println( "[] is Bike.Array: {0}", [] is Bike.Array );
+	println( "[ 1->2 ] is Bike.Array: {0}", [ 1->2 ] is Bike.Array );
+	println( "( func f(){{}} ) is Bike.Function: {0}", func(){} is Bike.Function );
+} );
+
+#! Objects
+Bike objects are essential hashes: you can add anything to them.
+Objects declared with object literal syntax are clones of Bike.Object.  
+!#
+register( "Object", func() {
+	# Object is hash
+	var language = {name: 'Bike', age: 0, to_string: null};
+	
+	# and thus, expandable
+	language.to_string = func() {
+		"Language [ name: {0}, age: {1} ]".with( this.name, this.age ); 
+	};
+	println( language );
+	
+	# a hash, indeed
+	language[ 'influenced_by' ] = [ 'JavaScript', 'Ruby', 'Io' ];
+	language.to_string = func() {
+		"Language [ name: {0}, age: {1}, influenced_by: {2} ]"
+			.with( this.name, this.age, this.influenced_by.to_string() ); 
+	};
+	println( language );
+	
+	# Everything is truly an object
+	10.times( print );
+	println();
+	
+	0.upto( 10, print );
+	println();
+	
+	var number = 10;
+	number.data = "I'm {0}".with( number );
+	println( number.data );
+	
+	number.get_data = func() {
+		number.data;
+	};
+	println( number.get_data() );
+} );
+
+register( "Object - Prototypal Inheritance", func() {
+	var person = {
+		initialize: func( name ) {
+			this.name = name;
+		},
+		to_string: func() {
+			this.name;
+		}
+	};
+	
+	# Create an object from a 'prototype' object
+	var buu = person.create( 'Buu' ); # clone person and invoke initialize on the new obj
+	buu.fav_language = "Bike";
+	buu.to_string = func() {
+		this.super( 'to_string' ) + "'s favorite language is " + this.fav_language;
+	};
+	println( buu );
+	
+	# Modify prototype explicitly
+	var coder = {
+		code: func() {
+			println( this.name + " loves coding" );
+		}
+	};
+	buu.prototype = coder;
+	buu.code();
+} );
+
+register( "Array", func() {
+	var arr = [];
+	arr.add( 1 );
+	arr.add( 2 );
+	arr.each( println );
+	
+	arr = [ true, false, 1, null, 'str' ];
+	arr.each( println );
+	
+	arr = [ 0->5 ];
+	arr.filter( func( e ) { e.odd(); } ).each( println );
+	arr.map( func( e ) { e * e; } ).each( println );
+	var value = arr.reduce( '', func( current, ele ) {current + ele;} );
+	println( value );
+} );
+
+register( "Function", func() {
+	# Declaration
+	func f() {}
+	var f2 = func() {
+	};
+	
+	# Self-executing function
+	( func() {
+		println( 'executed' );
+	} )();
+	
+	# Closure
+	f = ( func( a, b ) {
+		var c = 1;
+		return func() {
+			a + b + c;
+		};
+	} )( 2, 5 );
+	println( f() );
+} );
+
+register( "Function - Optional Return", func() {
+	func fib( n ) {
+		n<=2 ? n : fib( n-1 ) + fib( n-2 );
+	}
+	var n = 10;
+	println( fib( n ) );
+	
+	Bike.Number.fib = func() {
+		this<=2 ? this : ( this-1 ).fib() + ( this-2 ).fib();
+	};
+	println( n.fib() );
+} );
+
+register( "Function - Context", func() {
+	func print_name() {
+		println( this.name );
+	}
+	var buu = {name: 'Buu', print: print_name};
+	var bike = {name: 10101, print: print_name};
+	buu.print();
+	bike.print();
+	
+	# Select context
+	buu.print.call( bike );
+} );
+
+register( "Function - Module Pattern", func() {
+	func create_person( name ) {
+		var age = 10;
+		return {
+			get_name: func() { name; },
+			get_age: func() { age; }
+		};
+	}
+	var person = create_person( 'John' );
+	println( person.get_name() + ' ' + person.get_age() );
+} );
+
+register( "Function - Var Args", func() {
+	func add_all( *numbers ) {
+		numbers.reduce( 0, func( current, ele ) { current + ele; } );
+	}
+	println( add_all( 1, 2, 3 ) );
+	println( add_all( 1, 2, 3, 4 ) );
+	
+	var arr = [ 1->10 ];
+	println( add_all( *arr ) );
+} );
+
+register( "Function - Optional Parameters", func() {
+	func print_things( name, age ) {
+		name ||= 'Bike';
+		age ||= 0;
+		println( '{0} {1}'.with( name, age ) );
+	}
+	print_things();
+	print_things( 'John' );
+	print_things( null, 10 );
+} );
+
+register( "Function - Redundant Parameters", func() {
+	func print_nothing() {
+		println( 'nothing to print' );
+	};
+	print_nothing( 1, 2, 3 );
+} );
+
+register( "Function - Named Parameters", func() {
+	Bike.Object.merge = func( other ) {
+		if ( other == null ) return this;
+		for ( var member in other.members( false, true ) )
+			this[ member ] = other[ member ];
+		return this;
+	};
+	
+	func ajax( params ) {
+		params = {method: 'GET'}.merge( params );
+		println( '{0} request to {1}', params.method, params.url );
+	}
+	
+	ajax( { url: 'http//www.google.com.vn' } );
+	ajax( { method: 'POST', url: 'http//www.google.com.vn' } );
+} );
+
+register( "Function - Curry Pattern", func() {
+	Bike.Function.curry = func( *args ) {
+		if ( args == null ) return this;
+		var me = this;
+		return func( *more ) {
+			if ( more != null )
+				args.add_all( more );
+			me.call( this, *args );
+		};
+	};
+
+	func add( a, b ) { a + b; }
+	var addTo2 = add.curry( 2 );
+	println( addTo2( 3 ) );
+
+	add = add.curry( 2, 3 );
+	println( add() );
+
+	var converter = func( ratio, symbol, input ) {
+		( input * ratio ).round( 1 ) + " " + symbol;
+	};
+
+	var kilosToPounds = converter.curry( 2.2, "lbs" );
+	var milesToKilometers = converter.curry( 1.62, "km" );
+
+	println( kilosToPounds( 4 ) ); 
+	println( milesToKilometers( 34 ) );
+} );
+
+#! Conditional
+Evaluation rule: false and null -> false, everything else -> true 
+!#
+register( "Construct - Conditional", func() {
+	if ( !null ) println( '!null is true' );
+	if ( !false ) println( '!false is true' );
+	if ( '' ) println( '"" is true' );
+	if ( 1 ) println( '1 is true' );
+	if ( true ) println( 'true is, well, true' );
+
+	if ( false ) println( 'if' );
+	else if ( false ) println( 'else if' );
+	else {
+		println( 'else {' );
+		println( '}' );
+	}
+} );
+
+register( "Construct - While", func() {
+	var i = 0;
+	while ( i < 10 ) print( i++ + ', ' );
+	println();
+
+	i = -1;
+	while ( ++i < 10 ) {
+		if ( i < 3 ) next;
+		if ( i == 7 ) break;
+		print( i + ', ' );
+	}
+} );
+
+#! For Loop 
+- for ( prop in obj )
+	if obj is Bike.Array ( or .NET's IEnumerable ): prop is array's element
+	if obj is Bike.Object: prop is direct member name of obj
+!#
+register( "Construct - For", func() {
+	for ( var element in [ 1, 2, 3, 4 ] ) {
+		print( element + ', ' );
+	}
+	println();
+
+	var person = {name: 'John', age: 22};
+	for ( var propName in person ) {
+		println( propName );
+	}
+} );
+
+register( "Construct - Switch", func() {
+	var person = {name: 'John', age: 22};
+	switch ( person.name ) {
+		case 'John': # fall through
+		case 'Peter':
+			println( 'John or Peter' );
+			break;
+	}
+
+	switch ( person.name ) {
+		default:
+			println( 'Default' );
+			break;
+	}
+
+	var age = 22;
+	switch ( person.age ) {
+		case age:
+			println( age );
+			break;
+	}
+} );
+
+register( "Construct - Exception Handling", func() {
+	try {
+		throw 'anything';
+	} rescue e {
+		println( 'Rescue: {0}', e );
+	} finally {
+		println( 'Finally' );
+	}
+
+	try {
+		System.Console.A;
+	} rescue e {
+		println( 'Rescue: {0}', e );
+	} finally {
+		println( 'Finally' );
+	}
+
+	var code = 'throw "This is an error";';
+	try {
+		exec code;
+	} rescue e {
+		println( 'Error is {0}', e );
+	}
+	
+	try {
+		throw Bike.ArgumentError.create( 'whatever' );
+	} rescue e {
+		println( 'Error is {0}', e );
+	}
+} );
+
+register( "Interop - Construction", func() {
+	var list = System.Collections.ArrayList();
+	println( 'Type check: {0}', list is System.Collections.ArrayList );
+	
+	# Clr type is assignable
+	var type = System.Collections.ArrayList;
+	list = type();
+	println( 'Type check: {0}', list is System.Collections.ArrayList );
+} );
+
+register( "Interop - Instance Members", func() {
+	var list = System.Collections.ArrayList();
+	[ 0->9 ].each( func( i ) { list.Add( i ); } ); 
+	for ( var e in list ) print( e + ', ' );  	
+	println();
+	0.upto( list.Count, func( i ){println( list[ i ] );} );
+	println();
+} );
+
+register( "Interop - Static Members", func() {
+	println( "max( 1, 2 ): {0}", System.Math.Max( 1, 2 ) ); 
+	var out = System.Console.Out; 
+	out.WriteLine( "Hey Bike!" ); 
+	var math = System.Math; # type alias
+	out.WriteLine( "min( 1, 2 ): {0}", math.Min( 1, 2 ) ); 
+} );
+
+register( "Interop - Delegates & Events", func() {
+	load 'utils.dll';
+	
+	Utils.Event.AssignDelegate( func() { # pass func() where delegate is expected
+		println( "Delegate callback 1" );
+	} );
+	Utils.Event.voidDelegate += func() { # use += syntax
+		println( "Delegate callback 2" );
+	};
+	Utils.Event.voidDelegate(); # invoke static delegate
+	
+	var event = Utils.Event();
+	var sum = 0;
+	event.AddEvent( func( a ) { sum += a * a; } ); # pass func() where delegate is expected
+	event.intEvent += func( a ) { sum += a + a; }; # use += syntax
+	var result = event.TriggerEvent( 2 );
+	println( "sum: {0}, result: {1}", sum, result );
+} );
+
+register( "Interop - Generic Objects", func() {
+	var list = System.Collections.Generic.List<System.String>();
+	println( 'Type check: {0}', list is System.Collections.Generic.List<System.String> );
+	
+	[ 0->9 ].each( func( i ) { list.Add( i.to_string() ); } );
+	
+	try { list.Add( 1 ); } # try to add number -> error
+	rescue e { println( e ); }
+	
+	for ( var e in list ) print( e + ', ' );
+	println();
+	
+	for ( var i in [ 0->list.Count ] ) print( list[ i ] + ', ' );
+	println();
+	
+	var dict = System.Collections.Generic.Dictionary
+				  <System.Collections.Generic.List<System.Int32>, System.Int32>();	
+	dict.Add( System.Collections.Generic.List<System.Int32>(), 1 );
+	for ( var value in dict.Values ) println( "Dict: {0}", value );
+} );
+
+register( "Interop - Generic Methods", func() {
+	load 'Utils.dll';
+	
+	println( Utils.Generic.Max<System.Int32>( 1, 10 ) );
+	println( Utils.Generic.Max<System.Decimal>( 1.1, 1 ) );
+	println( Utils.Generic.Max<System.String>( 'Buu', 'Nguyen' ) );
+	
+	var generic = Utils.Generic();
+	var listType = generic.GetType<System.Collections.Generic.List<System.String>>();
+	var list = listType();
+	println( "{0} is {1}: {2}", list, listType, list is listType );
+} );
+
+register( "Dynamic Evaluation", func() {
+	var code = 'println( "This is cool!" );';
+	exec( code );
+	code = '2 * 3;';
+	println( exec code );
+	code = 'var person = {name: "John"};';
+	println( ( exec code ).name );
+	println( person.name );
+} );
+
+execute();
+#! To run all features
+execute();
+!#
+
+#! To selectively run some features
+execute( 
+	   'Declaration',
+	   'Primitive', 
+	   'Object',
+	   'Object - Prototypal Inheritance',
+	   'Array',
+	   'Function',
+	   'Function - Optional Return',
+	   'Function - Context',
+	   'Function - Module Pattern',
+	   'Function - Var Args',
+	   'Function - Optional Parameters',
+	   'Function - Redundant Parameters',
+	   'Function - Named Parameters',
+	   'Function - Curry Pattern',
+	   'Construct - Conditional',
+	   'Construct - While',
+	   'Construct - For',
+	   'Construct - Switch',
+	   'Construct - Exception Handling',
+	   'Interop - Construction',
+	   'Interop - Instance Members',
+	   'Interop - Static Members',
+	   'Interop - Delegates & Events',
+	   'Interop - Generic Objects',
+	   'Interop - Generic Methods',
+	   'Dynamic Evaluation'
+ );
+!#

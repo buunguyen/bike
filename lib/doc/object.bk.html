@@ -1,0 +1,157 @@
+<html>
+<head>
+	<title>object.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Object">Bike.Object</a></h1><br />The prototype of all objects in the system.<br /><br /><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Object == ( other )</td>
+	<td>
+		<div>Determines if this object is equal to the specified object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>other</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The object to be compared.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this object is equal to the supplied object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.is_same( obj1, obj2 )</td>
+	<td>
+		<div>Determines if these 2 variables refer to the same in-memory object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>obj1</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The first object to compare.<br /><i>obj2</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The second object to compare.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if both <i>obj1</i> and <i>obj2</i> refer to the same in-memory object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.hash_code()</td>
+	<td>
+		<div>Gets the hash code of this object.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Number<br />The hash code of this object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.to_string()</td>
+	<td>
+		<div>Gets the string representation of this object.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The string representation of this object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.clone()</td>
+	<td>
+		<div>Clones an object using this object as a prototype.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />The clone of this object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.create( *args )</td>
+	<td>
+		<div>Clones an object using this object as a prototype and invokes
+			initialize on the newly created object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>*args</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The arguments to invoke initialize().<br /></div>
+		<div><br /><strong>Return Value</strong><br />A cloned and initialized object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.super( method, *args )</td>
+	<td>
+		<div>Invokes a method of the prototype of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>method</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the method to be invoked.<br /><i>*args</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The arguments for <i>method</i>.<br /></div>
+		<div><br /><strong>Return Value</strong><br />The returned value of the method.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.member_if_exist( member, defaultValue, recursive )</td>
+	<td>
+		<div>Gets the value of a member, whose name is specified, if it exists.</div>
+		<div><br /><strong>Parameters</strong><br /><i>member</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the member whose value is to be retrieved.<br /><i>defaultValue</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The default value if <i>member</i> does not exist.<br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to search up the hierarchy or not.<br /></div>
+		<div><br /><strong>Return Value</strong><br />The value of <i>member</i> if it exists.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.has_member( member, recursive )</td>
+	<td>
+		<div>Determines whether this contains a certain member.</div>
+		<div><br /><strong>Parameters</strong><br /><i>member</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the member to be check for existance.<br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to search up the hierarchy or not.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if this object contains the member.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.remove_member( member )</td>
+	<td>
+		<div>Removes a member from this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>member</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The name of the member to remove.<br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to search up the hierarchy or not.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the member is removed successfully.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.members( recursive, exclude_prototype )</td>
+	<td>
+		<div>Retrieves an array of member names.</div>
+		<div><br /><strong>Parameters</strong><br /><i>recursive</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to search up the hierarchy or not.<br /><i>exclude_prototype</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Whether to exclude the prototype object from the result array or not.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Array<br />An array of member names.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.wait()</td>
+	<td>
+		<div>Makes current thread acquire this object.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.notify()</td>
+	<td>
+		<div>Notify a waiting thread.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.notify_all()</td>
+	<td>
+		<div>Notify all waiting threads.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.sync()</td>
+	<td>
+		<div>Synchronizes access to a block of code using the intrinsic 
+			lock of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>fn</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Function<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The function to be executed in the sync context.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.acquire()</td>
+	<td>
+		<div>Acquires the intrinsic lock of this object.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.try_acquire()</td>
+	<td>
+		<div>Tries to acquire the intrinsic lock of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>millis</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The milliseconds to wait for the acquisition.  
+			       If 0 or not specified, return immediately.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.Boolean<br />True if the lock was successfully acquired.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Object.release()</td>
+	<td>
+		<div>Releases the intrinsic lock of this object.</div>
+		<div></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

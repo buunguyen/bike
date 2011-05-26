@@ -1,0 +1,11 @@
+load 'file.bk';
+
+var fs = Bike.FileSystem, total = 0;
+fs.each( fs.current_dir(), func( filePath ) {
+	var count = fs.read( filePath ).counts( '\n' ) + 1;
+	println( filePath + ': ' + count );
+	total += count;
+}, true, '.bk' );
+println( 'Total line count: ' + total );
+
+readln();

@@ -1,0 +1,107 @@
+load 'regex.bk';
+load 'unit.bk';
+
+
+BikeUnit.Batch.create( 'Bike.Regex :: Invalid parameter calling' ).run( func() {
+	var the_text = 'just a normal text';
+	this.should_throw( func() { Bike.Regex.is_matched() } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Regex.is_matched( the_text ) } , Bike.ArgumentNullError );
+	
+	this.should_throw( func() { Bike.Regex.replace() } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Regex.replace( the_text ) } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Regex.replace( the_text , the_text ) } , Bike.ArgumentNullError );
+	
+	this.should_throw( func() { Bike.Regex.matches() } , Bike.ArgumentNullError );
+	this.should_throw( func() { Bike.Regex.matches( the_text ) } , Bike.ArgumentNullError );
+} );
+
+
+BikeUnit.Batch.create( 'Bike.Regex :: is_matched() test' ).run( func() {	
+	var evaluating_text = 'Hello, is it me your looking for?';
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'for\\?$' ) );
+	this.should_be_false( Bike.Regex.is_matched( evaluating_text , '^for\\?' ) );
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , '^Hello,' ) );
+	this.should_be_false( Bike.Regex.is_matched( evaluating_text , 'Hello,$' ) );
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'lo{2}k[ing]{3}' ) );
+} );
+
+BikeUnit.Batch.create( 'Bike.Regex :: replace() test' ).run( func() {	
+	var evaluating_text = 'And in my dreams I\'ve kissed your lips a thousand times';
+	var result1 = Bike.Regex.replace( evaluating_text , '\\sthousand\\s' , ' single ' );
+	this.should_be_equal( result1 , 'And in my dreams I\'ve kissed your lips a single times' );
+	
+	var result2 = Bike.Regex.replace( evaluating_text , '\\sdream\\s' , ' zzz ' );
+	this.should_be_equal( result2 , evaluating_text );
+	
+	var result3 = Bike.Regex.replace( evaluating_text , 'ou' , '04' );
+	this.should_be_equal( result3 , 'And in my dreams I\'ve kissed y04r lips a th04sand times' );
+} );
+
+
+BikeUnit.Batch.create( 'Bike.Regex :: matches() test' ).run( func() {	
+	var evaluating_text = 'Are you somewhere feeling lonely or is someone loving you?';
+	var matches1 = Bike.Regex.matches( evaluating_text , 'love' );
+	var group = null;
+	var match = null;
+	this.should_be_equal( matches1.size() , 0 );
+	
+	var matches2 = Bike.Regex.matches( evaluating_text , 'Are' );
+	this.should_be_equal( matches2.size() , 1 );
+	match = matches2[0];
+	this.should_be_equal( match.value , 'Are' );
+	this.should_be_equal( match.index , 0 );
+	this.should_be_equal( match.groups.size() , 1 );
+	group = match.groups[0];
+	this.should_be_equal( group.value , match.value );
+	this.should_be_equal( group.index , match.index );
+	this.should_be_true( group.success );
+	
+	
+	var matches3 = Bike.Regex.matches( evaluating_text , 'you' );
+	this.should_be_equal( matches3.size() , 2 );
+	match = matches3[0];
+	this.should_be_equal( match.value , 'you' );
+	this.should_be_equal( match.index , 4 );
+	this.should_be_equal( match.groups.size() , 1 );
+	group = match.groups[0];
+	this.should_be_equal( group.value , match.value );
+	this.should_be_equal( group.index , match.index );
+	this.should_be_true( group.success );
+	
+	match = matches3[1];
+	this.should_be_equal( match.value , 'you' );
+	this.should_be_equal( match.index , evaluating_text.length()-4 );
+	this.should_be_equal( match.groups.size() , 1 );
+	group = match.groups[0];
+	this.should_be_equal( group.value , match.value );
+	this.should_be_equal( group.index , match.index );
+	this.should_be_true( group.success );
+	
+	var matches4 = Bike.Regex.matches( evaluating_text , 'some([\\w]+)' );
+	this.should_be_equal( matches4.size() , 2 );
+	match = matches4[0];
+	this.should_be_equal( match.value , 'somewhere' );
+	this.should_be_equal( match.index , 8 );
+	this.should_be_equal( match.groups.size() , 2 );
+	group = match.groups[0];
+	this.should_be_equal( group.value , match.value );
+	this.should_be_equal( group.index , match.index );
+	this.should_be_true( group.success );
+	group = match.groups[1];
+	this.should_be_equal( group.value , 'where' );
+	this.should_be_equal( group.index , match.index + 4 );
+	this.should_be_true( group.success );
+	
+	match = matches4[1];
+	this.should_be_equal( match.value , 'someone' );
+	this.should_be_equal( match.index , evaluating_text.length()-19 );
+	this.should_be_equal( match.groups.size() , 2 );
+	group = match.groups[0];
+	this.should_be_equal( group.value , match.value );
+	this.should_be_equal( group.index , match.index );
+	this.should_be_true( group.success );
+	group = match.groups[1];
+	this.should_be_equal( group.value , 'one' );
+	this.should_be_equal( group.index , match.index + 4 );
+	this.should_be_true( group.success );
+} );
