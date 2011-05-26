@@ -23,6 +23,7 @@ bq. Notes:
 - If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@
 - If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
 
+
 h1. Install Bike on Windows
 
 * Prerequisite: .NET 4.0
@@ -36,23 +37,24 @@ bq. The setup program also makes the following changes to your system:
 - Append @[installation_folder]bin/@ to @PATH@ env variable
 - Associate @.bk@ extension with @bike.exe@
 
+
 h1. Bike folder structure
 
 In OSX, Bike is installed to @Applications/bike@. In Windows, Bike is installed to @Program Files/bike@. The structure of the Bike folder is as follows:
-* bin/: binaries and dependencies and
-** bike.app (OSX only): the app you can used to associate with @.bk@ files so that they are executable via Finder
-** bike.action (OSX only): the @Automator@ action code used to create @bike.app@, feel free to customize
-** bike.sh (OSX only): the shell script used to run Bike (the same file also exists in @/usr/local/bin@)
-* lib/
-** src/
-*** core/: Library source code
-*** test/: Test for library
-*** tools/: Bike doc and unit tools
-*** doc/: API documentation
-* samples/: Sample programs, most notable is @spec.bk@, an executable walkthrough to all language features
-* resources/ (Windows only)
-** np.xml: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
-* LICENSE
+* @bin@: binaries and dependencies and
+** @bike.app@ (OSX only): the app you can used to associate with @.bk@ files so that they are executable via Finder
+** @bike.action@ (OSX only): the @Automator@ action code used to create @bike.app@, feel free to customize
+** @bike.sh@ (OSX only): the shell script used to run Bike (the same file also exists in @/usr/local/bin@)
+* @lib@
+** @src@
+*** @core@: Library source code
+*** @test@: Test for library
+*** @tools@: Bike doc and unit tools
+*** @doc@: API documentation
+* @samples@: Sample programs, most notable is @spec.bk@
+* @resources@ (Windows only)
+** @np.xml@: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
+* @LICENSE@
 
 
 h1. Contributors
