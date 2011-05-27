@@ -1,7 +1,7 @@
 load 'resolution_helper.bk';
 
 print_text( 'Resolution tests for Installer :: Home installation path' );
-var bike_home_lib_path = fs.combine_path( System.Environment.GetEnvironmentVariable('BIKE_HOME') , 'Lib' );
+var bike_home_lib_path = fs.combine_path( System.Environment.GetEnvironmentVariable('BIKE_HOME') , 'lib/src/core' );
 
 run_resolution_test( func() {	
 	var the_file =  fs.combine_path( bike_home_lib_path , 'the_dummy_file.bk' );
