@@ -4,7 +4,7 @@ bike relative_path_test.bk
 
 echo ****************
 md c:\lib_for_bike
-@set BIKE_LIB=c:\lib_for_bike
+@set BIKE_LIBS=c:\lib_for_bike
 bike addon_library_path_test.bk
 rmdir c:\lib_for_bike
 
