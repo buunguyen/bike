@@ -11,5 +11,5 @@ rm -rf ~/lib_for_bike
 echo "****************"
 bike home_installation_path_test.bk
 
-read        
+read          
  
