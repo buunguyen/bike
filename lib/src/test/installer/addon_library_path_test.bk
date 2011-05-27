@@ -1,7 +1,7 @@
 load 'resolution_helper.bk';
 
 print_text( 'Resolution tests for Installer :: Addon library path' );
-var addon_lib_path = System.Environment.GetEnvironmentVariable('BIKE_LIB');
+var addon_lib_path = System.Environment.GetEnvironmentVariable('BIKE_LIBS');
 
 run_resolution_test( func() {	
 	var the_file =  fs.combine_path( addon_lib_path , 'the_dummy_file.bk' );
