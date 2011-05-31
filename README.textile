@@ -57,6 +57,16 @@ In OSX, Bike is installed to @Applications/bike@. In Windows, Bike is installed 
 * @LICENSE@
 
 
+h1. What's next?
+
+* Want to learn more about Bike?  Take a look at sample code in "samples":https://github.com/buunguyen/Bike/tree/master/samples.  The file @spec.bk@ should give you a good overview.
+* Want to contribute?  There are many things you can do to help:
+** Implement features (see Issues tab)
+** Suggest new features
+** Report or fix bugs
+** Document code or features
+** Add unit test cases
+
 h1. Contributors
 
 * "duylam":https://github.com/duylam
