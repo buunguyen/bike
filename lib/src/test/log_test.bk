@@ -1,0 +1,89 @@
+load 'log.bk';
+load 'unit.bk';
+load 'file.bk';
+
+var fs = Bike.FileSystem;
+func run_test( name , fn ) {
+	BikeUnit.Batch.create( name ).run( fn );
+}
+
+run_test( 'Bike.Logger :: Default output' , func() {
+	var logger = Bike.Logger.create(); # print to console	
+	logger.debug( 'debug message' );
+	logger.info( 'info message' );
+	logger.warn( 'warn message' );
+	logger.error( 'error message' );
+} );
+
+
+run_test( 'Bike.Logger :: File output creation' , func() {
+	var log_file = 'run_test.log';
+	fs.delete_file( log_file );
+	this.should_throw( func() { Bike.Logger.create( log_file ) } , Bike.ArgumentError );
+	this.should_not_throw( func() { Bike.Logger.create( log_file , true ) } );
+	
+	fs.delete_file( log_file );
+	fs.create_file( log_file );
+	this.should_not_throw( func() { Bike.Logger.create( log_file ) } );
+} );
+
+
+run_test( 'Bike.Logger :: Log format and datetime format' , func() {
+	
+} );
+
+run_test( 'Bike.Logger :: Output level' , func() {
+	var log_file = 'run_test.log';
+	var debug_msg = 'debug message';
+	var info_msg = 'info message';
+	var warn_msg = 'warn message';
+	var error_msg = 'error message';
+	fs.delete_file( log_file );
+	fs.create_file( log_file );
+	var logger = Bike.Logger.create( log_file );	
+	func write_log_msg() {
+		logger.debug( debug_msg );
+		logger.info( info_msg );
+		logger.warn( warn_msg );
+		logger.error( error_msg );
+	}
+	
+	func check_log_msg( true_on_debug_msg , true_on_info_msg , true_on_warn_msg , true_on_error_msg ) {
+		var content_log_file = fs.read( log_file );
+		var two_field_object = {
+			initialize: func( true_condition , msg ) {
+				this.true_condition = true_condition;
+				this.msg = msg;
+			}
+		};
+		[ two_field_object.create( true_on_debug_msg , debug_msg ) , two_field_object.create( true_on_info_msg , info_msg ) ,
+		  two_field_object.create( true_on_warn_msg , warn_msg ) , two_field_object.create( true_on_error_msg , error_msg ) ].each( func( element ) {
+			if( element.true_condition ) {
+				this.should_be_true( content_log_file.contains( element.msg ) );
+			} else {
+				this.should_be_false( content_log_file.contains( element.msg ) );
+			}
+		} );
+	}
+	
+	write_log_msg();
+	check_log_msg( true , true , true , true );
+	
+	fs.delete_file( log_file );
+	fs.create_file( log_file ); # Clear the log content	
+	logger.level = Bike.Logger.INFO;
+	write_log_msg();	
+	check_log_msg( false , true , true , true );
+	
+	fs.delete_file( log_file );
+	fs.create_file( log_file ); # Clear the log content	
+	logger.level = Bike.Logger.WARN;
+	write_log_msg();	
+	check_log_msg( false , false , true , true );
+		
+	fs.delete_file( log_file );
+	fs.create_file( log_file ); # Clear the log content	
+	logger.level = Bike.Logger.ERROR;
+	write_log_msg();	
+	check_log_msg( false , false , false , true );
+} );
