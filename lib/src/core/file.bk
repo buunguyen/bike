@@ -3,7 +3,7 @@
 }!#
 Bike.FileSystem = {
 	#!{ method: 'Bike.FileSystem.each( path, fn , exts , recursive )',
-		summary: 'Iterates files and invokes the given function on each file name',
+		summary: 'Iterates files and invokes the given function on each file name' ,
 		params: {
 			path: {
 				type: 'Bike.String',
