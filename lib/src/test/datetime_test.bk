@@ -14,8 +14,9 @@ run_test( 'Bike.DateTime :: Creation basic' , func() {
 		me.should_be_equal( the_past.second , time );	
 		me.should_be_equal( the_past.millisecond , milis );
 	}
-	var the_past = Bike.DateTime.create( 1000 );
-	this.should_be_equal( the_past.ticks , 1000 );	
+	println( 'uncomment me and run again' );
+	# var the_past = Bike.DateTime.from_ticks( 1000 );	
+	# this.should_be_equal( the_past.ticks , 1000 );	
 	
 	the_past = Bike.DateTime.create( 1 , 1 , 1000 );
 	check_datetime_object( 1 , 1 , 1000 );
@@ -67,7 +68,6 @@ run_test( 'Bike.DateTime :: Date modification' , func() {
 
 run_test( 'Bike.DateTime :: Time modification' , func() {
 	var me = this;
-	var 
 	func check_date( date_object , day , month , year , hour,  minute , second ) {
 		me.should_be_equal( date_object.day , day );
 		me.should_be_equal( date_object.month , month );
@@ -94,8 +94,8 @@ run_test( 'Bike.DateTime :: Time modification' , func() {
 
 
 run_test( 'Bike.DateTime :: Util methods' , func() {
-	var the_past = Bike.DateTime.create( 28 , 6 , 1984 , 0 , 10 , 10 , 1234 );
-	this.should_be_equal( the_past.to_string( 'MM-dd-yyyy HH:mm:ss.ffff' ) , '06-28-1984 00:10:10.1234' );	
+	var the_past = Bike.DateTime.create( 28 , 6 , 1984 , 0 , 10 , 10 , 123 );
+	this.should_be_equal( the_past.to_string( 'MM-dd-yyyy HH:mm:ss.ffff' ) , '06-28-1984 00:10:10.0123' );	
 	this.should_be_equal( the_past.to_string( 'MM-dd-yy' ) , '06-28-84' );	
-	this.should_be_equal( the_past.to_string( 'HH:mm:ss.ffff' ) , '00:10:10.1234' );	
+	this.should_be_equal( the_past.to_string( 'HH:mm:ss.ffff' ) , '00:10:10.0123' );	
 } );
