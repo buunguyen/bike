@@ -1,0 +1,107 @@
+load 'logger.bk';
+load 'unit.bk';
+load 'file.bk';
+load 'regex.bk';
+
+var fs_log = Bike.FileSystem;
+
+func clear_file_content( file_name ) {
+	file_name ||= 'run_test.log';
+	fs_log.delete_file( file_name );
+	fs_log.create_file( file_name );
+}
+
+func get_logger_object( log_file ) {
+	log_file ||= 'run_test.log';
+	clear_file_content( log_file );
+	return Bike.Logger.create( log_file );
+}
+
+run_test( 'Bike.Logger :: File output creation' , func() {
+	var log_file = 'run_test.log';
+	fs_log.delete_file( log_file );
+	this.should_throw( func() { Bike.Logger.create( log_file ) } , Bike.ArgumentError );
+	this.should_not_throw( func() { Bike.Logger.create( log_file , Bike.Logger.DEBUG , true ) } );
+	
+	clear_file_content( log_file );
+	this.should_not_throw( func() { Bike.Logger.create( log_file ) } );
+	
+	fs_log.delete_file( log_file );
+} );
+
+
+run_test( 'Bike.Logger :: Log format and datetime format' , func() {
+	var log_file = 'run_test.log';
+	var logging_msg = 'logging message';
+	var logger = get_logger_object( log_file );
+	logger.debug( logging_msg );
+	var log_content = fs_log.read( log_file );
+	this.should_be_true( Bike.Regex.is_matched( log_content , '\\[\\d{{2}}-\\d{{2}}-\\d{{4}} \\d{{2}}:\\d{{2}}:\\d{{2}}\\.\\d{{4}}\\] DEBUG {0}'.with( logging_msg ) ) );
+		
+	logger.datetime_format = 'dd-MM-yyyy';
+	logger.level = Bike.Logger.INFO;
+	clear_file_content( log_file );
+	logger.info( logging_msg );
+	log_content = fs_log.read( log_file );
+	this.should_be_true( Bike.Regex.is_matched( log_content , '\\[\\d{{2}}-\\d{{2}}-\\d{{4}}\\] INFO {0}'.with( logging_msg ) ) );
+	
+	logger.formatter = func( date_time , level_name , msg ) {
+		msg
+	};
+	clear_file_content( log_file );
+	logger.info( logging_msg );
+	log_content = fs_log.read( log_file );
+	this.should_be_true( log_content , logging_msg );
+	
+	fs_log.delete_file( log_file );
+} );
+
+run_test( 'Bike.Logger :: Output level' , func() {
+	var log_file = 'run_test.log';
+	var debug_msg = 'debug message';
+	var info_msg = 'info message';
+	var warn_msg = 'warn message';
+	var error_msg = 'error message';
+	var logger = get_logger_object( log_file );
+	var me = this;
+	func write_log_msg( log_level ) {
+		clear_file_content( log_file );
+		logger.level = log_level;
+		logger.debug( debug_msg );
+		logger.info( info_msg );
+		logger.warn( warn_msg );
+		logger.error( error_msg );
+	}
+	
+	func check_log_msg( true_on_debug_msg , true_on_info_msg , true_on_warn_msg , true_on_error_msg ) {
+		var content_log_file = fs_log.read( log_file );
+		var two_field_object = {
+			initialize: func( true_condition , msg ) {
+				this.true_condition = true_condition;
+				this.msg = msg;
+			}
+		};
+		[ two_field_object.create( true_on_debug_msg , debug_msg ) , two_field_object.create( true_on_info_msg , info_msg ) ,
+		  two_field_object.create( true_on_warn_msg , warn_msg ) , two_field_object.create( true_on_error_msg , error_msg ) ].each( func( element ) {
+			if( element.true_condition ) {
+				me.should_be_true( content_log_file.contains( element.msg ) );
+			} else {
+				me.should_be_false( content_log_file.contains( element.msg ) );
+			}
+		} );
+	}
+	
+	write_log_msg( Bike.Logger.DEBUG );
+	check_log_msg( true , true , true , true );
+	
+	write_log_msg( Bike.Logger.INFO );	
+	check_log_msg( false , true , true , true );
+	
+	write_log_msg( Bike.Logger.WARN );	
+	check_log_msg( false , false , true , true );
+		
+	write_log_msg( Bike.Logger.ERROR );	
+	check_log_msg( false , false , false , true );
+	
+	fs_log.delete_file( log_file );
+} );

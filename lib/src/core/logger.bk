@@ -1,0 +1,165 @@
+load 'file.bk';
+
+#!{ object: 'Bike.Logger',
+	summary: 'The util object for logging purpose'
+}!#
+Bike.Logger = {
+	#!{ field: 'Bike.Logger.DEBUG',
+		summary: 'Indicates the level for logging message is DEBUG',
+		type: 'Bike.Number'
+	}!#
+	DEBUG: 8,
+	
+	#!{ field: 'Bike.Logger.INFO',
+		summary: 'Indicates the level for logging message is INFO',
+		type: 'Bike.Number'
+	}!#
+	INFO: 4,
+	
+	#!{ field: 'Bike.Logger.WARN',
+		summary: 'Indicates the level for logging message is WARN',
+		type: 'Bike.Number'
+	}!#
+	WARN: 2,
+	
+	#!{ field: 'Bike.Logger.ERROR',
+		summary: 'Indicates the level for logging message is ERROR',
+		type: 'Bike.Number'
+	}!#
+	ERROR: 1,
+	
+	#!{ method: 'Bike.Logger.initialize(  log_file_name , level , create_log_file  )',
+		summary: 'Initializes new Bike.Logger object',
+		params: {
+			log_file_name: {
+				type: 'Bike.String',
+				desc: 'Path to log file'
+			},
+			level: {
+				type: 'Bike.Number',
+				desc: 'The level of logging message e.g. Bike.Logger.DEBUG. The priority of level: DEBUG < INFO < WARN < ERROR. Default is Bike.Logger.DEBUG which records all levels'
+			},
+			create_log_file: {
+				type: 'Bike.Boolean',
+				desc: 'Indicates to automatically create the log file if it doesn\' exist. False if not indicated'
+			}
+		}
+	}!#
+	initialize: func( log_file_name , level , create_log_file ) {
+		create_log_file ||= false;
+		
+		Bike.Contract.requires( create_log_file || Bike.FileSystem.file_exists( log_file_name ) , 'log_file_name' , 'The log file {0} doesn\'t exist'.with( log_file_name ) );
+		
+		this._inner_write_msg = func( level ,  msg ) {
+			var level_name = 'DEBUG';
+			switch( level ) {
+				case Bike.Logger.INFO: 
+					level_name = 'INFO';
+					break;
+				case Bike.Logger.WARN: 
+					level_name = 'WARN';
+					break;
+				case Bike.Logger.ERROR: 
+					level_name = 'ERROR';
+					break;
+				default:
+					level_name = 'DEBUG';
+					break;
+			}
+			var final_message = this.formatter( System.DateTime.Now , level_name , msg ) + NL;
+			if( this.level >= level ) { # because bike currently hasn't supported & operator T_T
+				if( log_file_name )
+					Bike.FileSystem.append( log_file_name , final_message );
+				else 
+					println( final_message );
+			}
+		};
+		
+		#!{ field: 'Bike.Logger.level',
+			summary: 'The level for logging message of this object. Bike.Logger.DEBUG by default',
+			type: 'Bike.Number'
+		}!#
+		this.level = level || Bike.Logger.DEBUG;
+		
+		#!{ field: 'Bike.Logger.datetime_format',
+			summary: 'The format string to represent the date object in final log message',
+			type: 'Bike.String'
+		}!#
+		this.datetime_format = 'dd-MM-yyyy HH:mm:ss.ffff';
+		
+		#!{ method: 'Bike.Logger.formatter (  date_time , level_name , message )',
+			summary: 'A Bike.Function() to create the log message',
+			params: {
+				date_time: {
+					type: 'System.DateTime',
+					desc: 'The moment when the log message is written'
+				},
+				level_name: {
+					type: 'Bike.String',
+					desc: 'The representation text of level e.g. DEBUG, INFO'
+				},
+				message: {
+					type: 'Bike.String',
+					desc: 'The log message'
+				}
+			}
+		}!#
+		this.formatter = func( date_time , level_name , message ) {
+			'[{0}] {1} {2}'.with( date_time.ToString( this.datetime_format ) , level_name , message )
+		};
+				
+		return this;
+	},
+	
+	#!{ method: 'Bike.Logger.debug(  message )',
+		summary: 'Write the {message} with Bike.Logger.DEBUG level',
+		params: {
+			message: {
+				type: 'Bike.String',
+				desc: 'The log message'
+			}
+		}
+	}!#
+	debug: func( message ) {
+		this._inner_write_msg( Bike.Logger.DEBUG , message );
+	},
+	#!{ method: 'Bike.Logger.info(  message )',
+		summary: 'Write the {message} with Bike.Logger.INFO level',
+		params: {
+			message: {
+				type: 'Bike.String',
+				desc: 'The log message'
+			}
+		}
+	}!#
+	info: func( message ) {
+		this._inner_write_msg( Bike.Logger.INFO , message );
+	},
+	
+	#!{ method: 'Bike.Logger.warn(  message )',
+		summary: 'Write the {message} with Bike.Logger.WARN level',
+		params: {
+			message: {
+				type: 'Bike.String',
+				desc: 'The log message'
+			}
+		}
+	}!#
+	warn: func( message ) {
+		this._inner_write_msg( Bike.Logger.WARN , message );
+	},
+	
+	#!{ method: 'Bike.Logger.error(  message )',
+		summary: 'Write the {message} with Bike.Logger.ERROR level',
+		params: {
+			message: {
+				type: 'Bike.String',
+				desc: 'The log message'
+			}
+		}
+	}!#
+	error: func( message ) {
+		this._inner_write_msg( Bike.Logger.ERROR , message );
+	}
+
+};

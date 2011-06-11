@@ -8,6 +8,7 @@ load 'file_test.bk';
 load 'uri_test.bk';
 load 'http_test.bk';
 load 'json_test.bk';
+load 'logger_test.bk';
 load 'regex_test.bk';
 load 'stopwatch_test.bk';
 load 'thread_test.bk';

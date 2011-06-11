@@ -123,3 +123,7 @@ BikeUnit.Batch = {
 		throw BikeUnit.AssertionError.create( msg ||= 'Fail' );
 	}
 };
+
+func run_test( name , fn ) {
+	BikeUnit.Batch.create( name ).run( fn );
+}
