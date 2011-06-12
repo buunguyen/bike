@@ -113,6 +113,113 @@ Bike.DateTime = {
 			format_string ||= 'dd-MM-yyyy HH:mm:ss.ffff';
 			return net_datetime.ToString( format_string );
 		};
+		
+		func adjust_datetime_value( value , fn ) {
+			Bike.Contract.requires_not_null( value , 'value' );
+			return Bike.DateTime.from_ticks( fn().Ticks );
+		}
+		
+		#!{ method: 'Bike.DateTime.add_days( value )',
+			summary: 'Returns new Bike.DateTime object with day value adding given number to day of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of day. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_days = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddDays( value ) } );
+		};
+		
+		#!{ method: 'Bike.DateTime.add_months( value )',
+			summary: 'Returns new Bike.DateTime object with month value adding given number to month of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of month. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_months = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddMonths( value ) } );
+		};
+		
+		#!{ method: 'Bike.DateTime.add_years( value )',
+			summary: 'Returns new Bike.DateTime object with year value adding given number to year of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of year. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_years = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddYears( value ) } );
+		};
+		
+		#!{ method: 'Bike.DateTime.add_hours( value )',
+			summary: 'Returns new Bike.DateTime object with hour value adding given number to hour of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of hour. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_hours = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddHours( value ) } );
+		};
+		
+		#!{ method: 'Bike.DateTime.add_Minutes( value )',
+			summary: 'Returns new Bike.DateTime object with minute value adding given number to minute of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of minute. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_minutes = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddMinutes( value ) } );
+		};
+		
+		#!{ method: 'Bike.DateTime.add_seconds( value )',
+			summary: 'Returns new Bike.DateTime object with second value adding given number to second of this object',
+			params: {
+				value: {
+					type: 'Bike.Number',
+					desc: 'Number of second. It could be negative or positive'
+				}
+			},
+			ret: {
+				type: 'Bike.DateTime',
+				desc: 'New Bike.DateTime object with updated value'
+			}
+		}!#
+		this.add_seconds = func( value ) {
+			return adjust_datetime_value( value , func() { net_datetime.AddSeconds( value ) } );
+		};
 
 		return this;
 	},
@@ -131,6 +238,7 @@ Bike.DateTime = {
 		}
 	}!#
 	from_ticks: func( ticks ) {
+		Bike.Contract.requires_not_null( ticks , 'ticks' );
 		var net_datetime = System.DateTime( ticks );
 		return this.create( net_datetime.Year , net_datetime.Month , net_datetime.Day , net_datetime.Hour , net_datetime.Minute , net_datetime.Second , net_datetime.Millisecond );
 	},
@@ -144,6 +252,6 @@ Bike.DateTime = {
 	}!#
 	now: func() {
 		var net_datetime = System.DateTime.Now;
-		return this.create( net_datetime.Year , net_datetime.Month , net_datetime.Day , net_datetime.Hour , net_datetime.Minute , net_datetime.Second , net_datetime.Millisecond );
+		return Bike.DateTime.from_ticks( net_datetime.Ticks );
 	}
 };

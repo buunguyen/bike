@@ -1,4 +1,5 @@
 load 'file.bk';
+load 'datetime.bk';
 
 #!{ object: 'Bike.Logger',
 	summary: 'The util object for logging purpose'
@@ -66,7 +67,7 @@ Bike.Logger = {
 					level_name = 'DEBUG';
 					break;
 			}
-			var final_message = this.formatter( System.DateTime.Now , level_name , msg ) + NL;
+			var final_message = this.formatter( Bike.DateTime.now() , level_name , msg ) + NL;
 			if( this.level >= level ) { # because bike currently hasn't supported & operator T_T
 				if( log_file_name )
 					Bike.FileSystem.append( log_file_name , final_message );
@@ -91,7 +92,7 @@ Bike.Logger = {
 			summary: 'A Bike.Function() to create the log message',
 			params: {
 				date_time: {
-					type: 'System.DateTime',
+					type: 'Bike.DateTime',
 					desc: 'The moment when the log message is written'
 				},
 				level_name: {
@@ -105,7 +106,7 @@ Bike.Logger = {
 			}
 		}!#
 		this.formatter = func( date_time , level_name , message ) {
-			'[{0}] {1} {2}'.with( date_time.ToString( this.datetime_format ) , level_name , message )
+			'[{0}] {1} {2}'.with( date_time.to_string( this.datetime_format ) , level_name , message )
 		};
 				
 		return this;
