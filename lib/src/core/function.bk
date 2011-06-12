@@ -1,39 +1,41 @@
-#!{ object: 'Bike.Function',
-	summary: 'The prototype of all functions in the system'
-}!#
+(func() {
+	#!{ object: 'Bike.Function',
+		summary: 'The prototype of all functions in the system'
+	}!#
 
-#!{ method: 'Bike.Array.to_string',
-	summary: 'Gets the string representation of this function',
-	ret: {
-		type: 'Bike.String',
-		desc: 'The string representation of this function'
-	}
-}!#
-Bike.Function.to_string = func() {
-	var val = this.name;
-	if ( this.params.size() == 0 )
-		return val + '()';
-	val += '( ';
-	for ( var param in this.params ) {
-		val += ( param.is_params ? '*' : '' ) + param.name + ', ';
-	}
-	val = val.sub( 0, val.length() - 2 ) + ' )';
-	return val;
-};
+	#!{ method: 'Bike.Array.to_string',
+		summary: 'Gets the string representation of this function',
+		ret: {
+			type: 'Bike.String',
+			desc: 'The string representation of this function'
+		}
+	}!#
+	Bike.Function.to_string = func to_string() {
+		var val = this.name;
+		if ( this.params.size() == 0 )
+			return val + '()';
+		val += '( ';
+		for ( var param in this.params ) {
+			val += ( param.is_params ? '*' : '' ) + param.name + ', ';
+		}
+		val = val.sub( 0, val.length() - 2 ) + ' )';
+		return val;
+	};
 
-#!{ method: 'Bike.Function.call( target, *args )',
-	summary: 'Binds {target} to this function and invokes it.',
-	params: {
-		target: 'The object to be bound to this function',
-		'*args': 'The arguments to call this function'
-	},
-	ret: 'The return value of this function'
-}!#
-Bike.Function.call = func( target, *args ) {
-	if ( target == null )
-		return this( *args );
-	target.__tmp_func = this;
-	var result = target.__tmp_func( *args );
-	target.remove_member( '__tmp_func' );
-	return result;
-};
+	#!{ method: 'Bike.Function.call( target, *args )',
+		summary: 'Binds {target} to this function and invokes it.',
+		params: {
+			target: 'The object to be bound to this function',
+			'*args': 'The arguments to call this function'
+		},
+		ret: 'The return value of this function'
+	}!#
+	Bike.Function.call = func call( target, *args ) {
+		if ( target == null )
+			return this( *args );
+		target.__tmp_func = this;
+		var result = target.__tmp_func( *args );
+		target.remove_member( '__tmp_func' );
+		return result;
+	};
+})();

@@ -1,44 +1,47 @@
-#!{ object: 'Bike.Boolean',
-	summary: 'The prototype of all booleans in the system'
-}!#
+(func() {
+	#!{ object: 'Bike.Boolean',
+		summary: 'The prototype of all booleans in the system'
+	}!#
 
-#!{ method: 'Bike.Boolean == ( other )',
-	summary: 'Determines if this boolean is equal to the specified boolean',
-	params: {
-		other: {
+	#!{ method: 'Bike.Boolean == ( other )',
+		summary: 'Determines if this boolean is equal to the specified boolean',
+		params: {
+			other: {
+				type: 'Bike.Boolean',
+				desc: 'The boolean to be compared'
+			}
+		},
+		ret: {
 			type: 'Bike.Boolean',
-			desc: 'The boolean to be compared'
+			desc: 'True if this boolean is equal to the supplied boolean'
 		}
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if this boolean is equal to the supplied boolean'
-	}
-}!#
-Bike.Boolean[ '==' ] = func( other ) {
-	if ( other == null || !( other is Bike.Boolean ) )
-		return false;
-	return this.__native.Equals( other.__native );
-};
+	}!#
+	Bike.Boolean[ '==' ] = func( other ) {
+		if ( other == null || !( other is Bike.Boolean ) )
+			return false;
+		return this.__native.Equals( other.__native );
+	};
+	Bike.Boolean[ '==' ].name = '==';
 
-#!{ method: 'Bike.Boolean.hash_code',
-	summary: 'Gets the hash code of this boolean',
-	ret: {
-		type: 'Bike.Number',
-		desc: 'The hash code of this boolean'
-	}
-}!#
-Bike.Boolean.hash_code = func() {
-	return this.__native.GetHashCode();
-};
+	#!{ method: 'Bike.Boolean.hash_code',
+		summary: 'Gets the hash code of this boolean',
+		ret: {
+			type: 'Bike.Number',
+			desc: 'The hash code of this boolean'
+		}
+	}!#
+	Bike.Boolean.hash_code = func hash_code() {
+		return this.__native.GetHashCode();
+	};
 
-#!{ method: 'Bike.Boolean.to_string',
-	summary: 'Gets the string representation of this boolean',
-	ret: {
-		type: 'Bike.String',
-		desc: 'The string representation of this boolean'
-	}
-}!#
-Bike.Boolean.to_string = func() {
-	return this.__native.ToString();
-};
+	#!{ method: 'Bike.Boolean.to_string',
+		summary: 'Gets the string representation of this boolean',
+		ret: {
+			type: 'Bike.String',
+			desc: 'The string representation of this boolean'
+		}
+	}!#
+	Bike.Boolean.to_string = func to_string() {
+		return this.__native.ToString();
+	};
+})();

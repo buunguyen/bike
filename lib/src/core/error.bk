@@ -1,62 +1,64 @@
-#!{ object: 'Bike.Error',
-	summary: 'The prototype of all errors in the system.',
-	remark: 'Avoid using sophisticated code for methods
-		    of error objects to avoid infinite error loop.'
-}!#
+(func() {
+	#!{ object: 'Bike.Error',
+		summary: 'The prototype of all errors in the system.',
+		remark: 'Avoid using sophisticated code for methods
+				of error objects to avoid infinite error loop.'
+	}!#
 
-#!{ field: 'Bike.Error.type',
-	summary: 'The type of this error object',
-	type: 'Bike.String'
-}!#
-Bike.Error.type = 'Bike.Error';
-
-#!{ field: 'Bike.Error.cause',
-	summary: 'The inner exception of this error object',
-	type: 'Any object'
-}!#
-Bike.Error.cause = null;
-
-#!{ field: 'Bike.Error.message',
-	summary: 'The error message',
-	type: 'Bike.String'
-}!#
-Bike.Error.message = null;
-
-#!{ field: 'Bike.Error.stack_trace',
-	summary: 'The stack trace of this error object',
-	type: 'Bike.String'
-}!#
-Bike.Error.stack_trace = null;
-
-#!{ method: 'Bike.Error.initialize',
-	summary: 'Initializes an error object',
-	params: {
-		message: {
-			type: 'Bike.String',
-			desc: 'The error message'
-		}
-	}
-}!#
-Bike.Error.initialize = func( message ) {	
-	#!{ field: 'Bike.Error.message',
-		summary: 'The message of this error object',
+	#!{ field: 'Bike.Error.type',
+		summary: 'The type of this error object',
 		type: 'Bike.String'
 	}!#
-	this.message = message || 'An error has occurred';
-};
+	Bike.Error.type = 'Bike.Error';
 
-#!{ method: 'Bike.Error.to_string',
-	summary: 'Returns the error message and stack trace',
-	ret: {
-		type: 'Bike.String',
-		desc: 'The error message and stack trace'
-	}
-}!#
-Bike.Error.to_string = func() {
-	this.type + ": " + this.message + NL + 
-	"Stack Trace: " + NL + this.stack_trace;
-};
-Bike.Error.__is_error = true;
+	#!{ field: 'Bike.Error.cause',
+		summary: 'The inner exception of this error object',
+		type: 'Any object'
+	}!#
+	Bike.Error.cause = null;
+
+	#!{ field: 'Bike.Error.message',
+		summary: 'The error message',
+		type: 'Bike.String'
+	}!#
+	Bike.Error.message = null;
+
+	#!{ field: 'Bike.Error.stack_trace',
+		summary: 'The stack trace of this error object',
+		type: 'Bike.String'
+	}!#
+	Bike.Error.stack_trace = null;
+
+	#!{ method: 'Bike.Error.initialize',
+		summary: 'Initializes an error object',
+		params: {
+			message: {
+				type: 'Bike.String',
+				desc: 'The error message'
+			}
+		}
+	}!#
+	Bike.Error.initialize = func initialize( message ) {	
+		#!{ field: 'Bike.Error.message',
+			summary: 'The message of this error object',
+			type: 'Bike.String'
+		}!#
+		this.message = message || 'An error has occurred';
+	};
+
+	#!{ method: 'Bike.Error.to_string',
+		summary: 'Returns the error message and stack trace',
+		ret: {
+			type: 'Bike.String',
+			desc: 'The error message and stack trace'
+		}
+	}!#
+	Bike.Error.to_string = func to_string() {
+		this.type + ": " + this.message + NL + 
+		"Stack Trace: " + NL + this.stack_trace;
+	};
+	Bike.Error.__is_error = true;
+})();
 
 #!{ object: 'Bike.AlreadyDefinedError',
 	summary: 'This type of error is thrown when a variable is re-declared'
