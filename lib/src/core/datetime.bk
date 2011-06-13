@@ -2,7 +2,7 @@
 	summary: 'The object represents for date and time in system'
 }!#
 Bike.DateTime = {
-	#!{ method: 'Bike.DateTime.initialize(  day , month , year , hour , month , second , millisecond )',
+	#!{ method: 'Bike.DateTime.initialize(  year , month , day , hour , month , second , millisecond )',
 		summary: 'Initializes new Bike.DateTime object',
 		params: {
 			day: {
@@ -35,7 +35,7 @@ Bike.DateTime = {
 			}
 		}
 	}!#
-	initialize: func( day , month , year , hour , minute , second , millisecond  ) {
+	initialize: func( year , month , day , hour , minute , second , millisecond  ) {
 		Bike.Contract.requires_not_null( day , 'day' );
 		Bike.Contract.requires_not_null( month , 'month' );
 		Bike.Contract.requires_not_null( year , 'year' );
@@ -48,6 +48,12 @@ Bike.DateTime = {
 			net_datetime = System.DateTime( year , month, day , hour , minute , second , millisecond );
 		}
 		
+		this._populate_datetime_members$( net_datetime );
+
+		return this;
+	},
+	
+	_populate_datetime_members$: func( net_datetime ) {
 		#!{ field: 'Bike.DateTime.day',
 			summary: 'The day number in a month. Starts from 1 to 31',
 			type: 'Bike.Number'
@@ -95,6 +101,18 @@ Bike.DateTime = {
 			type: 'Bike.Number'
 		}!#
 		this.ticks = net_datetime.Ticks;
+		
+		#!{ field: 'Bike.DateTime.day_of_week',
+			summary: 'The day of week of this object. 0 is Sunday, 1 is Month so on',
+			type: 'Bike.Number'
+		}!#
+		this.day_of_week = System.Convert.ToInt32( net_datetime.DayOfWeek );
+		
+		#!{ field: 'Bike.DateTime.day_of_year',
+			summary: 'The day of year of this object',
+			type: 'Bike.Number'
+		}!#
+		this.day_of_year = net_datetime.DayOfYear;
 		
 		#!{ method: 'Bike.DateTime.to_string( format_string )',
 			summary: 'Returns the string representation of this date time object',
@@ -220,8 +238,6 @@ Bike.DateTime = {
 		this.add_seconds = func( value ) {
 			return adjust_datetime_value( value , func() { net_datetime.AddSeconds( value ) } );
 		};
-
-		return this;
 	},
 	
 	#!{ method: 'Bike.DateTime.from_ticks( ticks )',
@@ -239,8 +255,9 @@ Bike.DateTime = {
 	}!#
 	from_ticks: func( ticks ) {
 		Bike.Contract.requires_not_null( ticks , 'ticks' );
-		var net_datetime = System.DateTime( ticks );
-		return this.create( net_datetime.Year , net_datetime.Month , net_datetime.Day , net_datetime.Hour , net_datetime.Minute , net_datetime.Second , net_datetime.Millisecond );
+		var datetime_object = this.clone();
+		datetime_object._populate_datetime_members$( System.DateTime( ticks ) );
+		return datetime_object;
 	},
 	
 	#!{ method: 'Bike.DateTime.now( )',

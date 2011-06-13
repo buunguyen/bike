@@ -3,7 +3,7 @@ load 'unit.bk';
 
 run_test( 'Bike.DateTime :: Creation basic' , func() {
 	var me = this;
-	func check_datetime_object( day , month , year , time , milis ) {
+	func check_datetime_object( year , month , day , time , milis ) {
 		time ||= 0;
 		milis ||= 0;
 		me.should_be_equal( the_past.day , day );
@@ -13,25 +13,23 @@ run_test( 'Bike.DateTime :: Creation basic' , func() {
 		me.should_be_equal( the_past.minute , time );
 		me.should_be_equal( the_past.second , time );	
 		me.should_be_equal( the_past.millisecond , milis );
-	}
-	println( 'uncomment me and run again' );
-	# var the_past = Bike.DateTime.from_ticks( 1000 );	
-	# this.should_be_equal( the_past.ticks , 1000 );	
+	}	
+	var the_past = Bike.DateTime.from_ticks( 1000 );	
+	this.should_be_equal( the_past.ticks , 1000 );	
 	
-	the_past = Bike.DateTime.create( 1 , 1 , 1000 );
-	check_datetime_object( 1 , 1 , 1000 );
+	the_past = Bike.DateTime.create( 1000 , 1 , 1 );
+	check_datetime_object( 1000 , 1 , 1 );
 	
-	the_past = Bike.DateTime.create( 1 , 1 , 1000 , 1 , 1 , 1 );
-	check_datetime_object( 1 , 1 , 1000 , 1 );
+	the_past = Bike.DateTime.create( 1000 , 1 , 1 , 1 , 1 , 1 );
+	check_datetime_object( 1000 , 1 , 1 , 1 );
 	
-	the_past = Bike.DateTime.create( 1 , 2 , 1000 , 1 , 1 , 1 , 1);
-	check_datetime_object( 1 , 2 , 1000 , 1 , 1 );
-	this.should_be_equal( the_past.day_of_week , 1 );
+	the_past = Bike.DateTime.create( 2012 , 2 , 1 , 1 , 1 , 1 , 1);
+	check_datetime_object( 2012 , 2 , 1 , 1 , 1 );
+	this.should_be_equal( the_past.day_of_week , 3 );
 	this.should_be_equal( the_past.day_of_year , 32 );
 		
 	var now = Bike.DateTime.now();
-	the_past = Bike.DateTime.create( 1 , 1 , 1000 , 0 , 0 , 0 , 0 );
-	this.should_be_true( now.day_of_week >= the_past.day_of_week );
+	the_past = Bike.DateTime.create( 1000 , 1 , 1 , 0 , 0 , 0 , 0 );
 	this.should_be_true( now.day_of_year >= the_past.day_of_year );
 	this.should_be_true( now.day >= the_past.day );
 	this.should_be_true( now.month >= the_past.month );
@@ -44,31 +42,31 @@ run_test( 'Bike.DateTime :: Creation basic' , func() {
 
 run_test( 'Bike.DateTime :: Date modification' , func() {
 	var me = this;
-	func check_date( date_object , day , month , year ) {
+	func check_date( date_object , year , month , day ) {
 		me.should_be_equal( date_object.day , day );
 		me.should_be_equal( date_object.month , month );
 		me.should_be_equal( date_object.year , year );
 	}
 	
-	var date_params = [ 1 , 1 , 1000 ];
+	var date_params = [ 1000 , 1 , 1 ];
 	var the_past = Bike.DateTime.create( *date_params );
-	check_date( the_past.add_days( 1 ) , 2 , 1 , 1000 );
-	check_date( the_past.add_days( -1 ) , 31 , 12 , 999 );
+	check_date( the_past.add_days( 1 ) , 1000 , 1 , 2 );
+	check_date( the_past.add_days( -1 ) , 999 , 12 , 31 );
 	check_date( the_past , *date_params ); # Should be immutable object
 	
-	check_date( the_past.add_months( 1 ) , 1 , 2 , 1000 );
-	check_date( the_past.add_months( -1 ) , 1 , 12 , 999 );
+	check_date( the_past.add_months( 1 ) , 1000 , 2 , 1 );
+	check_date( the_past.add_months( -1 ) , 999 , 12 , 1 );
 	check_date( the_past , *date_params ); # Should be immutable object
 	
-	check_date( the_past.add_years( 1 ) , 1 , 1 , 1001 );
-	check_date( the_past.add_years( -1 ) , 1 , 1 , 999 );
+	check_date( the_past.add_years( 1 ) , 1001 , 1 , 1 );
+	check_date( the_past.add_years( -1 ) , 999 , 1 , 1 );
 	check_date( the_past , *date_params ); # Should be immutable object	
 } );
 
 
 run_test( 'Bike.DateTime :: Time modification' , func() {
 	var me = this;
-	func check_date( date_object , day , month , year , hour,  minute , second ) {
+	func check_date( date_object , year , month , day , hour,  minute , second ) {
 		me.should_be_equal( date_object.day , day );
 		me.should_be_equal( date_object.month , month );
 		me.should_be_equal( date_object.year , year );
@@ -77,25 +75,25 @@ run_test( 'Bike.DateTime :: Time modification' , func() {
 		me.should_be_equal( date_object.second , second );
 	}
 	
-	var date_time_params = [ 28 , 2 , 2008 , 23 , 59 , 59 ]; # leap year
+	var date_time_params = [ 2008 , 2 , 28 , 23 , 59 , 59 ]; # leap year
 	var the_past = Bike.DateTime.create( *date_time_params ); 
-	check_date( the_past.add_hours( 1 ) , 29 , 2 , 2008 , 0 , 59 , 59 );
-	check_date( the_past.add_hours( -1 ) , 28 , 2 , 2008 , 22 , 59 , 59 );
+	check_date( the_past.add_hours( 1 ) , 2008 , 2 , 29 , 0 , 59 , 59 );
+	check_date( the_past.add_hours( -1 ) , 2008 , 2 , 28 , 22 , 59 , 59 );
 	check_date( the_past , *date_time_params ); # Should be immutable object
 	
-	check_date( the_past.add_minutes( 1 ) , 29 , 2 , 2008 , 0 , 0 , 59 );
-	check_date( the_past.add_minutes( -1 ) , 28 , 2 , 2008 , 23 , 58 , 59 );
+	check_date( the_past.add_minutes( 1 ) , 2008 , 2 , 29 , 0 , 0 , 59 );
+	check_date( the_past.add_minutes( -1 ) , 2008 , 2 , 28 , 23 , 58 , 59 );
 	check_date( the_past , *date_time_params ); # Should be immutable object
 	
-	check_date( the_past.add_seconds( 1 ) , 29 , 2 , 2008 , 0 , 0 , 0 );
-	check_date( the_past.add_seconds( -1 ) , 28 , 2 , 2008 , 23 , 59 , 58 );
+	check_date( the_past.add_seconds( 1 ) , 2008 , 2 , 29 , 0 , 0 , 0 );
+	check_date( the_past.add_seconds( -1 ) , 2008 , 2 , 28 , 23 , 59 , 58 );
 	check_date( the_past , *date_time_params ); # Should be immutable object
 } );
 
 
 run_test( 'Bike.DateTime :: Util methods' , func() {
-	var the_past = Bike.DateTime.create( 28 , 6 , 1984 , 0 , 10 , 10 , 123 );
-	this.should_be_equal( the_past.to_string( 'MM-dd-yyyy HH:mm:ss.ffff' ) , '06-28-1984 00:10:10.0123' );	
+	var the_past = Bike.DateTime.create( 1984 , 6 , 28 , 0 , 10 , 10 , 123 );
+	this.should_be_equal( the_past.to_string( 'MM-dd-yyyy HH:mm:ss.fff' ) , '06-28-1984 00:10:10.123' );	
 	this.should_be_equal( the_past.to_string( 'MM-dd-yy' ) , '06-28-84' );	
-	this.should_be_equal( the_past.to_string( 'HH:mm:ss.ffff' ) , '00:10:10.0123' );	
+	this.should_be_equal( the_past.to_string( 'HH:mm:ss.fff' ) , '00:10:10.123' );	
 } );
