@@ -115,8 +115,8 @@ BikeUnit.Batch.create( 'Bike.Http.Request :: Http get method test' ).run( func()
 
 
 BikeUnit.Batch.create( 'Bike.Http.Request :: Http post method test' ).run( func() {
-	var test_url = 'http://www.gawab.com/login';
-	var email_value = 'bike@gawab.com';
+	var test_url = 'http://www.flickr.com/services/api/explore/flickr.groups.search';
+	var param_text = 'hello bike';
 	
 	this.should_throw( func() { Bike.Http.Request.post(); } , Bike.ArgumentNullError );
 	this.should_throw( func() { Bike.Http.Request.post( test_url ); } , Bike.ArgumentNullError );	
@@ -124,8 +124,8 @@ BikeUnit.Batch.create( 'Bike.Http.Request :: Http post method test' ).run( func(
 	var me = this;
 	Bike.Http.Request.post( test_url, func( response ) {
 		me.should_be_equal( response.code() , 200 );
-		me.should_be_true( response.body().contains( 'address=' + email_value ) );
-	} , { service : 'webmail', username : 'bike', domain : 'gawab.com' , email : email_value , password : 'wanna know ?' } );
+		me.should_be_true( response.body().contains( 'value="{0}"'.with(param_text) ) );
+	} , { method : 'flickr.groups.search', enable_text : 'on', param_text : Bike.Uri.escape_string( param_text ) , format: 'rest' } );
 	
 	Bike.Http.Request.post( test_url, func( response ) {
 		me.should_be_equal( response.code() , 200 );

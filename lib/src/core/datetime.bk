@@ -103,7 +103,7 @@ Bike.DateTime = {
 		this.ticks = net_datetime.Ticks;
 		
 		#!{ field: 'Bike.DateTime.day_of_week',
-			summary: 'The day of week of this object. 0 is Sunday, 1 is Month so on',
+			summary: 'The day of week of this object. 0 is Sunday, 1 is Monday and so on',
 			type: 'Bike.Number'
 		}!#
 		this.day_of_week = System.Convert.ToInt32( net_datetime.DayOfWeek );
