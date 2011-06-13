@@ -1,265 +1,268 @@
-#!{ object: 'Bike.Object',
-	summary: 'The prototype of all objects in the system'
-}!#
+(func() {
+	#!{ object: 'Bike.Object',
+		summary: 'The prototype of all objects in the system'
+	}!#
 
-#!{ method: 'Bike.Object == ( other )',
-	summary: 'Determines if this object is equal to the specified object',
-	params: {
-		other: 'The object to be compared',
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if this object is equal to the supplied object'
-	}
-}!#
-Bike.Object[ '==' ] = func( other ) {
-	return System.Runtime.CompilerServices.RuntimeHelpers.Equals( this, other );
-};
-
-#!{ method: 'Bike.Object.is_same( obj1, obj2 )',
-	summary: 'Determines if these 2 variables refer to the same in-memory object',
-	params: {
-		obj1: 'The first object to compare',
-		obj2: 'The second object to compare'
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if both {obj1} and {obj2} refer to the same in-memory object.'
-	}
-}!#
-Bike.Object.is_same = func( obj1, obj2 ) {
-	return System.Runtime.CompilerServices.RuntimeHelpers.Equals( obj1, obj2 );
-};
-
-#!{ method: 'Bike.Object.hash_code',
-	summary: 'Gets the hash code of this object',
-	ret: {
-		type: 'Bike.Number',
-		desc: 'The hash code of this object'
-	}
-}!#
-Bike.Object.hash_code = func() {
-	return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode( this );
-};
-
-#!{ method: 'Bike.Object.to_string',
-	summary: 'Gets the string representation of this object',
-	ret: {
-		type: 'Bike.String',
-		desc: 'The string representation of this object'
-	}
-}!#
-Bike.Object.to_string = func() {
-	return "Object #" + this.hash_code();
-};
-
-#!{ method: 'Bike.Object.clone',
-	summary: 'Clones an object using this object as a prototype',
-	ret: 'The clone of this object'
-}!#
-Bike.Object.clone = func() {
-	var obj = {};
-	obj.prototype = this;
-	return obj;
-};
-
-#!{ method: 'Bike.Object.create( *args )',
-	summary: 'Clones an object using this object as a prototype and invokes
-			initialize on the newly created object',
-	params: {
-		'*args': 'The arguments to invoke initialize()'
-	},
-	ret: 'A cloned and initialized object'
-}!#
-Bike.Object.create = func( *args ) {
-	var obj = this.clone();
-	obj.initialize( *args );
-	return obj;
-};
-
-#!{ method: 'Bike.Object.super( method, *args )',
-	summary: 'Invokes a method of the prototype of this object',
-	params: {
-		method: {
-			type: 'Bike.String',
-			desc: 'The name of the method to be invoked',
+	#!{ method: 'Bike.Object == ( other )',
+		summary: 'Determines if this object is equal to the specified object',
+		params: {
+			other: 'The object to be compared',
 		},
-		'*args': 'The arguments for {method}'
-	},
-	ret: 'The returned value of the method'
-}!#
-Bike.Object.super = func( method, *args ) {
-	return this.prototype[ method ].call( this, *args );
-};
-
-#!{ method: 'Bike.Object.member_if_exist( member, defaultValue, recursive )',
-	summary: 'Gets the value of a member, whose name is specified, if it exists',
-	params: {
-		member: {
-			type: 'Bike.String',
-			desc: 'The name of the member whose value is to be retrieved',
-		},
-		defaultValue: 'The default value if {member} does not exist',
-		recursive: {
+		ret: {
 			type: 'Bike.Boolean',
-			desc: 'Whether to search up the hierarchy or not',
+			desc: 'True if this object is equal to the supplied object'
 		}
-	},
-	ret: 'The value of {member} if it exists.'
-}!#
-Bike.Object.member_if_exist = func( member, defaultValue, recursive ) {
-	var members = this.members( recursive );
-	return members.has( member ) ? this[ member ] : defaultValue;
-};
+	}!#
+	Bike.Object[ '==' ] = func( other ) {
+		return System.Runtime.CompilerServices.RuntimeHelpers.Equals( this, other );
+	};
+	Bike.Object[ '==' ].name = '==';
 
-#!{ method: 'Bike.Object.has_member( member, recursive )',
-	summary: 'Determines whether this contains a certain member',
-	params: {
-		member: {
-			type: 'Bike.String',
-			desc: 'The name of the member to be check for existance',
+	#!{ method: 'Bike.Object.is_same( obj1, obj2 )',
+		summary: 'Determines if these 2 variables refer to the same in-memory object',
+		params: {
+			obj1: 'The first object to compare',
+			obj2: 'The second object to compare'
 		},
-		recursive: {
+		ret: {
 			type: 'Bike.Boolean',
-			desc: 'Whether to search up the hierarchy or not',
+			desc: 'True if both {obj1} and {obj2} refer to the same in-memory object.'
 		}
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if this object contains the member'
-	}
-}!#
-Bike.Object.has_member = func( member, recursive ) {
-	recursive ||= false;
-	return this.members( recursive ).has( member );
-};
+	}!#
+	Bike.Object.is_same = func is_same( obj1, obj2 ) {
+		return System.Runtime.CompilerServices.RuntimeHelpers.Equals( obj1, obj2 );
+	};
 
-#!{ method: 'Bike.Object.remove_member( member )',
-	summary: 'Removes a member from this object',
-	params: {
-		member: {
-			type: 'Bike.String',
-			desc: 'The name of the member to remove',
-		},
-		recursive: {
-			type: 'Bike.Boolean',
-			desc: 'Whether to search up the hierarchy or not',
-		}
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if the member is removed successfully'
-	}
-}!#
-Bike.Object.remove_member = func( member ) {
-	return this.__members.Remove( member );
-};
-
-#!{ method: 'Bike.Object.members( recursive, exclude_prototype )',
-	summary: 'Retrieves an array of member names',
-	params: {
-		recursive: {
-			type: 'Bike.Boolean',
-			desc: 'Whether to search up the hierarchy or not',
-		},
-		exclude_prototype: {
-			type: 'Bike.Boolean',
-			desc: 'Whether to exclude the prototype object from the result array or not',
-		},
-	},
-	ret: {
-		type: 'Bike.Array',
-		desc: 'An array of member names'
-	}
-}!#
-Bike.Object.members = func( recursive, exclude_prototype ) { 
-	recursive ||= false;
-	exclude_prototype ||= false;
-	var members = [];
-	var obj = this;
-	while ( obj != null ) {
-		for ( var member in obj ) {
-			if ( exclude_prototype && member == 'prototype' ) 
-				next;
-			members.add( member );
-		}
-		if ( !recursive )
-			break;
-		obj = obj.prototype;
-	}
-	return members.distinct();
-};
-
-#!{ method: 'Bike.Object.wait',
-	summary: 'Makes current thread acquire this object'
-}!#
-Bike.Object.wait = func() {
-	System.Threading.Monitor.Wait( this );
-};
-
-#!{ method: 'Bike.Object.notify',
-	summary: 'Notify a waiting thread'
-}!#
-Bike.Object.notify = func() {
-	System.Threading.Monitor.Pulse( this );
-};
-
-#!{ method: 'Bike.Object.notify_all',
-	summary: 'Notify all waiting threads'
-}!#
-Bike.Object.notify_all = func() {
-	System.Threading.Monitor.PulseAll( this );
-};
-
-#!{ method: 'Bike.Object.sync',
-	summary: 'Synchronizes access to a block of code using the intrinsic 
-			lock of this object',
-	params: {
-		fn: {
-			type: 'Bike.Function',
-			desc: 'The function to be executed in the sync context'
-		}
-	}
-}!#
-Bike.Object.sync = func( fn ) {
-	this.acquire();
-	try {
-		fn();
-	} finally {
-		this.release();
-	}
-};
-
-#!{ method: 'Bike.Object.acquire',
-	summary: 'Acquires the intrinsic lock of this object'
-}!#
-Bike.Object.acquire = func() {
-	System.Threading.Monitor.Enter( this );
-};
-
-#!{ method: 'Bike.Object.try_acquire',
-	summary: 'Tries to acquire the intrinsic lock of this object',
-	params: {
-		millis: {
+	#!{ method: 'Bike.Object.hash_code',
+		summary: 'Gets the hash code of this object',
+		ret: {
 			type: 'Bike.Number',
-			desc: 'The milliseconds to wait for the acquisition.  
-			       If 0 or not specified, return immediately.'
+			desc: 'The hash code of this object'
 		}
-	},
-	ret: {
-		type: 'Bike.Boolean',
-		desc: 'True if the lock was successfully acquired.'
-	}
-}!#
-Bike.Object.try_acquire = func( millis ) {
-	if ( millis == null )
-		return System.Threading.Monitor.TryEnter( this );
-	return System.Threading.Monitor.TryEnter( this, millis );
-};
+	}!#
+	Bike.Object.hash_code = func hash_code() {
+		return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode( this );
+	};
 
-#!{ method: 'Bike.Object.release',
-	summary: 'Releases the intrinsic lock of this object'
-}!#
-Bike.Object.release = func() {
-	System.Threading.Monitor.Exit( this );
-};
+	#!{ method: 'Bike.Object.to_string',
+		summary: 'Gets the string representation of this object',
+		ret: {
+			type: 'Bike.String',
+			desc: 'The string representation of this object'
+		}
+	}!#
+	Bike.Object.to_string = func to_string() {
+		return "Object #" + this.hash_code();
+	};
+
+	#!{ method: 'Bike.Object.clone',
+		summary: 'Clones an object using this object as a prototype',
+		ret: 'The clone of this object'
+	}!#
+	Bike.Object.clone = func clone() {
+		var obj = {};
+		obj.prototype = this;
+		return obj;
+	};
+
+	#!{ method: 'Bike.Object.create( *args )',
+		summary: 'Clones an object using this object as a prototype and invokes
+				initialize on the newly created object',
+		params: {
+			'*args': 'The arguments to invoke initialize()'
+		},
+		ret: 'A cloned and initialized object'
+	}!#
+	Bike.Object.create = func create( *args ) {
+		var obj = this.clone();
+		obj.initialize( *args );
+		return obj;
+	};
+
+	#!{ method: 'Bike.Object.super( method, *args )',
+		summary: 'Invokes a method of the prototype of this object',
+		params: {
+			method: {
+				type: 'Bike.String',
+				desc: 'The name of the method to be invoked',
+			},
+			'*args': 'The arguments for {method}'
+		},
+		ret: 'The returned value of the method'
+	}!#
+	Bike.Object.super = func super( method, *args ) {
+		return this.prototype[ method ].call( this, *args );
+	};
+
+	#!{ method: 'Bike.Object.member_if_exist( member, defaultValue, recursive )',
+		summary: 'Gets the value of a member, whose name is specified, if it exists',
+		params: {
+			member: {
+				type: 'Bike.String',
+				desc: 'The name of the member whose value is to be retrieved',
+			},
+			defaultValue: 'The default value if {member} does not exist',
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Whether to search up the hierarchy or not',
+			}
+		},
+		ret: 'The value of {member} if it exists.'
+	}!#
+	Bike.Object.member_if_exist = func member_if_exist( member, defaultValue, recursive ) {
+		var members = this.members( recursive );
+		return members.has( member ) ? this[ member ] : defaultValue;
+	};
+
+	#!{ method: 'Bike.Object.has_member( member, recursive )',
+		summary: 'Determines whether this contains a certain member',
+		params: {
+			member: {
+				type: 'Bike.String',
+				desc: 'The name of the member to be check for existance',
+			},
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Whether to search up the hierarchy or not',
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if this object contains the member'
+		}
+	}!#
+	Bike.Object.has_member = func has_member( member, recursive ) {
+		recursive ||= false;
+		return this.members( recursive ).has( member );
+	};
+
+	#!{ method: 'Bike.Object.remove_member( member )',
+		summary: 'Removes a member from this object',
+		params: {
+			member: {
+				type: 'Bike.String',
+				desc: 'The name of the member to remove',
+			},
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Whether to search up the hierarchy or not',
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the member is removed successfully'
+		}
+	}!#
+	Bike.Object.remove_member = func remove_member( member ) {
+		return this.__members.Remove( member );
+	};
+
+	#!{ method: 'Bike.Object.members( recursive, exclude_prototype )',
+		summary: 'Retrieves an array of member names',
+		params: {
+			recursive: {
+				type: 'Bike.Boolean',
+				desc: 'Whether to search up the hierarchy or not',
+			},
+			exclude_prototype: {
+				type: 'Bike.Boolean',
+				desc: 'Whether to exclude the prototype object from the result array or not',
+			},
+		},
+		ret: {
+			type: 'Bike.Array',
+			desc: 'An array of member names'
+		}
+	}!#
+	Bike.Object.members = func members( recursive, exclude_prototype ) { 
+		recursive ||= false;
+		exclude_prototype ||= false;
+		var members = [];
+		var obj = this;
+		while ( obj != null ) {
+			for ( var member in obj ) {
+				if ( exclude_prototype && member == 'prototype' ) 
+					next;
+				members.add( member );
+			}
+			if ( !recursive )
+				break;
+			obj = obj.prototype;
+		}
+		return members.distinct();
+	};
+
+	#!{ method: 'Bike.Object.wait',
+		summary: 'Makes current thread acquire this object'
+	}!#
+	Bike.Object.wait = func wait() {
+		System.Threading.Monitor.Wait( this );
+	};
+
+	#!{ method: 'Bike.Object.notify',
+		summary: 'Notify a waiting thread'
+	}!#
+	Bike.Object.notify = func notify() {
+		System.Threading.Monitor.Pulse( this );
+	};
+
+	#!{ method: 'Bike.Object.notify_all',
+		summary: 'Notify all waiting threads'
+	}!#
+	Bike.Object.notify_all = func notify_all() {
+		System.Threading.Monitor.PulseAll( this );
+	};
+
+	#!{ method: 'Bike.Object.sync',
+		summary: 'Synchronizes access to a block of code using the intrinsic 
+				lock of this object',
+		params: {
+			fn: {
+				type: 'Bike.Function',
+				desc: 'The function to be executed in the sync context'
+			}
+		}
+	}!#
+	Bike.Object.sync = func sync( fn ) {
+		this.acquire();
+		try {
+			fn();
+		} finally {
+			this.release();
+		}
+	};
+
+	#!{ method: 'Bike.Object.acquire',
+		summary: 'Acquires the intrinsic lock of this object'
+	}!#
+	Bike.Object.acquire = func acquire() {
+		System.Threading.Monitor.Enter( this );
+	};
+
+	#!{ method: 'Bike.Object.try_acquire',
+		summary: 'Tries to acquire the intrinsic lock of this object',
+		params: {
+			millis: {
+				type: 'Bike.Number',
+				desc: 'The milliseconds to wait for the acquisition.  
+					   If 0 or not specified, return immediately.'
+			}
+		},
+		ret: {
+			type: 'Bike.Boolean',
+			desc: 'True if the lock was successfully acquired.'
+		}
+	}!#
+	Bike.Object.try_acquire = func try_acquire( millis ) {
+		if ( millis == null )
+			return System.Threading.Monitor.TryEnter( this );
+		return System.Threading.Monitor.TryEnter( this, millis );
+	};
+
+	#!{ method: 'Bike.Object.release',
+		summary: 'Releases the intrinsic lock of this object'
+	}!#
+	Bike.Object.release = func release() {
+		System.Threading.Monitor.Exit( this );
+	};
+})();
