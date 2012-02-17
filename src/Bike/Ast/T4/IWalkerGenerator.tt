@@ -1,0 +1,14 @@
+﻿<#@ include file="NodeFileNamesGenerator.tt" #>
+namespace Bike.Ast {
+	public interface IWalker {
+		<# 
+		var fileNames = GetNoneAbstractClassesFileNames();
+		foreach (var fileName in fileNames)
+		{
+		#>	
+		object Walk(<#= fileName #> node);
+		<# 
+		} 
+		#>
+	}
+}

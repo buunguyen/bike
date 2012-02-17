@@ -1,0 +1,19 @@
+﻿<#@ include file="NodeFileNamesGenerator.tt" #>
+// Generated code: copy content of this to Walker.cs
+/*
+<# 
+var fileNames = GetNoneAbstractClassesFileNames();
+foreach (var fileName in fileNames)
+{
+#>	
+public object Walk(<#= fileName #> node) {	
+	if (Enter(node)) {
+		// Insert code here
+	}
+	Exit(node);
+	return null;
+}
+<# 
+} 
+#>
+*/

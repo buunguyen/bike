@@ -1,0 +1,35 @@
+﻿TODO
+Resolution
+- Use -paths (optional) for all paths
+- If can't find core.bk in any search paths, use relative from bike.exe (../src/lib)
+- -paths go to $PATHS, which is modified in bike
+- When searching a file, search right-to-left parent to sub
+- Need no env var
+- Remove all location reference in DEBUG build (set -paths) and Test project (set $PATH explicitly)
+
+Features
+- Bitwise operator & |
+- f(<TypeDesc>a, <TypeDesc>b);
+	how about: f({'type': a, 'type': b})? -> seems good
+	or using names: f({param_name: a})?
+- throw vs throw e;
+- Operator overloading (currently == for equals)
+- load: should load into global frame?
+	require
+- Hosting API 
+	Invoke BikeObject from .NET, wrapped in a DynamicObject? 
+	Adjust Visibility of classes & members
+
+Type system
+- var so = System.Object; list<so> instead of list<System.Object>
+- Interop with .NET collections: DONE -- to be tested 
+- ref/out/nullable/optional parameters...
+- Array marshalling: maintain values
+- Nested classes
+- Support structs
+
+Optimization
+- Parser, memoize?
+- Tree optimization?
+- Interpreter optimization?
+- Tail call optimization

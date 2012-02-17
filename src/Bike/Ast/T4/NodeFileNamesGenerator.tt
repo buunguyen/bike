@@ -1,0 +1,52 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+ 
+	private static string[] ExclusionFileNames = 
+	{
+		"IWalker",
+		"NodeWalker"
+	};
+	
+	private static string[] AbstractClassesFileNames = 
+	{
+		"Node",
+		"Declaration", 
+		"Statement", 
+		"ExprNode", 
+	};
+	
+	private List<string> GetAbstractClassesFileNames() 
+	{
+		return AbstractClassesFileNames.ToList();
+	}
+	
+	private List<string> GetNoneAbstractClassesFileNames() 
+	{
+		return GetFileNames().Except(AbstractClassesFileNames).ToList();
+	}
+	
+	private List<string> GetFileNames()
+	{
+		var dir = System.IO.Path.GetDirectoryName(Host.TemplateFile);
+		var parent = Directory.GetParent(dir).FullName;
+		var fileNames = new List<string>();
+		GetFileNames(fileNames, parent);
+	 	return fileNames.Except(ExclusionFileNames)
+						.Except(fileNames.Where(name => name.Contains("Generator")))
+						.ToList();
+	}
+	
+	private void GetFileNames(List<string> fileNames, string dir)
+	{
+		fileNames.AddRange(from file in Directory.GetFiles(dir, "*.cs")
+						   select Path.GetFileNameWithoutExtension(file));
+		var dirs = Directory.GetDirectories(dir);
+		foreach (var subDir in dirs)
+		{
+			GetFileNames(fileNames, subDir);	 
+		}
+	}
+#>

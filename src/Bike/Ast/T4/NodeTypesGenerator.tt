@@ -1,0 +1,12 @@
+﻿<#@ include file="NodeFileNamesGenerator.tt" #>
+// Generated code
+namespace Bike.Ast {
+	public enum NodeType {
+	<# 
+	var fileNames = GetFileNames();
+	foreach (var fileName in fileNames)
+	{
+		#><#= fileName #>,	
+	<# } #>
+	}
+}

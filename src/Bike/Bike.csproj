@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6B9D2DE6-168F-47E9-BF3E-6EA3A224B058}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bike</RootNamespace>
+    <AssemblyName>Bike.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ast\Declarations\FormalParameter.cs" />
+    <Compile Include="Ast\Expressions\AdditiveExpression.cs" />
+    <Compile Include="Ast\Expressions\Argument.cs" />
+    <Compile Include="Ast\Expressions\Arguments.cs" />
+    <Compile Include="Ast\Expressions\CallExpression.cs" />
+    <Compile Include="Ast\Expressions\ConditionalExpression.cs" />
+    <Compile Include="Ast\Expressions\EqualityExpression.cs" />
+    <Compile Include="Ast\Expressions\ExecExpression.cs" />
+    <Compile Include="Ast\Expressions\ExprNode.cs" />
+    <Compile Include="Ast\Expressions\IndexSuffix.cs" />
+    <Compile Include="Ast\Expressions\LeftAssignmentExpression.cs" />
+    <Compile Include="Ast\Expressions\AndExpression.cs" />
+    <Compile Include="Ast\Expressions\MultiplicativeExpression.cs" />
+    <Compile Include="Ast\Expressions\OrExpression.cs" />
+    <Compile Include="Ast\Expressions\MemberExpression.cs" />
+    <Compile Include="Ast\Expressions\PropertyReferenceSuffix.cs" />
+    <Compile Include="Ast\Expressions\RelationalExpression.cs" />
+    <Compile Include="Ast\Expressions\TypeDescriptor.cs" />
+    <Compile Include="Ast\Expressions\TypeDescriptorSuffix.cs" />
+    <Compile Include="Ast\Literals\ArrayLiteral.cs" />
+    <Compile Include="Ast\Literals\ObjectLiteral.cs" />
+    <Compile Include="Ast\Statements\BreakStatement.cs" />
+    <Compile Include="Ast\Statements\CaseClause.cs" />
+    <Compile Include="Ast\Statements\LoadStatement.cs" />
+    <Compile Include="Ast\Statements\RescueClause.cs" />
+    <Compile Include="Ast\Expressions\SelfExpression.cs" />
+    <Compile Include="Ast\Statements\SwitchStatement.cs" />
+    <Compile Include="Ast\Declarations\Declaration.cs" />
+    <Compile Include="Ast\Statements\EmptyStatement.cs" />
+    <Compile Include="Ast\Expressions\Expression.cs" />
+    <Compile Include="Ast\Statements\ExpressionStatement.cs" />
+    <Compile Include="Ast\Statements\ForInStatement.cs" />
+    <Compile Include="Ast\Declarations\FunctionDeclaration.cs" />
+    <Compile Include="Ast\Expressions\FunctionExpression.cs" />
+    <Compile Include="Ast\Expressions\Identifier.cs" />
+    <Compile Include="Ast\Statements\IfStatement.cs" />
+    <Compile Include="Ast\Literals\PrimitiveLiteral.cs" />
+    <Compile Include="Ast\Statements\NextStatement.cs" />
+    <Compile Include="Ast\Node.cs" />
+    <None Include="Ast\T4\IWalkerGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IWalkerGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\WalkerTemplateGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WalkerTemplateGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\EnterForWalkerGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EnterForWalkerGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\NodeFileNamesGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeFileNamesGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\NodeTypeForNodeGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeTypeForNodeGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\NodeTypesGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeTypesGenerator.cs</LastGenOutput>
+    </None>
+    <None Include="Ast\T4\NodeAcceptGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>NodeAcceptGenerator.cs</LastGenOutput>
+    </None>
+    <Compile Include="Ast\Statements\ReturnStatement.cs" />
+    <Compile Include="Ast\SourceElements.cs" />
+    <Compile Include="Ast\SourceUnitTree.cs" />
+    <Compile Include="Ast\Statements\Statement.cs" />
+    <Compile Include="Ast\Statements\StatementBlock.cs" />
+    <Compile Include="Ast\Statements\ThrowStatement.cs" />
+    <Compile Include="Ast\Statements\TryStatement.cs" />
+    <Compile Include="Ast\Declarations\VariableDeclaration.cs" />
+    <Compile Include="Ast\Statements\VariableStatement.cs" />
+    <Compile Include="Ast\Statements\WhileStatement.cs" />
+    <Compile Include="Ast\Expressions\UnaryExpression.cs" />
+    <Compile Include="Ast\T4\IWalkerGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IWalkerGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\NodeAcceptGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NodeAcceptGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\WalkerTemplateGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WalkerTemplateGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\EnterForWalkerGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnterForWalkerGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\NodeFileNamesGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NodeFileNamesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\NodeTypeForNodeGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NodeTypeForNodeGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Ast\T4\NodeTypesGenerator.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NodeTypesGenerator.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Hosting\Engine.cs" />
+    <Compile Include="Interpreter\Builtin\BikeArray.cs" />
+    <Compile Include="Interpreter\Builtin\BikeBoolean.cs" />
+    <Compile Include="Interpreter\Builtin\BikeFunction.cs" />
+    <Compile Include="Interpreter\Builtin\BikeNumber.cs" />
+    <Compile Include="Interpreter\Builtin\BikeObject.cs" />
+    <Compile Include="Interpreter\Builtin\BikeString.cs" />
+    <Compile Include="Interpreter\Cache.cs" />
+    <Compile Include="Interpreter\Context\BikeImportContext.cs" />
+    <Compile Include="Interpreter\Context\ClrImportContext.cs" />
+    <Compile Include="Interpreter\Context\ImportContext.cs" />
+    <Compile Include="Interpreter\Interpreter.Assignment.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Interpreter.Interop.Conversion.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Interpreter.Invocation.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Interpreter.Operator.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Break.cs">
+      <DependentUpon>ControlFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\ControlFlow.cs" />
+    <Compile Include="Interpreter\Context\InterpretationContext.cs" />
+    <Compile Include="Interpreter\Interpreter.Interop.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Interpreter.StaticHelper.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\InterpreterException.cs" />
+    <Compile Include="Interpreter\Next.cs">
+      <DependentUpon>ControlFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Return.cs">
+      <DependentUpon>ControlFlow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Scope\ScopeStack.cs" />
+    <Compile Include="Interpreter\Interpreter.cs" />
+    <Compile Include="Interpreter\Scope\IScope.cs" />
+    <Compile Include="Interpreter\Scope\ScopeFrame.cs" />
+    <Compile Include="Parser\BacktrackParser.cs" />
+    <Compile Include="Parser\Lexer.cs" />
+    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Parser\ParseException.cs" />
+    <Compile Include="Parser\SourceLocation.cs" />
+    <Compile Include="Parser\Token.cs" />
+    <Compile Include="Parser\TokenType.cs" />
+    <Compile Include="Ast\NodeWalker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Grammar\References\Csharp.g" />
+    <None Include="Grammar\References\EcmaScript.g" />
+    <None Include="Grammar\References\Java.g" />
+    <None Include="Grammar\References\JavaScript.g" />
+    <None Include="Grammar\References\Python.g" />
+    <None Include="Grammar\References\Ruby.g" />
+    <Compile Include="Interpreter\Interpreter.Interop.Callback.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interpreter\Interpreter.Interop.Number.cs">
+      <DependentUpon>Interpreter.cs</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <Compile Include="Interpreter\Builtin\ErrorFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Bike.ruleset" />
+    <None Include="Grammar\Bike.g" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Grammar\Features.txt" />
+    <Content Include="Grammar\np.xml" />
+    <Content Include="Grammar\References\hotruby.js" />
+    <Content Include="Grammar\References\_.txt" />
+    <Content Include="Grammar\Scope Rules.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Fasterflect\Fasterflect\Fasterflect\Fasterflect.csproj">
+      <Project>{FDF54936-A188-45B1-B482-632DA23DB0B0}</Project>
+      <Name>Fasterflect</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

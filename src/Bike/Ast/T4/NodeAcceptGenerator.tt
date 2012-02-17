@@ -1,0 +1,39 @@
+﻿<#@ include file="NodeFileNamesGenerator.tt" #>
+// Generated code
+namespace Bike.Ast {
+    using System;
+    using Parser;
+    using Interpreter;
+    using Interpreter.Builtin;
+	
+	partial class Node { 
+		public abstract object Accept(IWalker walker);
+	}
+	<#
+	var fileNames = GetNoneAbstractClassesFileNames();
+	foreach (var fileName in fileNames)
+	{
+	#>
+	
+	partial class <#= fileName #> { 
+		public override object Accept(IWalker walker) {
+			if (InterpretationContext.Instance != null)
+				InterpretationContext.Instance.CurrentLocation = Token.Location;
+			try {
+				return walker.Walk(this);
+            }
+            catch (Exception e)
+            {
+                if (e is ParseException || 
+					e is BikeObject ||
+					e is ControlFlow)
+                    throw;
+                // throw;
+				throw ErrorFactory.CreateClrError(e);
+            }
+		}
+	}
+	<#	 
+	}
+#>
+}

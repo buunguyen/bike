@@ -1,0 +1,28 @@
+﻿<#@ include file="NodeFileNamesGenerator.tt" #>
+// Generated code
+namespace Bike.Ast {
+<# 
+	var fileNames = GetFileNames();
+	foreach (var fileName in fileNames)
+	{
+	#>
+	
+	partial class <#= fileName #> { 
+		public <#= WriteModifier(fileName) #> NodeType NodeType {
+			get { return NodeType.<#= fileName #>; }
+		}
+	}
+	<#	 
+	}
+#>
+}
+
+<#+ 
+	private string WriteModifier(string fileName)
+	{
+		if (fileName == "Node")
+			return "virtual";
+		else
+			return "override";
+	}
+#>

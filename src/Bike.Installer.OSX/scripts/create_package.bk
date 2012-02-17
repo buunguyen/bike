@@ -1,0 +1,48 @@
+load 'file.bk';
+
+var fs = Bike.FileSystem;
+var combine = fs.combine_path;
+
+var INSTALLER = fs.current_dir();
+var PACKAGE = combine(INSTALLER, '../bike');
+var LIBRARY = combine(INSTALLER, '../../../../Library');
+var DLLS = combine(INSTALLER, '../../Bike.Console/bin/Release');
+
+func create() {
+	# Creates folder structure
+	if (fs.dir_exists(PACKAGE))
+		fs.delete_dir(PACKAGE, true);
+	fs.create_dir(PACKAGE);
+	fs.create_dir(combine(PACKAGE, 'resources'));
+	fs.create_dir(combine(PACKAGE, 'root/usr/local/bin'));
+	fs.create_dir(combine(PACKAGE, 'root/Applications/bike/bin'));
+	fs.create_dir(combine(PACKAGE, 'root/Applications/bike/lib'));
+	fs.create_dir(combine(PACKAGE, 'root/Applications/bike/samples'));
+	
+	# Copies license to both places
+	fs.copy_file(combine(LIBRARY, 'LICENSE'), 
+				 combine(PACKAGE, 'resources/license.rtf'));
+	fs.copy_file(combine(LIBRARY, 'LICENSE'), 
+				 combine(PACKAGE, 'root/Applications/bike/LICENSE'));
+	
+	# Copies executable to search path
+	fs.copy_file(combine(LIBRARY, 'installers/osx/bike.sh'),
+				 combine(PACKAGE, 'root/usr/local/bin/bike.sh'), false, true);
+							
+	# Copies scripts and binaries
+	fs.copy_dir(combine(LIBRARY, 'installers/osx'), 
+				combine(PACKAGE, 'root/Applications/bike/bin'), false, true);
+	fs.copy_dir(DLLS, 	
+				combine(PACKAGE, 'root/Applications/bike/bin'), false, true);
+				
+	# Copies samples
+	fs.copy_dir(combine(LIBRARY, 'samples'), 	
+				combine(PACKAGE, 'root/Applications/bike/samples'), false, true);
+				
+	# Copies lib (including doc and src)
+	fs.copy_dir(combine(LIBRARY, 'lib'), 	
+				combine(PACKAGE, 'root/Applications/bike/lib'), false, true);
+};
+
+create();
+println('Package created successfully...');
