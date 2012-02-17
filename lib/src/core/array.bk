@@ -1,4 +1,4 @@
-(func() {
+(func() { 
 	#!{ object: 'Bike.Array',
 		summary: 'The prototype of all arrays in the system'
 	}!#

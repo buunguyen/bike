@@ -11,4 +11,5 @@ load 'logger_test.bk';
 load 'regex_test.bk';
 load 'stopwatch_test.bk';
 load 'thread_test.bk';
+load 'datetime.bk';
 load 'http_test.bk';

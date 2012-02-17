@@ -10,7 +10,7 @@ h1. Interpreted language built on .NET/Mono
 
 h1. Install Bike on Mac OSX
 
-* Prerequisite: Mono 2.10.2 (I haven't tested with earlier versions)
+* Prerequisite: Mono 2.10.2 (not tested yet with earlier versions)
 * Download @bike.pkg@ in @installers/osx@
 * Run @bike.pkg@ to install Bike
 * Open the Terminal and type the followings

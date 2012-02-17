@@ -1,0 +1,151 @@
+<html>
+<head>
+	<title>datetime.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.DateTime">Bike.DateTime</a></h1><br />The object represents for date and time in system.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.DateTime.day</td>
+	<td>
+		<div>Type: Bike.Number<br />The day number in a month. Starts from 1 to 31.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.month</td>
+	<td>
+		<div>Type: Bike.Number<br />The month number in a year. Starts from 1 to 12.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.year</td>
+	<td>
+		<div>Type: Bike.Number<br />The year number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.hour</td>
+	<td>
+		<div>Type: Bike.Number<br />The hour number in a day. Starts from 0 to 23.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.minute</td>
+	<td>
+		<div>Type: Bike.Number<br />The minute number in an hour. Starts from 0 to 59.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.second</td>
+	<td>
+		<div>Type: Bike.Number<br />The second number in a minute. Starts from 0 to 59.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.millisecond</td>
+	<td>
+		<div>Type: Bike.Number<br />The millisecond number in a second. Starts from 0 to 999.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.ticks</td>
+	<td>
+		<div>Type: Bike.Number<br />A date and time expressed in the number of 100-nanosecond intervals that have elapsed since January 1, 0001 at 00:00:00.000.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.day_of_week</td>
+	<td>
+		<div>Type: Bike.Number<br />The day of week of this object. 0 is Sunday, 1 is Monday and so on.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.day_of_year</td>
+	<td>
+		<div>Type: Bike.Number<br />The day of year of this object.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.DateTime.initialize(  year , month , day , hour , month , second , millisecond )</td>
+	<td>
+		<div>Initializes new Bike.DateTime object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>day</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The day number in a month. Starts from 1 to 31.<br /><i>month</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The month number in a year. Starts from 1 to 12.<br /><i>year</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The year number.<br /><i>hour</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The hour number in a day. Starts from 0 to 23.<br /><i>minute</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The minute number in an hour. Starts from 0 to 59.<br /><i>second</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The second number in a minute. Starts from 0 to 59.<br /><i>millisecond</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The millisecond number in a second. Starts from 0 to 999.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.to_string( format_string )</td>
+	<td>
+		<div>Returns the string representation of this date time object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>format_string</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A string to format the representation string of date time object. Default is null which means showing all day, month, year, hour, minute, second and millisecond.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.String<br />The representation string of this date time object.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_days( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with day value adding given number to day of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of day. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_months( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with month value adding given number to month of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of month. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_years( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with year value adding given number to year of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of year. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_hours( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with hour value adding given number to hour of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of hour. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_Minutes( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with minute value adding given number to minute of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of minute. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.add_seconds( value )</td>
+	<td>
+		<div>Returns new Bike.DateTime object with second value adding given number to second of this object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>value</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Number of second. It could be negative or positive.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />New Bike.DateTime object with updated value.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.from_ticks( ticks )</td>
+	<td>
+		<div>Initializes a new Bike.DateTime object with a specified number of ticks.</div>
+		<div><br /><strong>Parameters</strong><br /><i>ticks</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A date and time expressed in the number of 100-nanosecond intervals that have elapsed since January 1, 0001 at 00:00:00.000.<br /></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />The Bike.DateTime object from the tick number.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.DateTime.now( )</td>
+	<td>
+		<div>Initializes a new Bike.DateTime object with current date and time.</div>
+		<div></div>
+		<div><br /><strong>Return Value</strong><br />Type: Bike.DateTime<br />The Bike.DateTime object with current date and time.</div>
+	</td>
+</tr>
+</table>
+</body>
+</html>

@@ -27,8 +27,9 @@ Bike.FileSystem = {
 		exts ||= [];
 		recursive ||= false;
 		if ( Bike.String.is_empty( path ) || fn == null ) {
-			throw Bike.ArgumentError.create();
+			throw Bike.ArgumentNullError.create();
 		}
+		
 		if ( Bike.FileSystem.file_exists( path ) ) {
 			if ( exts.size() == 0 || exts.has( System.IO.Path.GetExtension( path ) ) ) {
 				fn( path );
@@ -37,6 +38,7 @@ Bike.FileSystem = {
 			if ( !Bike.FileSystem.dir_exists( path ) ) {
 				throw Bike.ArgumentError.create( "No such directory" );
 			}
+			
 			var dirInfo = System.IO.DirectoryInfo( path );
 			for ( var fileInfo in dirInfo.GetFiles() ) {
 				Bike.FileSystem.each( fileInfo.FullName, fn, recursive, *exts );
@@ -92,7 +94,7 @@ Bike.FileSystem = {
 		}
 	}!#
 	write: func( path, content ) {
-		Bike.Contract.requires_not_null( content , 'content' );
+		Bike.Contract.requires( !Bike.String.is_empty(content) , 'content' );
 		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
 		System.IO.File.WriteAllText( path, content );
 	},
@@ -111,9 +113,7 @@ Bike.FileSystem = {
 		}
 	}!#
 	dir_exists: func( path ) {
-		if ( Bike.String.is_empty( path ) ) {
-			return false;
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
 		return System.IO.Directory.Exists( path );
 	},
 	
@@ -131,9 +131,7 @@ Bike.FileSystem = {
 		}
 	}!#
 	file_exists: func( path ) {
-		if ( Bike.String.is_empty( path ) ) {
-			return false;
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
 		return System.IO.File.Exists( path );
 	},
 	
@@ -147,9 +145,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	delete_file: func( path ) {
-		if ( Bike.FileSystem.file_exists( path ) ) {
-			System.IO.File.Delete( path );
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.File.Delete( path );
 	},
 	
 	#!{ method: 'Bike.FileSystem.delete_dir( path , recursive )',
@@ -168,9 +165,8 @@ Bike.FileSystem = {
 	}!#
 	delete_dir: func( path, recursive ) {
 		recursive ||= false;
-		if ( Bike.FileSystem.dir_exists( path ) ) {
-			System.IO.Directory.Delete( path, recursive );
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.Directory.Delete(path,recursive);
 	},
 	
 	#!{ method: 'Bike.FileSystem.create_file( path )',
@@ -183,9 +179,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	create_file: func( path ) {
-		if ( !Bike.String.is_empty( path ) ) {
-			System.IO.File.Create( path ).Dispose();
-		}	
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.File.Create( path ).Dispose();
 	},
 	
 	#!{ method: 'Bike.FileSystem.create_dir( path )',
@@ -198,9 +193,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	create_dir: func( path ) {
-		if ( !Bike.String.is_empty( path ) ) {
-			System.IO.Directory.CreateDirectory( path );
-		}	
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		System.IO.Directory.CreateDirectory( path );
 	},
 	
 	#!{ method: 'Bike.FileSystem.copy_file( src_file_name , des_file_name , overwrite )',
@@ -222,11 +216,11 @@ Bike.FileSystem = {
 	}!#
 	copy_file: func( src_file_name , des_file_name , overwrite ) {
 		overwrite ||= false;
-		if ( Bike.FileSystem.file_exists( src_file_name ) ) {
-			if ( !Bike.FileSystem.dir_exists( des_file_name ) && ( !Bike.FileSystem.file_exists( des_file_name ) || overwrite ) ) {
-				System.IO.File.Copy( src_file_name, des_file_name, overwrite );
-			}
-		}		
+		Bike.Contract.requires( !Bike.String.is_empty( src_file_name ) , 'src_file_name' );
+		Bike.Contract.requires( !Bike.String.is_empty( des_file_name ) , 'des_file_name' );
+		Bike.Contract.requires( Bike.FileSystem.file_exists(src_file_name) , 'src_file_name', 'The source file {0} is unavailable'.with(src_file_name) );		
+
+		System.IO.File.Copy( src_file_name, des_file_name, overwrite );
 	},
 	
 	#!{ method: 'Bike.FileSystem.move_dir( src_dir_name, des_dir_name )',
@@ -243,8 +237,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	move_dir: func( src_dir_name , des_dir_name ) {
-		Bike.Contract.requires_not_null( src_dir_name , 'src_dir_name' );
-		Bike.Contract.requires_not_null( des_dir_name , 'des_dir_name' );
+		Bike.Contract.requires( !Bike.String.is_empty( src_dir_name ) , 'src_dir_name' );
+		Bike.Contract.requires( !Bike.String.is_empty( des_dir_name ), 'des_dir_name' );
 		Bike.Contract.requires( Bike.FileSystem.dir_exists( src_dir_name ) , 'src_dir_name' , 'The source directory {0} is unavailable'.with(src_dir_name) );
 		Bike.Contract.requires( !Bike.FileSystem.dir_exists( des_dir_name ) , 'des_dir_name' , 'The destination directory {0} exists'.with(des_dir_name) );
 	
@@ -265,9 +259,11 @@ Bike.FileSystem = {
 		}
 	}!#
 	move_file: func( src_file_name, des_file_name ) {
-		if ( Bike.FileSystem.file_exists( src_file_name ) && !Bike.String.is_empty( des_file_name ) && !Bike.FileSystem.file_exists( des_file_name ) ) {
-			System.IO.File.Move( src_file_name, des_file_name );
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( src_file_name ) , 'src_file_name' );
+		Bike.Contract.requires( !Bike.String.is_empty( des_file_name ) , 'des_file_name' );
+		Bike.Contract.requires( Bike.FileSystem.file_exists(src_file_name) , 'src_file_name', 'The source file {0} is unavailable'.with(src_file_name) );	
+		
+		System.IO.File.Move( src_file_name, des_file_name );
 	},
 	
 	#!{ method: 'Bike.FileSystem.combine_path( *path )',
@@ -309,9 +305,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	get_file_name: func( path ) {
-		if ( !Bike.String.is_empty( path ) ) {
-			return System.IO.Path.GetFileName( path );
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		return System.IO.Path.GetFileName( path );
 	},
 	
 	#!{ method: 'Bike.FileSystem.get_file_extension( path )',
@@ -328,9 +323,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	get_file_extension: func( path ) {
-		if ( !Bike.String.is_empty( path ) ) {
-			return System.IO.Path.GetExtension( path ).sub( 1 );
-		}
+		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
+		return System.IO.Path.GetExtension( path ).sub( 1 );
 	},
 	
 	#!{ method: 'Bike.FileSystem.dir_separator()',
@@ -358,7 +352,7 @@ Bike.FileSystem = {
 		}
 	}!#
 	append: func( path, content ) {
-		Bike.Contract.requires_not_null( content , 'content' );
+		Bike.Contract.requires( !Bike.String.is_empty( content ) , 'content' );
 		Bike.Contract.requires( !Bike.String.is_empty( path ) , 'path' );
 		System.IO.File.AppendAllText( path, content );
 	},
@@ -387,8 +381,8 @@ Bike.FileSystem = {
 	copy_dir: func( src_dir_path , des_dir_path , create_des_dir , overwrite  ) {
 		create_des_dir ||= false;
 		overwrite ||= false;
-		Bike.Contract.requires_not_null( src_dir_path , 'src_dir_path' );
-		Bike.Contract.requires_not_null( des_dir_path , 'des_dir_path' );
+		Bike.Contract.requires( !Bike.String.is_empty( src_dir_path ), 'src_dir_path' );
+		Bike.Contract.requires( !Bike.String.is_empty( des_dir_path ), 'des_dir_path' );
 		Bike.Contract.requires( Bike.FileSystem.dir_exists( src_dir_path ) , 'src_dir_path' , 'The directory {0} is unavailable'.with( src_dir_path ) );
 		Bike.Contract.requires( create_des_dir || Bike.FileSystem.dir_exists( des_dir_path ) , 'des_dir_path' , 'The directory {0} is unavailable. Please create it first or set parameter create_des_dir=True'.with( des_dir_path ) );
 				 
@@ -429,8 +423,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	rename_dir: func( src_dir_path , new_name ) {
-		Bike.Contract.requires_not_null( src_dir_path , 'src_dir_path' );
-		Bike.Contract.requires_not_null( new_name , 'new_name' );
+		Bike.Contract.requires( !Bike.String.is_empty( src_dir_path ) , 'src_dir_path' );
+		Bike.Contract.requires( !Bike.String.is_empty( new_name ), 'new_name' );
 		
 		var dir_info = System.IO.DirectoryInfo( src_dir_path );
 		var base_dir = dir_info.Parent.FullName;
@@ -452,8 +446,8 @@ Bike.FileSystem = {
 		}
 	}!#
 	file_size: func ( file_path ) {
+		Bike.Contract.requires( !Bike.String.is_empty( file_path ), 'file_path' );
 		Bike.Contract.requires( Bike.FileSystem.file_exists( file_path ) , 'file_path' );
-		var file_info = System.IO.FileInfo( file_path );
-		return file_info.Length;
+		return System.IO.FileInfo( file_path ).Length;
 	}
 };

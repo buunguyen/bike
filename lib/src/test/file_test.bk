@@ -3,7 +3,7 @@ load 'unit.bk';
 
 var fs = Bike.FileSystem;
 
-BikeUnit.Batch.create( 'Bike.FileSystem :: Invalid parameters' ).run( func( target ) {
+BikeUnit.Batch.create( 'Bike.FileSystem :: Null parameters' ).run( func( target ) {
 	var unexisting_file_to_test = 'free_to_delete_me.log';
 	var existing_folder_to_test = 'testing_folder';
 	var existing_file_to_test = fs.combine_path( existing_folder_to_test , 'testing_file.tmp' );
@@ -15,29 +15,45 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: Invalid parameters' ).run( func( targ
 	
 	this.should_throw( func() { fs.read(); }, Bike.ArgumentError ); 
 	this.should_throw( func() { fs.read( '' ); }, Bike.ArgumentError );
-	this.should_throw( func() { fs.write(); }, Bike.ArgumentNullError ); 
-	this.should_throw( func() { fs.write( '' ); }, Bike.ArgumentNullError );
+	this.should_throw( func() { fs.write(); }, Bike.ArgumentError ); 
+	this.should_throw( func() { fs.write( '' ); }, Bike.ArgumentError );	
+	this.should_throw( func() { fs.append(); }, Bike.ArgumentError ); 
+	this.should_throw( func() { fs.append( unexisting_file_to_test ); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.write( unexisting_file_to_test ); }, Bike.ArgumentError );
 	
-	this.should_throw( func() { fs.append(); }, Bike.ArgumentNullError ); 
-	this.should_throw( func() { fs.append( unexisting_file_to_test ); }, Bike.ArgumentNullError );
-	this.should_throw( func() { fs.write( unexisting_file_to_test ); }, Bike.ArgumentNullError );
-	this.should_be_false( fs.dir_exists() ); 
-	this.should_be_false( fs.dir_exists( '' ) );
-	this.should_be_false( fs.file_exists() ); this.should_be_false( fs.file_exists( '' ) );
-	this.should_not_throw( func() { fs.delete_file(); fs.delete_file( '' ); } );
-	this.should_not_throw( func() { fs.delete_dir(); fs.delete_dir( '' ); } );
-	this.should_not_throw( func() { fs.create_file(); fs.create_file( '' ); } );
-	this.should_not_throw( func() { fs.create_dir(); fs.create_dir( '' ); } );
-	this.should_not_throw( func() { fs.copy_file( unexisting_file_to_test ); } );
-	this.should_throw( func() { fs.move_dir(); } , Bike.ArgumentNullError );
-	this.should_throw( func() { fs.move_dir( existing_folder_to_test  ); } , Bike.ArgumentNullError );
-	this.should_not_throw( func() { fs.move_file(); fs.move_file( existing_file_to_test ); } );
+	this.should_throw( func() { fs.dir_exists(); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.dir_exists( '' ); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.file_exists( ); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.file_exists( '' ); }, Bike.ArgumentError );
+	
+	this.should_throw( func() { fs.delete_file(); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.delete_file( '' ); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.delete_dir(); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.delete_dir( '' ); }, Bike.ArgumentError );
+	
+	this.should_throw( func() { fs.create_file(); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.create_file( '' ); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.create_dir(); }, Bike.ArgumentError );
+	this.should_throw( func() { fs.create_dir( '' ); }, Bike.ArgumentError );
+	
+	this.should_throw( func() { fs.copy_file(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.copy_file( unexisting_file_to_test ); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.copy_dir(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.copy_dir( existing_folder_to_test ); } , Bike.ArgumentError );
+	
+	this.should_throw( func() { fs.move_dir(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.move_dir( existing_folder_to_test  ); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.move_file(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.move_file( existing_file_to_test ); } , Bike.ArgumentError );
+	
+	this.should_throw( func() { fs.get_file_name(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.get_file_name( '' ); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.get_file_extension(); } , Bike.ArgumentError );
+	this.should_throw( func() { fs.get_file_extension( '' ); } , Bike.ArgumentError );
+	
 	this.should_be_equal( fs.combine_path() , '' );
 	this.should_be_equal( fs.combine_path( existing_folder_to_test ) , existing_folder_to_test );
-	this.should_be_null( fs.get_file_name() );
-	this.should_be_null( fs.get_file_extension() );
 	
-		
 	# Clear up temp folders and files
 	fs.delete_file( unexisting_file_to_test );
 	fs.delete_file( existing_file_to_test );
@@ -58,8 +74,6 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: Copy directory' ).run( func( target )
 	fs.create_dir( existing_folder_path );
 	fs.create_file( existing_file_to_test );
 
-	this.should_throw( func() { fs.copy_dir(); }, Bike.ArgumentNullError ); 
-	this.should_throw( func() { fs.copy_dir( existing_folder_path ); }, Bike.ArgumentNullError ); 
 	this.should_throw( func() { fs.copy_dir( existing_folder_path , unexisting_folder_path , false ); }, Bike.ArgumentError ); 
 	this.should_throw( func() { fs.copy_dir( unexisting_folder_path , existing_folder_path ); }, Bike.ArgumentError ); 
 	
@@ -68,7 +82,6 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: Copy directory' ).run( func( target )
 	this.should_be_true( fs.file_exists( fs.combine_path( unexisting_folder_path , the_file_name ) ) );
 	
 	# Do not overwrite
-
 	this.should_throw( func() { fs.copy_dir( existing_folder_path , unexisting_folder_path ); }, Bike.InvalidOperationError ); 
 	this.should_not_throw( func() { fs.copy_dir( existing_folder_path , unexisting_folder_path , false , true ); } ); 
 	
@@ -96,8 +109,6 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: Rename dir' ).run( func( target ) {
 	fs.delete_dir( unexisting_folder_path );
 	fs.create_dir( existing_folder_path );
 	
-	this.should_throw( func() { fs.rename_dir(); }, Bike.ArgumentNullError ); 
-	this.should_throw( func() { fs.rename_dir( existing_folder_path ); }, Bike.ArgumentNullError ); 
 	this.should_throw( func() { fs.rename_dir( existing_folder_path , existing_folder_to_test ); }, Bike.ArgumentError ); 
 	
 	this.should_be_false( fs.dir_exists( unexisting_folder_path ) );
@@ -123,6 +134,7 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: File creation' ).run( func( target ) 
 	fs.delete_file( tmpFile2_new_name );
 	
 	this.should_be_false( fs.file_exists( tmpFile1 ) );
+	this.should_not_throw( func() { fs.delete_file( tmpFile1 ); } );
 	fs.create_file( tmpFile1 );
 	this.should_be_true( fs.file_exists( tmpFile1 ) );	
 	this.should_be_false( fs.file_exists( tmpFile2 ) );
@@ -182,6 +194,8 @@ BikeUnit.Batch.create( 'Bike.FileSystem :: Dir creation test' ).run( func( targe
 	fs.delete_dir( dir );
 	
 	this.should_be_false( fs.dir_exists( dir ) );
+	this.should_not_throw( func() { fs.delete_dir( dir ); } );
+	
 	fs.create_dir( dir );
 	fs.create_dir( subDir1 );
 	this.should_be_true( fs.dir_exists( dir ) );

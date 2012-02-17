@@ -1,0 +1,95 @@
+<html>
+<head>
+	<title>logger.bk</title>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<body>
+<h1><a name="Bike.Logger">Bike.Logger</a></h1><br />The util object for logging purpose.<br /><br /><div class="header_group">Fields</div><div><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Logger.DEBUG</td>
+	<td>
+		<div>Type: Bike.Number<br />Indicates the level for logging message is DEBUG.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.INFO</td>
+	<td>
+		<div>Type: Bike.Number<br />Indicates the level for logging message is INFO.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.WARN</td>
+	<td>
+		<div>Type: Bike.Number<br />Indicates the level for logging message is WARN.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.ERROR</td>
+	<td>
+		<div>Type: Bike.Number<br />Indicates the level for logging message is ERROR.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.level</td>
+	<td>
+		<div>Type: Bike.Number<br />The level for logging message of this object. Bike.Logger.DEBUG by default.</div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.datetime_format</td>
+	<td>
+		<div>Type: Bike.String<br />The format string to represent the date object in final log message.</div>
+	</td>
+</tr>
+</table><div class="header_group">Methods</div><div class="hr"><hr /></div><table>
+							<tr><th class="column_1">Name</th><th>Description</th></tr><tr>
+	<td class="name">Bike.Logger.initialize(  log_file_name , level , create_log_file  )</td>
+	<td>
+		<div>Initializes new Bike.Logger object.</div>
+		<div><br /><strong>Parameters</strong><br /><i>log_file_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Path to log file.<br /><i>level</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Number<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The level of logging message e.g. Bike.Logger.DEBUG. The priority of level: DEBUG < INFO < WARN < ERROR. Default is Bike.Logger.DEBUG which records all levels.<br /><i>create_log_file</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.Boolean<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Indicates to automatically create the log file if it doesn' exist. False if not indicated.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.formatter (  date_time , level_name , message )</td>
+	<td>
+		<div>A Bike.Function() to create the log message.</div>
+		<div><br /><strong>Parameters</strong><br /><i>date_time</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.DateTime<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The moment when the log message is written.<br /><i>level_name</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The representation text of level e.g. DEBUG, INFO.<br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The log message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.debug(  message )</td>
+	<td>
+		<div>Write the <i>message</i> with Bike.Logger.DEBUG level.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The log message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.info(  message )</td>
+	<td>
+		<div>Write the <i>message</i> with Bike.Logger.INFO level.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The log message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.warn(  message )</td>
+	<td>
+		<div>Write the <i>message</i> with Bike.Logger.WARN level.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The log message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+<tr>
+	<td class="name">Bike.Logger.error(  message )</td>
+	<td>
+		<div>Write the <i>message</i> with Bike.Logger.ERROR level.</div>
+		<div><br /><strong>Parameters</strong><br /><i>message</i><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type: Bike.String<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The log message.<br /></div>
+		<div></div>
+	</td>
+</tr>
+</table>
+</body>
+</html>
