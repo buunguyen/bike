@@ -1,5 +1,4 @@
-﻿TODO
-Resolution
+﻿Resolution
 - Use -paths (optional) for all paths
 - If can't find core.bk in any search paths, use relative from bike.exe (../src/lib)
 - -paths go to $PATHS, which is modified in bike
@@ -22,7 +21,6 @@ Features
 
 Type system
 - var so = System.Object; list<so> instead of list<System.Object>
-- Interop with .NET collections: DONE -- to be tested 
 - ref/out/nullable/optional parameters...
 - Array marshalling: maintain values
 - Nested classes
