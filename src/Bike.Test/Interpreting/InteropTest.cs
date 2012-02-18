@@ -7,6 +7,7 @@
     [TestFixture]
     public class InteropTest : BaseInterpreterTest
     {
+
         [Test]
         public void Generics()
         {
