@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Fasterflect">
-      <HintPath>..\packages\fasterflect.2.0.1\Fasterflect.dll</HintPath>
+    <Reference Include="Fasterflect, Version=2.0.4429.39723, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\fasterflect.2.0.2\lib\net40\Fasterflect.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -224,8 +225,8 @@
     <Compile Include="Interpreter\Interpreter.Interop.Number.cs">
       <DependentUpon>Interpreter.cs</DependentUpon>
     </Compile>
-    <None Include="packages.config" />
     <Compile Include="Interpreter\Builtin\ErrorFactory.cs" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Bike.ruleset" />
