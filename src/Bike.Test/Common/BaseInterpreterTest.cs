@@ -13,7 +13,7 @@
         protected void Initialize()
         {
             //string home = @"/Users/buunguyen/Documents/Projects/Personal/Bike/Library";
-			string home = @"C:\Users\Buu\Documents\Projects\Bike\Library";
+			string home = @"C:\Users\Buu\Documents\Projects\Bike\";
             context = InterpretationContext.StartInterpretation(home, null, null);
         }
 
