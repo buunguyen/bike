@@ -1,0 +1,24 @@
+﻿global: current: new ScopeFrame
+
+func f(args) { // .boundScope = current, i.e. global
+	func f2() { // f2.boundScope = current, i.e. f
+		func f3() { // f3.boundScope = current, i.e. f2
+			f3(); // new ScopeFrame(boundArgs, f3.boundScope)
+		}
+	}
+	return f2;
+} 
+
+f2 = f(); // current = new ScopeFrame(boundArgs, f.boundScope)
+f2(); // current = new ScopeFrame(boundArgs, f2.boundScope)
+
+
+var obj = {x: 1};
+obj.func = func() {
+	return this.x; 
+}
+obj.func(); // 1
+
+var obj2 = {x: 2};
+obj2.f = obj.func;
+obj2.f(); // 2

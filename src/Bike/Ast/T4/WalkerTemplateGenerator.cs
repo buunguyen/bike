@@ -162,14 +162,6 @@ public object Walk(MultiplicativeExpression node) {
 	return null;
 }
 	
-public object Walk(NewExpression node) {	
-	if (Enter(node)) {
-		// Insert code here
-	}
-	Exit(node);
-	return null;
-}
-	
 public object Walk(OrExpression node) {	
 	if (Enter(node)) {
 		// Insert code here
