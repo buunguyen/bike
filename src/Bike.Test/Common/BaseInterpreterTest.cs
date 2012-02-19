@@ -14,28 +14,26 @@
         [TestFixtureSetUp]
         public void PopulateBikeLibrary()
         {
-            // Copy all embbed .bk source files to physical folder
+            /* 
+             * Copy all embed .bk source files to physical temporary folder 
+             */
+
             var namespaceName = this.GetType().Namespace;
             var executingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
             _executingPath = Path.GetDirectoryName(executingAssembly.Location);
-            bool coreFolderCreated = false;
-            string filenamePrefix = string.Empty;
+
             string coreFolderPath = string.Empty;
             string filename = string.Empty;
+
+            // Create temporary folder to put .bk source files
+            coreFolderPath = Path.Combine(_executingPath, "lib/src/core");
+            Directory.CreateDirectory(coreFolderPath);  
+
+            var filenamePrefix = string.Format("{0}.lib.src.core.", namespaceName);
             foreach (var resourceName in this.GetType().Assembly.GetManifestResourceNames())
             {
-                filenamePrefix = string.Format("{0}.lib.src.core.", namespaceName);
-                if (resourceName.Contains(filenamePrefix) && !coreFolderCreated)
-                {
-                    coreFolderPath = Path.Combine(_executingPath, "lib/src/core");
-                    Directory.CreateDirectory(Path.Combine(_executingPath, coreFolderPath));                    
-                    coreFolderCreated = true;
-                }
-
-                // Get the filename
+                // Get the filename for physical file
                 filename = resourceName.Substring(filenamePrefix.Length);
-
-                // Copy file
                 using (var sourceFile = executingAssembly.GetManifestResourceStream(resourceName))
                 using (var desFile = new FileStream(Path.Combine(coreFolderPath, filename), FileMode.CreateNew))
                 {
