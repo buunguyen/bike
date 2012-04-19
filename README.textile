@@ -75,3 +75,8 @@ h1. Contributors
 h1. Copyright
 
 Copyright © 2011 Buu Nguyen and contributors
+
+h1. Contact
+
+* Email: "buunguyen@gmail.com":mailto:buunguyen@gmail.com
+* Twitter: "@buunguyen":http://twitter.com/buunguyen
