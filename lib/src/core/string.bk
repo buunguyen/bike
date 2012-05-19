@@ -346,4 +346,20 @@
 	Bike.String.is_empty = func is_empty( str ) {
 		return ( str || '' ) == '';
 	};
+	
+	#!{ method: 'Bike.String.split( *delimiters )',
+		summary: 'Splits this string with the provided delimiters',
+		params: {
+			'*trim_chars': 'The delimiting strings used to split this string.  If not specified, newline is used'
+		},
+		ret: {
+			type: 'Bike.Array',
+			desc: 'An array of strings'
+		}
+	}!#
+	Bike.String.split = func split( *delimiters ) {
+		return delimiters == null
+			? this.__native.Split( System.Environment.NewLine )
+			: this.__native.Split( *delimiters );
+	};
 })();
