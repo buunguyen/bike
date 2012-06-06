@@ -110,8 +110,9 @@
 		ret: 'The value of {member} if it exists.'
 	}!#
 	Bike.Object.member_if_exist = func member_if_exist( member, defaultValue, recursive ) {
-		var members = this.members( recursive );
-		return members.has( member ) ? this[ member ] : defaultValue;
+		return this.has_member( member, recursive )
+		       ? this[ member ]
+		       : defaultValue;
 	};
 
 	#!{ method: 'Bike.Object.has_member( member, recursive )',
@@ -133,7 +134,15 @@
 	}!#
 	Bike.Object.has_member = func has_member( member, recursive ) {
 		recursive ||= false;
-		return this.members( recursive ).has( member );
+		var obj = this;
+		while ( obj != null ) {
+		  if ( obj.__members.ContainsKey( member ) )
+		    return true;
+			if ( !recursive )
+				break;
+			obj = obj.prototype;
+		}
+		return false;
 	};
 
 	#!{ method: 'Bike.Object.remove_member( member )',

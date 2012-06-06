@@ -65,3 +65,13 @@ BikeUnit.Batch.create( 'String :: Modify' ).run( func() {
 	this.should_be_equal( 'Buu Nguyen a b a '.trim_end( 'a', 'b', ' ' ), 'Buu Nguyen' );
 	this.should_be_equal( ' a b a Buu Nguyen'.trim_start( 'a', 'b', ' ' ), 'Buu Nguyen' );	
 } );
+
+BikeUnit.Batch.create( 'String :: Split' ).run( func() {
+	this.should_be_equal( 'multi lines
+	                       string
+	                       HERE'.split().map(func(s) {s.trim()}), ['multi lines', 'string', 'HERE']);
+ 	this.should_be_equal( 'another<string>here'.split('<', '>'), ['another', 'string', 'here']);	
+  this.should_be_equal( 'another<string>in2lines
+  	                    here'.split(*['<', '>', NL]).map(func(s) {s.trim()}), 
+  	                    ['another', 'string', 'in2lines', 'here']);
+} );

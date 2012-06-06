@@ -238,6 +238,21 @@
 			throw ErrorFactory.CreateError(string.Format("Invalid suffix type {0}", currentSuffix));
 		}
 
+		public object TryInvokeMemberMissing (BikeObject target, string name, out bool success)
+		{
+			var scope = target.FindScopeFor(InterpreterHelper.MemberMissing);
+			if (scope == null)
+			{
+				success = false;
+				return null;
+			}
+			var memberMissingFunc = scope.Members[InterpreterHelper.MemberMissing] as BikeFunction;
+			if (memberMissingFunc == null)
+				throw ErrorFactory.CreateTypeError(InterpreterHelper.MemberMissing + " must be a function");
+			success = true;
+			return CallBikeFunction(memberMissingFunc, scope, new[] { new BikeString(name) });
+		}
+
 		public object CallBikeFunction(BikeFunction function, object self, Arguments arguments)
 		{
 			var argValues = GetArgumentValues(arguments);

@@ -4,6 +4,9 @@ load 'boolean_test.bk';
 load 'number_test.bk';
 load 'array_test.bk';
 load 'function_test.bk';
+
+load 'missing.bk';
+
 load 'file_test.bk';
 load 'uri_test.bk';
 load 'json_test.bk';

@@ -231,8 +231,6 @@
     <None Include="Grammar\Bike.g" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Grammar\Features.txt" />
-    <Content Include="Grammar\np.xml" />
     <Content Include="Grammar\References\hotruby.js" />
     <Content Include="Grammar\References\_.txt" />
     <Content Include="Grammar\Scope Rules.txt" />

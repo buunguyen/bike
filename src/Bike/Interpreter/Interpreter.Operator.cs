@@ -77,7 +77,7 @@
             if (lv is BikeObject)
             {
                 var lbo = (BikeObject) lv;
-                if (lbo.Exist("=="))
+                if (lbo.Exist("==") || lbo.Exist (InterpreterHelper.MemberMissing))
                 {
                     var eq = lbo.Resolve("==");
                     if (eq is BikeFunction)
@@ -99,7 +99,7 @@
             if (obj is BikeObject)
             {
                 var lbo = (BikeObject)obj;
-                if (lbo.Exist("hash_code"))
+                if (lbo.Exist("hash_code") || lbo.Exist (InterpreterHelper.MemberMissing))
                 {
                     var hc = lbo.Resolve("hash_code");
                     if (hc is BikeFunction)
@@ -122,7 +122,7 @@
             {
                 var sb = new StringBuilder();
                 var bo = (BikeObject) obj;
-                if (bo.Exist("to_string"))
+                if (bo.Exist("to_string") || bo.Exist (InterpreterHelper.MemberMissing))
                 {
                     var ts = bo.Resolve("to_string");
                     if (ts is BikeFunction)

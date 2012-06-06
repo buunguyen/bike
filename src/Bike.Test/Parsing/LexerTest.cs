@@ -93,8 +93,12 @@
         {
 			// TODO: \n fails in Mac OSX's Mono
             const string source = "'\\'', '\\\"', '\\\\', '\\b', '\\t', '\\n', '\\f', '\\r'";
-            const string expected = "'\'', '\"', '\\', '\b', '\t', '\n', '\f', '\r'<EOF>";
-            Match(expected, source);
+            const string expected = "'\'', '\"', '\\', '\b', '\t', '\n', '\f', '\r'";
+			var escapeChars = source.Split(',');
+			var parsedEscapeChars = expected.Split(',');
+			for (int i = 0; i < escapeChars.Length; i++) {
+            	Match(parsedEscapeChars[i].Trim() + "<EOF>", escapeChars[i].Trim(), false);
+			}
         }
 
         [Test]
@@ -288,7 +292,7 @@
             Match(expected, source);
         }
 
-        private static void Match(string expected, string source)
+        private static void Match(string expected, string source, bool removeSpaces = true)
         {
             var actual = new StringBuilder();
             var lexer = new Lexer(source);
@@ -319,8 +323,9 @@
                 token = lexer.NextToken();
             }
             actual.Append(token.Text);
-            Assert.AreEqual(expected.Replace(Environment.NewLine, string.Empty).Replace(" ", string.Empty), 
-                            actual.ToString());
+			if (removeSpaces)
+				expected = expected.Replace(Environment.NewLine, string.Empty).Replace(" ", string.Empty);
+            Assert.AreEqual(expected, actual.ToString());
         }
     }
 }

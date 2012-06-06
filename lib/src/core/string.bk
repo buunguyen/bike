@@ -359,7 +359,7 @@
 	}!#
 	Bike.String.split = func split( *delimiters ) {
 		return delimiters == null
-			? this.__native.Split( System.Environment.NewLine )
+			? this.__native.Split( NL )
 			: this.__native.Split( *delimiters );
 	};
 })();

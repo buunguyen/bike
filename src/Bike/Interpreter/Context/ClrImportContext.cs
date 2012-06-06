@@ -20,9 +20,14 @@
         static ClrImportContext()
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                StartupAssemblies.Add(assembly);
-            }
+			{
+#if DEBUG
+				// For some reason, loading NUnit will fail
+				// when running tests in MonoDevelop
+				if (!assembly.FullName.Contains("NUnit"))
+#endif
+                	StartupAssemblies.Add(assembly);
+			}
         }
 
         public ClrImportContext(string coreLibFolder, string addonLibFolders)

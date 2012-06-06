@@ -53,7 +53,14 @@ namespace Bike.Interpreter.Builtin
         {
             var scope = FindScopeFor(name);
             if (scope == null)
-                throw ErrorFactory.CreateNotDefinedError(name);
+			{
+				bool success;
+				var res = InterpretationContext.Instance.Interpreter
+					.TryInvokeMemberMissing(this, name, out success);
+				if (success)
+					return res;
+				throw ErrorFactory.CreateNotDefinedError(name);
+			}
             return scope.Members[name];
         }
 
@@ -63,7 +70,7 @@ namespace Bike.Interpreter.Builtin
             return scope != null;
         }
 
-        private BikeObject FindScopeFor(string name)
+        internal BikeObject FindScopeFor(string name)
         {
             var scope = this;
             while (scope != null && !scope.Members.ContainsKey(name))

@@ -563,6 +563,24 @@
         }
 
         [Test]
+        public void MemberMissing()
+        {
+            Interpret(@"var obj = {
+						  memberMissing: func(name) {
+						    if (name == 'add') {
+						      return func(a, b) { a + b };
+						    }
+						    return 'Member {0} is accessed'.with(name);
+						  }
+						};
+						var a = obj.notExist;
+						var b = obj.add(1, 2);
+						")
+                .Equal("a", "Member notExist is accessed")
+                .Equal("b", 3);
+        }
+
+        [Test]
         public void Switch()
         {
             Interpret(

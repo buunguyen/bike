@@ -65,66 +65,6 @@
     <Compile Include="Common\Person.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\..\lib\src\core\array.bk">
-      <Link>lib\src\core\array.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\boolean.bk">
-      <Link>lib\src\core\boolean.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\contract.bk">
-      <Link>lib\src\core\contract.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\core.bk">
-      <Link>lib\src\core\core.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\datetime.bk">
-      <Link>lib\src\core\datetime.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\error.bk">
-      <Link>lib\src\core\error.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\file.bk">
-      <Link>lib\src\core\file.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\function.bk">
-      <Link>lib\src\core\function.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\global.bk">
-      <Link>lib\src\core\global.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\http.bk">
-      <Link>lib\src\core\http.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\json.bk">
-      <Link>lib\src\core\json.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\logger.bk">
-      <Link>lib\src\core\logger.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\number.bk">
-      <Link>lib\src\core\number.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\object.bk">
-      <Link>lib\src\core\object.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\random.bk">
-      <Link>lib\src\core\random.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\regex.bk">
-      <Link>lib\src\core\regex.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\stopwatch.bk">
-      <Link>lib\src\core\stopwatch.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\string.bk">
-      <Link>lib\src\core\string.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\thread.bk">
-      <Link>lib\src\core\thread.bk</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\..\lib\src\core\uri.bk">
-      <Link>lib\src\core\uri.bk</Link>
-    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

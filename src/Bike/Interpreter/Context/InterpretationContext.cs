@@ -37,7 +37,7 @@
         public static InterpretationContext StartInterpretation(string homePath, string addonLibFolders, string filePath)
         {
             var coreLibFolder = Path.Combine(homePath, "lib/src");
-            var context = new InterpretationContext(coreLibFolder, addonLibFolders);
+			var context = new InterpretationContext(coreLibFolder, addonLibFolders);
             context.Interpreter.Run("core.bk", filePath);
             return context;
         }

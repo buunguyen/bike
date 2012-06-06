@@ -1,0 +1,15 @@
+var obj = {
+  memberMissing: func(name) {
+    if (name == "add") {
+      return func(a, b) { a + b };
+    }
+    return "Member {0} is accessed".with(name);
+  }
+};
+
+println(obj.notExist);
+println(obj.has_member('notExist')); # false
+
+println(obj['not    Exist']);
+
+println(obj.add(1, 2));

@@ -9,6 +9,7 @@
 
     internal static class InterpreterHelper
     {
+		public const string MemberMissing = "memberMissing";
         public const string SpecialSuffix = "__";
 
         public static object ActAndHandleException(Func<object> func, bool onThread = false)

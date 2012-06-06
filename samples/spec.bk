@@ -119,6 +119,22 @@ register( "Object", func() {
 	println( number.get_data() );
 } );
 
+register( "Object - Member Missing", func() {
+  # Bike uses memberMissing, if defined, when it can't resolve a member
+  var obj = {
+    memberMissing: func(name) {
+      if (name == "add") {
+        return func(a, b) { a + b };
+      }
+      return "Member {0} is accessed".with(name);
+    }
+  };
+
+  println(obj.notExist);
+  println(obj['not    Exist']);
+  println(obj.add(1, 2));
+});
+
 register( "Object - Prototypal Inheritance", func() {
 	var person = {
 		initialize: func( name ) {
@@ -184,7 +200,6 @@ register( "Function", func() {
 	println( f() );
 } );
 
-run();
 register( "Function - Optional Return", func() {
 	func fib( n ) {
 		n<=2 ? n : fib( n-1 ) + fib( n-2 );
@@ -490,4 +505,4 @@ register( "Dynamic Evaluation", func() {
 	println( person.name );
 } );
 
-# run_all();
+run_all();
