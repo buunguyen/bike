@@ -17,9 +17,9 @@ I don't update the Mac OSX and Windows installers frequently, except for major r
 * If you use Mac OSX, run <pre>@/usr/bin/mono "[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
 
 bq. Notes:
-* You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
-* NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
-* I will upload a TextMate bundle later
+- You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
+- NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
+- I will upload a TextMate bundle later
 
 h1. Install Bike on Mac OSX
 
@@ -32,8 +32,8 @@ Ctrl-D
 bike.sh hello.bk@</pre>
 
 bq. Notes:
-* If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
-* If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
+- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
+- If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
 
 
 h1. Install Bike on Windows
