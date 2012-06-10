@@ -110,6 +110,7 @@
 		ret: 'The value of {member} if it exists.'
 	}!#
 	Bike.Object.member_if_exist = func member_if_exist( member, defaultValue, recursive ) {
+	  Bike.Contract.requires( member is Bike.String, 'member', 'member must be String' );
 		return this.has_member( member, recursive )
 		       ? this[ member ]
 		       : defaultValue;
@@ -133,6 +134,7 @@
 		}
 	}!#
 	Bike.Object.has_member = func has_member( member, recursive ) {
+	  Bike.Contract.requires( member is Bike.String, 'member', 'member must be String' );
 		recursive ||= false;
 		var obj = this;
 		while ( obj != null ) {
@@ -163,6 +165,7 @@
 		}
 	}!#
 	Bike.Object.remove_member = func remove_member( member ) {
+	  Bike.Contract.requires( member is Bike.String, 'member', 'member must be String' );
 		return this.__members.Remove( member );
 	};
 
