@@ -1,11 +1,10 @@
 func memoize(f) {
   var cache = {
-    memberMissing: func() { null }
+    member_missing: func() { null }
   };
-  var recur = func(n) {
+  return func recur(n) {
     cache[n] || (cache[n] = f(recur, n));
   };
-  return recur;
 }
 
 var fib = func(n) {
