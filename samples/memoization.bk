@@ -1,0 +1,26 @@
+func memoize(f) {
+  var cache = {
+    memberMissing: func() { null }
+  };
+  var recur = func(n) {
+    cache[n] || (cache[n] = f(recur, n));
+  };
+  return recur;
+}
+
+var fib = func(n) {
+  n < 2 ? 1 : fib(n-1) + fib(n-2)
+};
+
+var m_fib = memoize(func(recur, n) {
+  n < 2 ? 1 : recur(n-1) + recur(n-2);
+});
+
+load 'stopwatch.bk';
+var watch = Bike.Stopwatch.create( ).start( );
+println('fib(20) = {0} (elapsed: {1}ms)', fib(20), watch.stop());
+
+watch.reset().start();
+println('m_fib(20) = {0} (elapsed: {1}ms)', m_fib(20), watch.stop()); 
+
+

@@ -46,4 +46,6 @@ var db = {
     }
   }
 };
+
+# SELECT * FROM PRODUCTS WHERE CATEGORYID=1 AND PRICE>1000
 println(db.findProducts({categoryId: 1, price: '>1000'})); 
