@@ -1,5 +1,5 @@
 var obj = {
-  memberMissing: func(name) {
+  member_missing: func(name) {
     return "Member: {0}".with(name);
   }
 };
@@ -9,7 +9,7 @@ println(obj.has_member('notExist')); # False
 
 
 obj = {
-  memberMissing: func(name) {
+  member_missing: func(name) {
     if (name == "add") {
       return func(a, b) { a + b };
     } 
@@ -19,7 +19,7 @@ obj = {
 println(obj.add(1, 2)); # 3
 
 obj = {
-  memberMissing: func(name) {
+  member_missing: func(name) {
     if (name == "cache") {
       return this.cache = func() {};
     }
@@ -30,7 +30,7 @@ obj.cache();
 println(obj.has_member('cache')); # True
 
 var db = { 
-  memberMissing: func(name) {
+  member_missing: func(name) {
     if (name.starts('find')) {
       return db[name] #! cache it !# = func(obj) {
         var sql = 'SELECT * FROM {0}'.with(name.sub(4).upper());
@@ -48,4 +48,4 @@ var db = {
 };
 
 # SELECT * FROM PRODUCTS WHERE CATEGORYID=1 AND PRICE>1000
-println(db.findProducts({categoryId: 1, price: '>1000'})); 
+println(db.findProducts({categoryId: 1, price: '>1000'}));

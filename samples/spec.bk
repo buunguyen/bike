@@ -122,7 +122,7 @@ register( "Object", func() {
 register( "Object - Member Missing", func() {
   # Bike uses memberMissing, if defined, when it can't resolve a member
   var obj = {
-    memberMissing: func(name) {
+    member_missing: func(name) {
       if (name == "add") {
         return func(a, b) { a + b };
       }

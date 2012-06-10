@@ -566,7 +566,7 @@
         public void MemberMissing()
         {
             Interpret(@"var obj = {
-						  memberMissing: func(name) {
+						  member_missing: func(name) {
 						    if (name == 'add') {
 						      return func(a, b) { a + b };
 						    }
