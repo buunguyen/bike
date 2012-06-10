@@ -21,5 +21,3 @@ println('fib(20) = {0} (elapsed: {1}ms)', fib(20), watch.stop());
 
 watch.reset().start();
 println('m_fib(20) = {0} (elapsed: {1}ms)', m_fib(20), watch.stop()); 
-
-
