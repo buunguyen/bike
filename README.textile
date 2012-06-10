@@ -7,21 +7,33 @@ h1. Interpreted language built on .NET/Mono
 * CLR interoperability
 * Cross-platform (Windows, OSX, Linux)
 
+h1. Run Bike
+
+I don't update the Mac OSX and Windows installers frequently, except for major releases. So to access latest features, you should follow these steps: 
+
+* Fork or download code
+* Build (with @VS.NET@ or @MonoDevelop@, if you're on Mac OSX)
+* If you use Windows, run <pre>@[code_folder]/src/Bike.Console/bin/Debug/bike.ex" -h="[code_folder]" bike_file.bk@</pre>
+* If you use Mac OSX, run <pre>@/usr/bin/mono "[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
+
+bq. Notes:
+* You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
+* NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
+* I will upload a TextMate bundle later
 
 h1. Install Bike on Mac OSX
 
 * Prerequisite: Mono 2.10.2 (not tested yet with earlier versions)
 * Download @bike.pkg@ in @installers/osx@
 * Run @bike.pkg@ to install Bike
-* Open the Terminal and type the followings
-<pre>@cat > hello.bk
+* Open the Terminal and type the followings <pre>@cat > hello.bk
 println('Hello World');
 Ctrl-D
 bike.sh hello.bk@</pre>
 
 bq. Notes:
-- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
-- If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
+* If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
+* If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
 
 
 h1. Install Bike on Windows
@@ -74,7 +86,7 @@ h1. Contributors
 
 h1. Copyright
 
-Copyright © 2011 Buu Nguyen and contributors
+Copyright © 2012 Buu Nguyen and contributors
 
 h1. Contact
 
