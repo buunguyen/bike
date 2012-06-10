@@ -32,7 +32,7 @@ println(obj.has_member('cache')); # True
 var db = { 
   memberMissing: func(name) {
     if (name.starts('find')) {
-      return func(obj) {
+      return db[name] #! cache it !# = func(obj) {
         var sql = 'SELECT * FROM {0}'.with(name.sub(4).upper());
         obj.members(false, true).each_with_index(func(name, index) {
           sql += (index == 0 ? ' WHERE ' : ' AND ') + 
