@@ -231,28 +231,25 @@
 		}
 	}!#
 	Bike.Array.sort = func sort( comparer ) {
-		var other = this.copy();
-		comparer ||= func( a, b ) { a.compare_to( b ); };
-		func swap( i, j ) { var tmp = other[ i ]; other[ i ] = other[ j ]; other[ j ] = tmp; }
-		func partition( l, r ) {
-			var i = l-1, j = r, v = other[ r ];
-			while ( true ) { 
-				while ( comparer( other[ ++i ], v ) < 0 ); 
-				while ( comparer( v, other[ --j ] ) < 0 && j > i ); 
-				if ( i >= j ) break; 
-				swap( i, j ); 
+		comparer ||= func( o1, o2 ) { o1.compare_to( o2 ); };
+		func swap( a, i, j ) { var tmp = a[ i ]; a[ i ] = a[ j ]; a[ j ] = tmp; }
+		func partition( a, l, r ) {
+		  var p = a[ (( l + r ) / 2).floor() ];
+		  while (l <= r) {
+				while ( comparer( a[ l ], p ) < 0 ) l++; 
+				while ( comparer( a[ r ], p ) > 0 ) r--; 
+				if ( l <= r ) swap( a, l++, r-- ); 
 			} 
-			swap( i, r ); 
-			return i;
+			return l;
 		}
-		func quick_sort( l, r ) {
-			if ( r <= l ) return; 
-			var i = partition( l, r );
-			quick_sort( l, i - 1 );
-			quick_sort( i + 1, r );
+		func quick_sort( a, l, r ) {
+			if ( l >= r ) return; 
+			var pi = partition( a, l, r );
+			quick_sort( a, l, pi - 1 );
+			quick_sort( a, pi, r );
+			return a;
 		};
-		quick_sort( 0, other.size() - 1 );
-		return other;
+		return quick_sort( this.copy(), 0, this.size() - 1 );
 	};
 
 	#!{ method: 'Bike.Array.copy()',
