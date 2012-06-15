@@ -81,8 +81,8 @@ BikeUnit.Batch.create( 'Array :: Traverse' ).run( func() {
 	
 	sum = 0;
 	var indices = [];
-	this.should_throw( func() { target.each_with_index(); } , Bike.ArgumentNullError );
-	target.each_with_index( func( e, i ) {
+	this.should_throw( func() { target.each(); } , Bike.ArgumentNullError );
+	target.each( func( e, i ) {
 		sum += e;
 		indices.add( i );
 	} );

@@ -183,7 +183,7 @@
 	};
 
 	#!{ method: 'Bike.Array.each( fn )',
-		summary: 'Executes a function on every element of this array',
+		summary: 'Executes a function on every element of this array and the index of the element',
 		params: {
 			fn: {
 				type: 'Bike.Function',
@@ -193,22 +193,6 @@
 	}!#
 	Bike.Array.each = func each( fn ) {
 		Bike.Contract.requires_not_null( fn  , 'fn' );
-		for ( var element in this ) {
-			fn( element );
-		}
-	};
-
-	#!{ method: 'Bike.Array.each_with_index( fn )',
-		summary: 'Executes a function on every element of this array and the index of the element',
-		params: {
-			fn: {
-				type: 'Bike.Function',
-				desc: 'The function to be executed.'
-			}
-		}
-	}!#
-	Bike.Array.each_with_index = func each_with_index( fn ) {
-		Bike.Contract.requires_not_null( fn  , 'fn' );	
 		var index = 0;
 		for ( var element in this ) {
 			fn( element, index++ );

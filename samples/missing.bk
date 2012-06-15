@@ -34,18 +34,21 @@ var db = {
     if (name.starts('find')) {
       return db[name] #! cache it !# = func(obj) {
         var sql = 'SELECT * FROM {0}'.with(name.sub(4).upper());
-        obj.members(false, true).each_with_index(func(name, index) {
+        obj.members(false, true).each(func(name, index) {
           sql += (index == 0 ? ' WHERE ' : ' AND ') + 
                  name.upper() + 
-                 (obj[name] is Bike.String ? '' : '=') + 
+                 (obj[name] is Bike.String ? ' ' : ' = ') + 
                  obj[name]
         });
         println('Executing...{0}{1}', NL, sql);
-        return [#! Suppose I'm a product array, yay! !#];
+        return [#! Suppose I'm an object array, yay! !#];
       };
     }
   }
 };
 
-# SELECT * FROM PRODUCTS WHERE CATEGORYID=1 AND PRICE>1000
-println(db.findProducts({categoryId: 1, price: '>1000'}));
+# SELECT * FROM PRODUCTS WHERE CATEGORYID = 1 AND PRICE > 1000
+println(db.findProducts({categoryId: 1, price: '> 1000'}));
+
+# SELECT * FROM CATEGORIES WHERE ID BETWEEN 1 AND 5
+println(db.findCategories({id: 'BETWEEN {0} AND {1}'.with(1, 5)}));
