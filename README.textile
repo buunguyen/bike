@@ -13,7 +13,7 @@ I don't update the Mac OSX and Windows installers frequently, except for major r
 
 * Fork or download code
 * Build (with @VS.NET@ or @MonoDevelop@, if you're on Mac OSX)
-* If you use Windows, run <pre>@[code_folder]/src/Bike.Console/bin/Debug/bike.ex" -h="[code_folder]" bike_file.bk@</pre>
+* If you use Windows, run <pre>@[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
 * If you use Mac OSX, run <pre>@/usr/bin/mono "[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
 
 bq. Notes:
