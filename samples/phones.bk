@@ -1,0 +1,71 @@
+#!
+Output the combination of strings corresponding to a given phone number.
+Only include those strings one of whose substrings must exist in the dictionary.
+This script uses the Linux dictionary. 
+!#
+
+load 'file.bk';
+
+var chars_for = {
+	'-': ['-'],
+	'0': ['0'],
+	'1': ['1'],
+	'2': ['A', 'B', 'C'],
+	'3': ['D', 'E', 'F'],
+	'4': ['G', 'H', 'I'],
+	'5': ['J', 'K', 'L'],
+	'6': ['M', 'N', 'O'],
+	'7': ['P', 'Q', 'R', 'S'],
+	'8': ['T', 'U', 'V'],
+	'9': ['W', 'X', 'Y', 'Z'],
+};
+
+var dict = { member_missing: func() { false } };
+Bike.FileSystem.read('/usr/share/dict/words').upper().split().each(func(word) {
+	dict[word] = true;
+});
+
+var rank = func(phone) {
+	var bare_phone = phone.replaces('-', ''), length = bare_phone.length(), subs = [];
+	3.upto(length + 1, func ( width ) {
+		0.upto(length - width + 1, func (start) {
+			subs.add( bare_phone.sub( start, width ).upper() );
+		});
+	});
+	return subs.filter(func(sub) { dict[sub] }) 
+			       .map(func(sub) { var l = sub.length(); return l*l*l; })
+			       .reduce(0, func(sum, val) { sum + val });
+};
+
+var phones = func(str, results, out, index) {
+	out ||= ''; 
+	index ||= 0;
+	if (str.length() == out.length()) {
+	  var value = rank(out);
+	  if (value > 0) results.add([out, value]);
+		return;
+	}
+	var chars = chars_for[str.char(index)];
+	for (var char in chars) {
+		out += char;
+		phones(str, results, out, index + 1);
+		out = out.sub(0, out.length() - 1);
+	}
+};
+
+var process = func(str) {
+	var results = [];
+	phones(str, results);
+	results = results.sort(func(a, b){ b[1].compare_to(a[1]) });
+	var out = '';
+	for (var result in results) {
+		out += '{0} (value: {1}){2}'.with(result[0], result[1], NL);
+	}
+	Bike.FileSystem.write(str + '.txt', out);
+};
+
+try {
+  process('6927753');
+} rescue e {
+  Bike.FileSystem.write('error.txt', e.toString());
+}
