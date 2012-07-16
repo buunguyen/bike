@@ -1,11 +1,9 @@
 bin
 obj
-*.suo
 TestResult.xml
-src/Bike.Console/Bike.Console.pidb
-src/Bike.Installer.Custom/Bike.Installer.Custom.pidb
-src/Bike.Mono.userprefs
-src/Bike.Test/Bike.Test.pidb
-src/Bike/Bike.pidb
-src/Bike.Test/test-results/Bike.Test.csproj-Debug|x86-2012-06-06.xml
-src/test-results/{F73ECFA4-663E-425A-B362-6A14F7632912}-default-2012-06-06.xml
+test-results
+_ReSharper.Bike
+*.suo
+*.pidb
+*.userprefs
+*.user
