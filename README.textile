@@ -91,4 +91,5 @@ Copyright © 2012 Buu Nguyen and contributors
 h1. Contact
 
 * Email: "buunguyen@gmail.com":mailto:buunguyen@gmail.com
+* Blog: "www.buunguyen.net":http://www.buunguyen.net/blog
 * Twitter: "@buunguyen":http://twitter.com/buunguyen
