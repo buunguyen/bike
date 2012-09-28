@@ -1,0 +1,16 @@
+var Y = func(h) {
+	return func(f) {
+		f(f)
+	}(func(f) {
+	 	h(func(n) { f(f)(n) })
+	});
+};
+
+var fact = Y(func(recur) {
+	return func(n) {
+		n == 1 ? 1 : n * recur(n-1)
+	};
+});
+
+println(fact(5));
+
