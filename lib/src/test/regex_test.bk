@@ -17,38 +17,41 @@ BikeUnit.Batch.create( 'Bike.Regex :: Invalid parameter calling' ).run( func() {
 
 
 BikeUnit.Batch.create( 'Bike.Regex :: is_matched() test' ).run( func() {	
-	var evaluating_text = 'Hello, is it me your looking for?';
-	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'for\\?$' ) );
-	this.should_be_false( Bike.Regex.is_matched( evaluating_text , '^for\\?' ) );
-	this.should_be_true( Bike.Regex.is_matched( evaluating_text , '^Hello,' ) );
-	this.should_be_false( Bike.Regex.is_matched( evaluating_text , 'Hello,$' ) );
-	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'lo{2}k[ing]{3}' ) );
+	var evaluating_text = 'However, can you imagine what I felt at that moment?';
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'moment\\?$' ) );
+	this.should_be_false( Bike.Regex.is_matched( evaluating_text , '^moment\\?' ) );
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , '^However,' ) );
+	this.should_be_false( Bike.Regex.is_matched( evaluating_text , 'However,$' ) );
+	this.should_be_true( Bike.Regex.is_matched( evaluating_text , 'ima[gin]{3}e' ) );
 } );
 
 BikeUnit.Batch.create( 'Bike.Regex :: replace() test' ).run( func() {	
-	var evaluating_text = 'And in my dreams I\'ve kissed your lips a thousand times';
+	var evaluating_text = 'For every thousand hacking at the leaves of evil, there is one striking at
+the root';
 	var result1 = Bike.Regex.replace( evaluating_text , '\\sthousand\\s' , ' single ' );
-	this.should_be_equal( result1 , 'And in my dreams I\'ve kissed your lips a single times' );
+	this.should_be_equal( result1 , 'For every single hacking at the leaves of evil, there is one striking at
+the root' );
 	
-	var result2 = Bike.Regex.replace( evaluating_text , '\\sdream\\s' , ' zzz ' );
+	var result2 = Bike.Regex.replace( evaluating_text , '\\sevil\\s' , ' good ' );
 	this.should_be_equal( result2 , evaluating_text );
 	
-	var result3 = Bike.Regex.replace( evaluating_text , 'ou' , '04' );
-	this.should_be_equal( result3 , 'And in my dreams I\'ve kissed y04r lips a th04sand times' );
+	var result3 = Bike.Regex.replace( evaluating_text , 'at' , '@' );
+	this.should_be_equal( result3 , 'For every thousand hacking @ the leaves of evil, there is one striking @
+the root' );
 } );
 
 
 BikeUnit.Batch.create( 'Bike.Regex :: matches() test' ).run( func() {	
-	var evaluating_text = 'Are you somewhere feeling lonely or is someone loving you?';
-	var matches1 = Bike.Regex.matches( evaluating_text , 'love' );
+	var evaluating_text = 'But what happens when we attempt to shortcut a natural process in our growth and development?';
+	var matches1 = Bike.Regex.matches( evaluating_text , 'improvement' );
 	var group = null;
 	var match = null;
 	this.should_be_equal( matches1.size() , 0 );
 	
-	var matches2 = Bike.Regex.matches( evaluating_text , 'Are' );
+	var matches2 = Bike.Regex.matches( evaluating_text , 'But' );
 	this.should_be_equal( matches2.size() , 1 );
 	match = matches2[0];
-	this.should_be_equal( match.value , 'Are' );
+	this.should_be_equal( match.value , 'But' );
 	this.should_be_equal( match.index , 0 );
 	this.should_be_equal( match.groups.size() , 1 );
 	group = match.groups[0];
@@ -57,10 +60,10 @@ BikeUnit.Batch.create( 'Bike.Regex :: matches() test' ).run( func() {
 	this.should_be_true( group.success );
 	
 	
-	var matches3 = Bike.Regex.matches( evaluating_text , 'you' );
+	var matches3 = Bike.Regex.matches( evaluating_text , 'wh' );
 	this.should_be_equal( matches3.size() , 2 );
 	match = matches3[0];
-	this.should_be_equal( match.value , 'you' );
+	this.should_be_equal( match.value , 'wh' );
 	this.should_be_equal( match.index , 4 );
 	this.should_be_equal( match.groups.size() , 1 );
 	group = match.groups[0];
@@ -69,39 +72,39 @@ BikeUnit.Batch.create( 'Bike.Regex :: matches() test' ).run( func() {
 	this.should_be_true( group.success );
 	
 	match = matches3[1];
-	this.should_be_equal( match.value , 'you' );
-	this.should_be_equal( match.index , evaluating_text.length()-4 );
+	this.should_be_equal( match.value , 'wh' );
+	this.should_be_equal( match.index , 17 );
 	this.should_be_equal( match.groups.size() , 1 );
 	group = match.groups[0];
 	this.should_be_equal( group.value , match.value );
 	this.should_be_equal( group.index , match.index );
 	this.should_be_true( group.success );
 	
-	var matches4 = Bike.Regex.matches( evaluating_text , 'some([\\w]+)' );
+	var matches4 = Bike.Regex.matches( evaluating_text , '([\\w]+)ut' );
 	this.should_be_equal( matches4.size() , 2 );
 	match = matches4[0];
-	this.should_be_equal( match.value , 'somewhere' );
-	this.should_be_equal( match.index , 8 );
+	this.should_be_equal( match.value , 'But' );
+	this.should_be_equal( match.index , 0 );
 	this.should_be_equal( match.groups.size() , 2 );
 	group = match.groups[0];
 	this.should_be_equal( group.value , match.value );
 	this.should_be_equal( group.index , match.index );
 	this.should_be_true( group.success );
 	group = match.groups[1];
-	this.should_be_equal( group.value , 'where' );
-	this.should_be_equal( group.index , match.index + 4 );
+	this.should_be_equal( group.value , 'B' );
+	this.should_be_equal( group.index , match.index );
 	this.should_be_true( group.success );
 	
 	match = matches4[1];
-	this.should_be_equal( match.value , 'someone' );
-	this.should_be_equal( match.index , evaluating_text.length()-19 );
+	this.should_be_equal( match.value , 'shortcut' );
+	this.should_be_equal( match.index , 36 );
 	this.should_be_equal( match.groups.size() , 2 );
 	group = match.groups[0];
 	this.should_be_equal( group.value , match.value );
 	this.should_be_equal( group.index , match.index );
 	this.should_be_true( group.success );
 	group = match.groups[1];
-	this.should_be_equal( group.value , 'one' );
-	this.should_be_equal( group.index , match.index + 4 );
+	this.should_be_equal( group.value , 'shortc' );
+	this.should_be_equal( group.index , match.index );
 	this.should_be_true( group.success );
 } );
