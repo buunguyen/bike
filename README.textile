@@ -7,49 +7,6 @@ h1. Interpreted language built on .NET/Mono
 * CLR interoperability
 * Cross-platform (Windows, OSX, Linux)
 
-h1. Run Bike
-
-I don't update the Mac OSX and Windows installers frequently, except for major releases. So to access latest features, you should follow these steps: 
-
-* Fork or download code
-* Build (with @VS.NET@ or @MonoDevelop@, if you're on Mac OSX)
-* If you use Windows, run <pre>@[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
-* If you use Mac OSX, run <pre>@/usr/bin/mono "[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
-
-bq. Notes:
-- You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
-- NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
-
-
-h1. Install Bike on Mac OSX
-
-* Prerequisite: Mono 2.10.2+
-* Download @bike.pkg@ in @installers/osx@
-* Run @bike.pkg@ to install Bike
-* Open the Terminal and type the followings <pre>@cat > hello.bk
-println('Hello World');
-Ctrl-D
-bike.sh hello.bk@</pre>
-
-bq. Notes:
-- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
-- If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
-
-
-h1. Install Bike on Windows
-
-* Prerequisite: .NET 4+
-* Download @bike.exe@ in @installers/win@
-* Run @bike.exe@ to extract and install Bike
-* Create a file named @hello.bk@ with this content <pre>@println('Hello World');@</pre>
-* In the cmd, type @bike hello.bk@ to execute it. Alternatively, you can double-click a Bike file in Windows Explorer.
-
-bq. The setup program also makes the following changes to your system:
-- @BIKE_HOME@ env variable pointing to the installation folder
-- Append @[installation_folder]bin/@ to @PATH@ env variable
-- Associate @.bk@ extension with @bike.exe@
-
-
 h1. Examples
 
 h3. Fibonacci
@@ -92,6 +49,124 @@ bc. Bike.Function.curry = func( *args ) {
 func add( a, b ) { a + b }
 var addTo2 = add.curry( 2 );
 println( addTo2( 3 ) );
+
+
+h3. Missing
+bc. obj = {
+  member_missing: func(name) {
+    if (name == "add") {
+      return func(a, b) { a + b };
+    } 
+  }
+};
+println(obj.add(1, 2));
+
+
+h3. WinForms
+
+bc. load 'System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a';
+load 'System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089';
+var btn = System.Windows.Forms.Button();
+btn.Text = "Click count: 0";
+btn.Size = System.Drawing.Size( 100, 30 );
+var count = 0;
+btn.Click += func() {
+	this.Text = "Click count: {0}".with( ++count );
+};
+var form = System.Windows.Forms.Form();
+form.Text = "My Dialog Box";
+form.Controls.Add( btn );
+form.ShowDialog();
+
+
+h4. GTK
+
+bc. load 'gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f';
+Gtk.Application.Init();
+var lblHello = Gtk.Label();
+var btnHello = Gtk.Button("Hello");
+var count = 0;
+btnHello.Clicked += func() {
+	lblHello.Text = "Hello World ({0} {1})".with(
+		++count, "time" + (count == 1 ? "" : "s"));
+};
+var btnQuit = Gtk.Button("Quit");
+btnQuit.Clicked += func() {
+	Gtk.Application.Quit();
+};
+var box = Gtk.VBox(false, 10);
+box.PackStart(btnHello, true, true, 0);
+box.PackStart(lblHello, true, true, 0);
+box.PackStart(btnQuit, true, true, 0);
+var win = Gtk.Window("Hello World");
+win.DeleteEvent += func() {
+	Gtk.Application.Quit();
+};
+win.Add(box);
+win.Resize(300, 200);
+win.ShowAll();
+Gtk.Application.Run();
+
+h1. Run Bike
+
+I don't update the Mac OSX and Windows installers frequently, except for major releases. So to access latest features, you should follow these steps: 
+
+* Fork or download code
+* Build (with @VS.NET@ or @MonoDevelop@, if you're on Mac OSX)
+* If you use Windows, run <pre>@[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
+* If you use Mac OSX, run <pre>@/usr/bin/mono "[code_folder]/src/Bike.Console/bin/Debug/bike.exe" -h="[code_folder]" bike_file.bk@</pre>
+
+bq. Notes:
+- You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
+- NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
+- I will upload a TextMate bundle later
+
+h1. Install Bike on Mac OSX
+
+* Prerequisite: Mono 2.10.2 (not tested yet with earlier versions)
+* Download @bike.pkg@ in @installers/osx@
+* Run @bike.pkg@ to install Bike
+* Open the Terminal and type the followings <pre>@cat > hello.bk
+println('Hello World');
+Ctrl-D
+bike.sh hello.bk@</pre>
+
+bq. Notes:
+- If you didn't install Mono or Bike to their default folders, modify @/usr/local/bin/bike.sh@ to use correct paths
+- If you want to double-click to execute a Bike file in @Finder@, associate the @.bk@ extension to @Applications/bike/bin/bike.app@
+
+
+h1. Install Bike on Windows
+
+* Prerequisite: .NET 4.0
+* Download @bike.exe@ in @installers/win@
+* Run @bike.exe@ to extract and install Bike
+* Create a file named @hello.bk@ with this content <pre>@println('Hello World');@</pre>
+* In the cmd, type @bike hello.bk@ to execute it. Alternatively, you can double-click a Bike file in Windows Explorer.
+
+bq. The setup program also makes the following changes to your system:
+- @BIKE_HOME@ env variable pointing to the installation folder
+- Append @[installation_folder]bin/@ to @PATH@ env variable
+- Associate @.bk@ extension with @bike.exe@
+
+
+h1. Bike folder structure
+
+In OSX, Bike is installed to @Applications/bike@. In Windows, Bike is installed to @Program Files/bike@. The structure of the Bike folder is as follows:
+* @bin@: binaries and dependencies and
+** @bike.app@ (OSX only): the app you can used to associate with @.bk@ files so that they are executable via Finder
+** @bike.action@ (OSX only): the @Automator@ action code used to create @bike.app@, feel free to customize
+** @bike.sh@ (OSX only): the shell script used to run Bike (the same file also exists in @/usr/local/bin@)
+* @lib@
+** @src@
+*** @core@: Library source code
+*** @test@: Test for library
+*** @tools@: Bike doc and unit tools
+** @doc@: API documentation
+* @samples@: Sample programs, most notable is @spec.bk@
+* @resources@ (Windows only)
+** @np.xml@: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
+* @LICENSE@
 
 
 h1. What's next?
