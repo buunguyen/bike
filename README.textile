@@ -62,6 +62,22 @@ var n = readln();
 println( fib( n.to_number() ) );
 read();
 
+
+h3. Memoize
+
+bc. func memoize(f) {
+  var cache = {
+    member_missing: func() { null }
+  };
+  return func recur(n) {
+    cache[n] || (cache[n] = f(recur, n));
+  };
+}
+var m_fib = memoize(func(recur, n) {
+  n < 2 ? 1 : recur(n-1) + recur(n-2);
+});
+
+
 h3. Curry
 
 bc. Bike.Function.curry = func( *args ) {
