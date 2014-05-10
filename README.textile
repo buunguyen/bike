@@ -64,8 +64,7 @@ read();
 
 h3. Curry
 
-bc. load 'file.bk';
-Bike.Function.curry = func( *args ) {
+bc. Bike.Function.curry = func( *args ) {
 	if ( args == null || args.size() == 0 ) return this;
 	var me = this;
 	return func( *more ) {

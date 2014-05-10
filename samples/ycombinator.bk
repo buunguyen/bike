@@ -13,4 +13,3 @@ var fact = Y(func(recur) {
 });
 
 println(fact(5));
-
