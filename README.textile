@@ -19,11 +19,11 @@ I don't update the Mac OSX and Windows installers frequently, except for major r
 bq. Notes:
 - You should configure NotePad&#43;&#43;, TextMate or whatever code editor to run @bike@ based on the above commands
 - NotePad++ users can use this "file":https://github.com/buunguyen/Bike/blob/master/resources/np.xml to enable syntax highlighting (View > User-Defined Dialog > Import)
-- I will upload a TextMate bundle later
+
 
 h1. Install Bike on Mac OSX
 
-* Prerequisite: Mono 2.10.2 (not tested yet with earlier versions)
+* Prerequisite: Mono 2.10.2+
 * Download @bike.pkg@ in @installers/osx@
 * Run @bike.pkg@ to install Bike
 * Open the Terminal and type the followings <pre>@cat > hello.bk
@@ -38,7 +38,7 @@ bq. Notes:
 
 h1. Install Bike on Windows
 
-* Prerequisite: .NET 4.0
+* Prerequisite: .NET 4+
 * Download @bike.exe@ in @installers/win@
 * Run @bike.exe@ to extract and install Bike
 * Create a file named @hello.bk@ with this content <pre>@println('Hello World');@</pre>
@@ -50,23 +50,33 @@ bq. The setup program also makes the following changes to your system:
 - Associate @.bk@ extension with @bike.exe@
 
 
-h1. Bike folder structure
+h1. Examples
 
-In OSX, Bike is installed to @Applications/bike@. In Windows, Bike is installed to @Program Files/bike@. The structure of the Bike folder is as follows:
-* @bin@: binaries and dependencies and
-** @bike.app@ (OSX only): the app you can used to associate with @.bk@ files so that they are executable via Finder
-** @bike.action@ (OSX only): the @Automator@ action code used to create @bike.app@, feel free to customize
-** @bike.sh@ (OSX only): the shell script used to run Bike (the same file also exists in @/usr/local/bin@)
-* @lib@
-** @src@
-*** @core@: Library source code
-*** @test@: Test for library
-*** @tools@: Bike doc and unit tools
-** @doc@: API documentation
-* @samples@: Sample programs, most notable is @spec.bk@
-* @resources@ (Windows only)
-** @np.xml@: Syntax highlighting file for NotePad++ (in NotePad++, select View > User-Defined Dialog > Import)
-* @LICENSE@
+h3. Fibonacci
+
+bc. func fib( n ) {
+    n <= 2 ? n: fib( n - 1 ) + fib( n - 2 )
+}
+print( "n: " );
+var n = readln();
+println( fib( n.to_number() ) );
+read();
+
+h3. Curry
+
+bc. load 'file.bk';
+Bike.Function.curry = func( *args ) {
+	if ( args == null || args.size() == 0 ) return this;
+	var me = this;
+	return func( *more ) {
+		if ( more != null )  
+			args.add_all( more );
+		me.call( this, *args );
+	};
+};
+func add( a, b ) { a + b }
+var addTo2 = add.curry( 2 );
+println( addTo2( 3 ) );
 
 
 h1. What's next?
@@ -79,14 +89,6 @@ h1. What's next?
 ** Document code or features
 ** Add unit test cases
 
-h1. Contributors
-
-* "duylam":https://github.com/duylam
-
-
-h1. Copyright
-
-Copyright © 2012 Buu Nguyen and contributors
 
 h1. Contact
 
